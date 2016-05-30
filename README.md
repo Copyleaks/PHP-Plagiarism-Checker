@@ -1,0 +1,2 @@
+# PHP-Plagiarism-Checker
+Readme
