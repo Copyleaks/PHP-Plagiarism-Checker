@@ -7,13 +7,13 @@ function isJson($string) {
 	return (json_last_error() == JSON_ERROR_NONE);
 }
 
-include_once( getcwd().'/Components/CopyleaksCloud.php');
-include_once( getcwd().'/Components/LoginToken.php');
-include_once( getcwd().'/Components/CopyleaksProcess.php');
-include_once( getcwd().'/Components/API.php');
+include_once( __DIR__.'/src/Components/CopyleaksCloud.php');
+include_once( __DIR__.'/src/Components/LoginToken.php');
+include_once( __DIR__.'/src/Components/CopyleaksProcess.php');
+include_once( __DIR__.'/src/Components/API.php');
 
-include_once( getcwd().'/Helpers/Config.php');
-include_once( getcwd().'/Helpers/ErrorHandler.php');
+include_once( __DIR__.'/src/Helpers/Config.php');
+include_once( __DIR__.'/src/Helpers/ErrorHandler.php');
 
 
 

@@ -2,6 +2,9 @@
 namespace Copyleaks;
 use Exception;
 
+/*
+API class is the builder and helper for http requests towards api.copyleaks.com
+*/
 class API{
 	private $config;
 	private $defaultHeaders;
@@ -45,7 +48,7 @@ class API{
 
 		return $this->headersForRequest;
 	}
-
+	
 	public function setOcrLanguage($lang=''){
 		if(!$this->languageSupported($lang))
 			throw new Exception("LANGUAGE ".$lang." IS NOT SUPPORTED BY COPYLEAKS OCR");
@@ -108,7 +111,7 @@ class API{
 				
 		}
 	}
-
+	
 	public function prepareRequest($method='POST'){
 		
 		return array(

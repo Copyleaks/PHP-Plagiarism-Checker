@@ -1,6 +1,14 @@
 <?php
 namespace Copyleaks;
 
+/*
+CopyleaksProcess class provides set of public function for user to implement :
+	
+	1. GET process status (include progress 0-100%)
+	2. GET process results
+	3. DELETE process
+
+*/
 class CopyleaksProcess{
 	private $config;
 	private $authHeader;

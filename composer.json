@@ -1,6 +1,8 @@
 {
     "name": "copyleaks/php-plagiarism-checker",
     "description": "Copyleaks detects online plagiarism and checks content distribution. Use Copyleaks to find out if textual content is original and where it has been used before. This package shows how to integrate with the Copyleaks cloud to search for copyright infringement.",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
 		"php": ">=5.3.0"
 	},
@@ -14,5 +16,10 @@
             "homepage": "https://copyleaks.com",
             "role": "Developer"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-0": {
+            "Copyleaks": "src/"
+        }
+    }
 }
