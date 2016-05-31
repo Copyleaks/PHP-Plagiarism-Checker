@@ -5,6 +5,17 @@ use Copyleaks\LoginToken;
 use Copyleaks\CopyleaksProcess;
 use Exception;
 
+/*
+CopyleaksCloud provides set of public function for user to implement :
+	
+	1. POST Login
+	2. GET credit balance
+	3. GET process list
+	4. POST create file
+	5. POST create file by OCR
+	6. POST create by URL
+
+*/
 class CopyleaksCloud{
 	public $loginToken;
 	private $config;
@@ -65,7 +76,7 @@ class CopyleaksCloud{
 		return $this->getRequests($_url);
 	}
 
-	public function getRequests($url=''){
+	private function getRequests($url=''){
 		$_api = new API();
 		$_requestHeaders = $_api->manageHeaders(array($this->loginToken->authHeader()));
 		$_requestPrepare = $_api->prepareRequest('GET');
@@ -111,7 +122,7 @@ class CopyleaksCloud{
 		return $this->createByType('',$_api,'URL',$customHeaders);
 	}
 
-	public function createByType($file='',$api=NULL,$type='',$additionalHeaders=array()){
+	private function createByType($file='',$api=NULL,$type='',$additionalHeaders=array()){
 		$_api = isset($api) ? $api : new API('',true);
 
 		

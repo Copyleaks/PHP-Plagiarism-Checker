@@ -1,7 +1,9 @@
 <?php
 namespace Copyleaks;
 
-
+/*
+handles login token after succesful login
+*/
 class LoginToken{
 
 	public $token;
