@@ -19,7 +19,7 @@ Using Copyleaks SDK you can detect plagiarism in:
 <pre>
 composer require copyleaks/php-plagiarism-checker @dev
 </pre>
-Followiing that, in order to use the SDK code add the following code:
+Following that, in order to use the SDK, add this to your code:
 <pre>
 //copyleaks dependencies 
 include_once( __DIR__.'/vendor/copyleaks/php-plagiarism-checker/autoload.php');
