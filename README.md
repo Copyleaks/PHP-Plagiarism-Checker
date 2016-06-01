@@ -17,7 +17,14 @@ Using Copyleaks SDK you can detect plagiarism in:
   <br>
   When integrating that way you will automatically be able to update the SDK to its latest version:
 <pre>
-composer require copyleaks/php-plagiarism-checker
+composer require copyleaks/php-plagiarism-checker @dev
+</pre>
+Followiing that, in order to use the SDK code add the following code:
+<pre>
+//copyleaks dependencies 
+include_once( __DIR__.'/vendor/copyleaks/php-plagiarism-checker/autoload.php');
+use Copyleaks\CopyleaksCloud;
+use Copyleaks\CopyleaksProcess;
 </pre>
 </li>
 <li>Download the code from this repository and add it to your project.
