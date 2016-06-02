@@ -55,7 +55,7 @@ try{
 	$process = new CopyleaksProcess($process['response']['ProcessId'],$process['response']['CreationTimeUTC'],$clCloud->loginToken->authHeader());
 	
 	//create process by ID
-	// $oldProcess = new CopyleaksProcess('11950086-8ded-4ace-85c6-a18d7ef1eb8d','30/05/2016 07:23:43',$clCloud->loginToken->authHeader());
+	// $oldProcess = new CopyleaksProcess('YOUR PID (GUID) HERE','30/05/2016 07:23:43',$clCloud->loginToken->authHeader());
 
 	//print_r($process->getStatus()); //get process status
 	//print_r($oldProcess->getResult()); //get process results

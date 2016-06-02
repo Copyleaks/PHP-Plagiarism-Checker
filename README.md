@@ -52,3 +52,4 @@ $apiKey = 'Your-API-Key-Here';
 <li><a href="https://api.copyleaks.com/Guides/HowToUse">Copyleaks API guide</a></li>
 <li><a href="https://api.copyleaks.com/Documentation">Copyleaks API documentation</a></li>
 </ul>
+
