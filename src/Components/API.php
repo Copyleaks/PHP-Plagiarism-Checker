@@ -198,13 +198,7 @@ class API{
 			case 'CREATE_BY_URL':
 				
 				if(count($params) == 0){
-					$_error = new ErrorHandler();
-
-					return array(
-									'has_error'=>true,
-									'error'=>$_error->getArray(),
-									'response_code' => 0
-								);
+					throw new Exception("Error: no response headers - wrong implementation");
 				}
 
 				$_test = $this->parseHeaders($params);
@@ -217,15 +211,20 @@ class API{
 
 					$_foundError = true;
 					
-					return array(
-									'has_error'=>$_foundError,
-									'error'=>$_error->getArray(),
-									'response_code' => $_responseCode
-								);
+					throw new Exception("Error code: ".$_errCode.", ".$_content['Message']);
+					
 				}
 				
-				if($_responseCode !== 200 )
+				if($_responseCode !== 200 ){
 					$_foundError = true;
+					// print_r($_content);die();
+					if(isset($_content['Message']))
+						throw new Exception("Response code: ".$_responseCode.", ".$_content['Message']);
+					else{
+
+						throw new Exception("Response code: ".$_responseCode.", ".$_content);
+					}
+				}
 				
 				return array(
 								'has_error'=>$_foundError,

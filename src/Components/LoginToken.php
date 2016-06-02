@@ -23,6 +23,9 @@ class LoginToken{
 	}
 
 	public function authHeader(){
+		if(!isset($this->token) || strlen($this->token) < 1)
+			throw new Exception("NO TOKEN");
+			
 		return $this->constants['AUTHORIZATION_HEADER'].' '.$this->token;
 	}
 

@@ -14,12 +14,19 @@ $clConst = $clCloud->getConstants(); //get all constants
 
 
 //LOGIN
-$response = $clCloud->login($email, $apiKey);
-
-if(!isset($clCloud->loginToken) || !$clCloud->loginToken->validate()){ //validate login token
-	throw new Exception("FAILED TO LOGIN");
+try{
+	$response = $clCloud->login($email, $apiKey);	
+}catch(Exception $e){
+	echo "<Br/>Caught exception: ". $e->getMessage();
 }
 
+
+//validate login token
+if(!isset($clCloud->loginToken) || !$clCloud->loginToken->validate()){ 
+	echo "<Br/>FALSE LOGIN CREDS";
+}
+
+$plist=array();
 $token = $clCloud->loginToken->token; //get login token
 $creditBalance = $clCloud->getCreditBalance(); //get credit balance
 // print_r($creditBalance);
@@ -32,17 +39,19 @@ try{
 								// $clConst['HTTP_CALLBACK'].': http://your.website.com/callback/{PID}',
 								// $clConst['EMAIL_CALLBACK'].': myemail@company.com',
 								// $clConst['CLIENT_CUSTOM_PREFIX'].'Message: customMsg',
-								// $clConst['PARTIAL_SCAN_HEADER']
+								$clConst['PARTIAL_SCAN_HEADER']
 								);
 
+	echo '<Br/>create new process HTTPREQUEST';
 	$process  = $clCloud->createByURL('https://www.copyleaks.com',$additionalHeaders);
 	// $process = $clCloud->createByFile('./tests/test.txt',$additionalHeaders);
 	// $process  = $clCloud->createByOCR('./tests/c2253306-637a-44c3-8fe0-e0b5d237da32.jpg','English',$additionalHeaders);
 	
-	print_r($process);
+	// print_r($process);
 	
 
 	//create process from create file\ocr response
+	echo '<Br/>create process instance';
 	$process = new CopyleaksProcess($process['response']['ProcessId'],$process['response']['CreationTimeUTC'],$clCloud->loginToken->authHeader());
 	
 	//create process by ID
@@ -54,6 +63,7 @@ try{
 	// print_r($createFileProcess); //print createByFile response
 	
 	//DELETE process example
+	// echo '<Br/>delete process';
 	//$deleteProcess = $process->delete();
 	// print_r($deleteProcess);
 
@@ -61,12 +71,46 @@ try{
 	$plist = $clCloud->getProcessList();
 	// print_r($plist);
 	
+
+
 	//get OCR's supported languages
 	$ocrSupportedLanguages = $clCloud->getOCRLanguages();
 	// print_r($ocrSupportedLanguages);
 	
 }catch(Exception $e){
-	echo "Caught exception: ". $e->getMessage();
+
+	echo "<br/>Caught exception: ". $e->getMessage();
 }
+
+//build table from PHP array
+function build_table($array){
+    // start table
+    $html = '<table>';
+    // header row
+    $html .= '<tr>';
+    foreach($array[0] as $key=>$value){
+            $html .= '<th>' . $key . '</th>';
+        }
+    $html .= '</tr>';
+
+    // data rows
+    foreach( $array as $key=>$value){
+        $html .= '<tr>';
+        foreach($value as $key2=>$value2){
+        	$value2 = is_array($value2) ? json_encode($value2) : $value2;
+            $html .= '<td>' . @$value2 . '</td>';
+        }
+        $html .= '</tr>';
+    }
+
+    // finish table and return it
+
+    $html .= '</table>';
+    return $html;
+}
+
+//print process list as HTML table
+if(isset($plist,$plist['response']) && count($plist['response'])>0)
+	echo build_table($plist['response']);
 
 ?>
