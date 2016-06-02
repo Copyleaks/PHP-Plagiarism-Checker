@@ -18,12 +18,14 @@ try{
 	$response = $clCloud->login($email, $apiKey);	
 }catch(Exception $e){
 	echo "<Br/>Caught exception: ". $e->getMessage();
+	die();
 }
 
 
 //validate login token
 if(!isset($clCloud->loginToken) || !$clCloud->loginToken->validate()){ 
 	echo "<Br/>FALSE LOGIN CREDS";
+	die();
 }
 
 $plist=array();
@@ -42,17 +44,20 @@ try{
 								$clConst['PARTIAL_SCAN_HEADER']
 								);
 
-	echo '<Br/>create new process HTTPREQUEST';
-	$process  = $clCloud->createByURL('https://www.copyleaks.com',$additionalHeaders);
+	$urlToScan = "https://www.copyleaks.com";
+	echo '<Br/>Creating new scan-process (' . $urlToScan . ')...';
+	$process  = $clCloud->createByURL($urlToScan,$additionalHeaders);
 	// $process = $clCloud->createByFile('./tests/test.txt',$additionalHeaders);
 	// $process  = $clCloud->createByOCR('./tests/c2253306-637a-44c3-8fe0-e0b5d237da32.jpg','English',$additionalHeaders);
 	
 	// print_r($process);
 	
-
 	//create process from create file\ocr response
-	echo '<Br/>create process instance';
-	$process = new CopyleaksProcess($process['response']['ProcessId'],$process['response']['CreationTimeUTC'],$clCloud->loginToken->authHeader());
+	$process = new CopyleaksProcess($process['response']['ProcessId'],
+		$process['response']['CreationTimeUTC'],
+		$clCloud->loginToken->authHeader());
+
+	echo "<BR/> Process created! (PID = '" . $process->processId . "')";
 	
 	//create process by ID
 	// $oldProcess = new CopyleaksProcess('YOUR PID (GUID) HERE','30/05/2016 07:23:43',$clCloud->loginToken->authHeader());
