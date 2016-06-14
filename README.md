@@ -43,7 +43,7 @@ $apiKey = 'Your-API-Key-Here';
 
 <p>This example shows how to scan a URL using the line:</p>
 <pre> $process  = $clCloud->createByURL('https://www.copyleaks.com',$additionalHeaders); </pre>
-<p>You can change 'createByURL' with 'creatByFile' to scan local files:</p>
+<p>You can change 'createByURL' with 'createByFile' to scan local files:</p>
 <pre> $process = $clCloud->createByFile('./tests/test.txt',$additionalHeaders); </pre>
 <p>or with 'createByOCR to scan local images containing text:</p>
 <pre>$process  = $clCloud->createByOCR('./tests/c2253306-637a-44c3-8fe0-e0b5d237da32.jpg','English',$additionalHeaders);</pre>
