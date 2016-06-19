@@ -25,8 +25,6 @@ class CopyleaksCloud{
 	private $constants;
 
 	public function __construct($type='publisher'){
-		// $this->loginToken = new LoginToken();
-		$this->process = new CopyleaksProcess();
 		$this->config = new \ReflectionClass('Copyleaks\Config');
 		$this->constants = $this->config->getConstants();
 		$this->typeOfService = $type;
@@ -153,7 +151,7 @@ class CopyleaksCloud{
 				break;
 			case 'TEXT':
 				$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION']
-					.'/'.$this->typeOfService.'/create-by-text';	
+					.'/'.$this->typeOfService.'/create-by-text';
 				break;
 			default:
 				throw new Exception("INVALID CREATE BY TYPE");

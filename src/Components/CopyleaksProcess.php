@@ -14,7 +14,7 @@ class CopyleaksProcess{
 	private $authHeader;
 	public $typeOfService;
 
-	public function __construct($processId=0,$creationTime='',$authHeader=array(),$type='publisher'){
+	public function __construct($processId=0,$creationTime='',$authHeader=array(),$type=''){
 		$this->config = new \ReflectionClass('Copyleaks\Config');
 		$this->constants = $this->config->getConstants();
 		$this->processId = $processId;
