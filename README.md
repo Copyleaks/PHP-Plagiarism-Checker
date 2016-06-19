@@ -1,6 +1,6 @@
 <h2>Copyleaks PHP SDK</h2>
 <p>
-Copyleaks SDK is a simple framework that allows you to scan text for plagiarism and detect content distribution online, using the <a href="https://copyleaks.com">Copyleaks plagiarism checker cloud</a>.
+Copyleaks SDK is a simple framework that allows you to scan text for plagiarism and detect content distribution online, using the <a href="https://copyleaks.com">Copyleaks plagiarism checker</a> cloud.
 </p>
 <p>
 Using Copyleaks SDK you can detect plagiarism in:  
@@ -35,7 +35,7 @@ use Copyleaks\CopyleaksProcess;
  <p>You can generate your personal API key. Do so by entering your <a href="https://api.copyleaks.com/Home/Dashboard">dashboard</a>, and under 'Access Keys' you will be able to see and generate your API keys.</p>
  <p>For more information check out our <a href="https://api.copyleaks.com/Guides/HowToUse">API guide</a>.</p>
 <h3>Example</h3>
-<p><a href="https://github.com/Copyleaks/PHP-Plagiarism-Checker/blob/master/example.php">Sample.php</a> will show you how to scan for plagiarism the URL: 'https://www.copyleaks.com'. All you have to do is to update the following two lines with your email and API key:
+<p><a href="https://github.com/Copyleaks/PHP-Plagiarism-Checker/blob/master/example.php">Example.php</a> will show you how to scan for plagiarism the URL: 'https://www.copyleaks.com'. All you have to do is to update the following two lines with your email and API key:
 </p>
 <pre>
 $email = 'Your-Email-Address-Here';
