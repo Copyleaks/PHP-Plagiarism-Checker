@@ -14,7 +14,7 @@ Using Copyleaks SDK you can detect plagiarism in:
 <h3>Integration</h3>
 <p>Integrate with the Copyleaks SDK in one of two options:</p>
 <ul>
-<li>Use the Package Manager - <a href="https://packagist.org/packages/copyleaks/php-plagiarism-checker">Packagist</a> (recommended).
+<li><b>Recommended:</b> Use the Package Manager - <a href="https://packagist.org/packages/copyleaks/php-plagiarism-checker">Packagist</a>.
   <br>
   When integrating that way you will automatically be able to update the SDK to its latest version:
 <pre>
