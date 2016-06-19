@@ -8,10 +8,25 @@ include_once( getcwd().'/autoload.php');
 use Copyleaks\CopyleaksCloud;
 use Copyleaks\CopyleaksProcess;
 
+/* CREATE CONFIG INSTANCE */
+$config = new \ReflectionClass('Copyleaks\Config');
+$clConst = $config->getConstants();
 
-$clCloud = new CopyleaksCloud();
-$clConst = $clCloud->getConstants(); //get all constants
+/* 
+	CONSTRUCT ACCEPTS 1 PARAMETER (type of product).
 
+	ACCEPTED TYPES: 
+	1. publisher 
+	2. academy
+
+	CONFIG HAS CONSTANTS FOR ACCEPTED TYPES:
+	1. $clConst['E_PRODUCT']['PUBLISHER']
+	2. $clConst['E_PRODUCT']['ACADEMY']
+
+	DEFAULT:
+	publisher
+*/
+$clCloud = new CopyleaksCloud($clConst['E_PRODUCT']['PUBLISHER']);
 
 //LOGIN
 try{
@@ -47,17 +62,29 @@ try{
 	$urlToScan = "https://www.copyleaks.com";
 	echo '<Br/>Creating new scan-process (' . $urlToScan . ')...';
 	$process  = $clCloud->createByURL($urlToScan,$additionalHeaders);
+	// $process  = $clCloud->createByText('<ENTER YOUR STRING HERE>');
 	// $process = $clCloud->createByFile('./tests/test.txt',$additionalHeaders);
 	// $process  = $clCloud->createByOCR('./tests/c2253306-637a-44c3-8fe0-e0b5d237da32.jpg','English',$additionalHeaders);
 	
 	// print_r($process);
 	
-	//create process from create file\ocr response
+	/*
+		create process from create file\ocr response
+		
+		Parameters:
+		1. processID
+		2. Creation time (UTC)
+		3. Login header
+		4. type of product (publisher\academy)
+
+	*/
 	$process = new CopyleaksProcess($process['response']['ProcessId'],
 		$process['response']['CreationTimeUTC'],
-		$clCloud->loginToken->authHeader());
+		$clCloud->loginToken->authHeader(),
+		$clConst['E_PRODUCT']['PUBLISHER']);
 
 	echo "<BR/> Process created! (PID = '" . $process->processId . "')";
+
 	
 	//create process by ID
 	// $oldProcess = new CopyleaksProcess('YOUR PID (GUID) HERE','30/05/2016 07:23:43',$clCloud->loginToken->authHeader());

@@ -102,6 +102,7 @@ class API{
 				
 				break;
 			case 'URL':
+			case 'TEXT':
 				$_headers = array($loginTokenHeader);
 				$_requestHeaders = $this->manageHeaders($_headers,$additionalHeaders);
 				

@@ -12,23 +12,25 @@ CopyleaksProcess class provides set of public function for user to implement :
 class CopyleaksProcess{
 	private $config;
 	private $authHeader;
+	public $typeOfService;
 
-	public function __construct($processId=0,$creationTime='',$authHeader=array()){
+	public function __construct($processId=0,$creationTime='',$authHeader=array(),$type='publisher'){
 		$this->config = new \ReflectionClass('Copyleaks\Config');
 		$this->constants = $this->config->getConstants();
 		$this->processId = $processId;
 		$this->creationTime = $creationTime;
 		$this->authHeader = $authHeader;
+		$this->typeOfService = $type;
 	}
 
 	public function getStatus(){
-		$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION'].'/'.$this->constants['SERVICE_PAGE'].'/'.$this->processId.'/status';
+		$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION'].'/'.$this->typeOfService.'/'.$this->processId.'/status';
 
 		return $this->getRequests($_url);
 	}
 
 	public function getResult(){
-		$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION'].'/'.$this->constants['SERVICE_PAGE'].'/'.$this->processId.'/result';
+		$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION'].'/'.$this->typeOfService.'/'.$this->processId.'/result';
 		
 		return $this->getRequests($_url);
 	}
@@ -63,7 +65,7 @@ class CopyleaksProcess{
 		$_requestHeaders = $_api->manageHeaders(array($this->authHeader));
 		$_requestPrepare = $_api->prepareRequest('DELETE');
 
-		$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION'].'/'.$this->constants['SERVICE_PAGE'].'/'.$this->processId.'/delete';;	
+		$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION'].'/'.$this->typeOfService.'/'.$this->processId.'/delete';;	
 
 		try {
 		    

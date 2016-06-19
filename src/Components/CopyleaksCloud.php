@@ -14,20 +14,22 @@ CopyleaksCloud provides set of public function for user to implement :
 	4. POST create file
 	5. POST create file by OCR
 	6. POST create by URL
-
+	7. POST create by Text
 */
 class CopyleaksCloud{
 	public $loginToken;
+	public $typeOfService;
 	private $config;
 	private $errorHandler;
 	private $processList;
 	private $constants;
 
-	public function __construct($email='',$apikey=''){
+	public function __construct($type='publisher'){
 		// $this->loginToken = new LoginToken();
 		$this->process = new CopyleaksProcess();
 		$this->config = new \ReflectionClass('Copyleaks\Config');
 		$this->constants = $this->config->getConstants();
+		$this->typeOfService = $type;
 	}
 
 	public function login($email='',$apikey=''){
@@ -71,7 +73,7 @@ class CopyleaksCloud{
 
 	public function getProcessList(){ 
 		$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION']
-					.'/'.$this->constants['SERVICE_PAGE'].'/list';		
+					.'/'.$this->typeOfService.'/list';		
 
 		return $this->getRequests($_url);
 	}
@@ -99,6 +101,7 @@ class CopyleaksCloud{
 		return $_validatedResponse;
 	}
 
+	/* SCAN BY OCR (IMAGE FILE) */
 	public function createByOCR($file='',$language='English',$customHeaders=array()){
 		$_api = new API('',true);
 		$_api->setOcrLanguage($language);
@@ -106,12 +109,14 @@ class CopyleaksCloud{
 		return $this->createByType($file,$_api,'OCR',$customHeaders);
 	}
 	
+	/* SCAN BY FILE */
 	public function createByFile($file='',$customHeaders=array()){
 		$_api = new API('',true);
 
 		return $this->createByType($file,$_api,'FILE',$customHeaders);
 	}
 
+	/* SCAN BY URL */
 	public function createByURL($url='',$customHeaders=array()){
 		if (filter_var($url, FILTER_VALIDATE_URL) === FALSE)
 		    throw new Exception("INVALID URL");
@@ -122,29 +127,39 @@ class CopyleaksCloud{
 		return $this->createByType('',$_api,'URL',$customHeaders);
 	}
 
+	/* SCAN BY TEXT(STRING) */
+	public function createByText($text='',$customHeaders=array()){
+		$_api = new API($text);
+
+		return $this->createByType('',$_api,'TEXT',$customHeaders);
+	}
+	
 	private function createByType($file='',$api=NULL,$type='',$additionalHeaders=array()){
 		$_api = isset($api) ? $api : new API('',true);
-
 		
 		switch ($type) {
 			case 'OCR':
 				$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION']
-					.'/'.$this->constants['SERVICE_PAGE'].'/create-by-file-ocr?language='.$_api->getOCRLanguage();		
+					.'/'.$this->typeOfService.'/create-by-file-ocr?language='.$_api->getOCRLanguage();		
 				break;
 			
 			case 'URL':
 				$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION']
-				.'/'.$this->constants['SERVICE_PAGE'].'/create-by-url';
+				.'/'.$this->typeOfService.'/create-by-url';
 				break;
 			case 'FILE':
 				$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION']
-					.'/'.$this->constants['SERVICE_PAGE'].'/create-by-file';	
+					.'/'.$this->typeOfService.'/create-by-file';	
+				break;
+			case 'TEXT':
+				$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION']
+					.'/'.$this->typeOfService.'/create-by-text';	
 				break;
 			default:
 				throw new Exception("INVALID CREATE BY TYPE");
 				
 		}
-
+		
 		$_api->manageContent($type,$file,$this->loginToken->authHeader(),$additionalHeaders);
 
 		$_requestPrepare = $_api->prepareRequest();
