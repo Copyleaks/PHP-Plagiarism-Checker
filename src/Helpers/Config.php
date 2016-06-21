@@ -24,7 +24,7 @@ class Config{
     const USER_AGENT = 'CopyleaksPHPSDK/1.0';
     const DATE_FORMAT = 'dd/MM/yyyy HH:mm:ss';
     const SERVICE_PAGE = 'publisher';
-    const E_PRODUCT = array('PUBLISHER'=>'publisher','ACADEMY'=>'academy');
+    const E_PRODUCT = array('PUBLISHER'=>'publisher','ACADEMY'=>'academic');
     const COPYLEAKS_INTERNAL_ERROR = 'Sorry we have some internal issues, please try again shortly.';
 
     const MULTIPART_BOUNDARY = '--------------------------';
