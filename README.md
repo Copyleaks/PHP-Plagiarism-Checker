@@ -6,9 +6,9 @@ Copyleaks SDK is a simple framework that allows you to scan text for plagiarism 
 Using Copyleaks SDK you can detect plagiarism in:  
 <ul>
 <li>Online content and webpages</li>
-<li>Local and cloud files (<a href="https://api.copyleaks.com/Documentation/TechnicalSpecifications/#non-textual-formats">see supported files</a>)</li>
+<li>Local and cloud files (<a href="https://api.copyleaks.com/GeneralDocumentation/TechnicalSpecifications#supportedfiletypes">see supported files</a>)</li>
 <li>Free text</li>
-<li>OCR (Optical Character Recognition) - scanning pictures with textual content (<a href="https://api.copyleaks.com/Documentation/TechnicalSpecifications/#ocr-formats">see supported files</a>)</li>
+<li>OCR (Optical Character Recognition) - scanning pictures with textual content (<a href="https://api.copyleaks.com/GeneralDocumentation/TechnicalSpecifications#supportedfiletypes">see supported files</a>)</li>
 </ul>
 </p>
 <h3>Integration</h3>
@@ -32,7 +32,7 @@ use Copyleaks\CopyleaksProcess;
 </ul>
 <h3>Register and Get Your API Key</h3>
  <p>To use the Copyleaks API you need to first have a Copyleaks account. The registration to Copyleaks takes a minute and is free of charge. <a href="https://copyleaks.com/Account/Register">Signup</a> and confirm your account to finalize your registration. </p>
- <p>You can generate your personal API key. Do so by entering your <a href="https://api.copyleaks.com/Home/Dashboard">dashboard</a>, and under 'Access Keys' you will be able to see and generate your API keys.</p>
+ <p>You can generate your personal API key. Do so by entering your dashboard (<a href="https://api.copyleaks.com/businessesapi">Businesses dashboard/</a><a href="https://api.copyleaks.com/academicapi">Academic dashboard/</a><a href="https://api.copyleaks.com/websitesapi">Websites dashboard</a>), and under 'Access Keys' you will be able to see and generate your API keys.</p>
  <p>For more information check out our <a href="https://api.copyleaks.com/Guides/HowToUse">API guide</a>.</p>
 <h3>Example</h3>
 <p><a href="https://github.com/Copyleaks/PHP-Plagiarism-Checker/blob/master/example.php">Example.php</a> will show you how to scan for plagiarism the URL: 'https://www.copyleaks.com'. All you have to do is to update the following two lines with your email and API key:
