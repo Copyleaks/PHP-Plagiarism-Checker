@@ -48,6 +48,16 @@ $apiKey = 'Your-API-Key-Here';
 <pre> $process = $clCloud->createByFile('./tests/test.txt',$additionalHeaders); </pre>
 <p>or with 'createByOCR to scan local images containing text:</p>
 <pre>$process  = $clCloud->createByOCR('./tests/c2253306-637a-44c3-8fe0-e0b5d237da32.jpg','English',$additionalHeaders);</pre>
+<p>Wait for scan to complete:</p>
+<pre>
+while ($process->getStatus() != 'Finished')
+{
+    sleep(3);              
+}
+</pre>
+<p>Get the results:</p> 
+<pre>print_r($Process->getResult());</pre>
+
 <h3>Read More</h3>
 <ul>
 <li><a href="https://api.copyleaks.com/Guides/HowToUse">Copyleaks API guide</a></li>
