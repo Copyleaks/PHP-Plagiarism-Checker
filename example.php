@@ -85,7 +85,17 @@ try{
 
 	echo "<BR/> Process created! (PID = '" . $process->processId . "')";
 
-	
+	echo 'Scanning...this may take a few minutes';
+
+	// Wait for the scan to complete
+	while ($process->getStatus() != 'Finished')
+	{
+	      sleep(3);              
+	}
+
+	// Print the results
+	print_r($Process->getResult());
+
 	//create process by ID
 	// $oldProcess = new CopyleaksProcess('YOUR PID (GUID) HERE','30/05/2016 07:23:43',$clCloud->loginToken->authHeader());
 
