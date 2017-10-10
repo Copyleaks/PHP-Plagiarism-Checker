@@ -8,7 +8,7 @@ Using Copyleaks SDK you can detect plagiarism in:
 <li>Online content and webpages</li>
 <li>Local and cloud files (<a href="https://api.copyleaks.com/GeneralDocumentation/TechnicalSpecifications#supportedfiletypes">see supported files</a>)</li>
 <li>Free text</li>
-<li>OCR (Optical Character Recognition) - scanning pictures with textual content (<a href="https://api.copyleaks.com/GeneralDocumentation/TechnicalSpecifications#supportedfiletypes">see supported files</a>)</li>
+<li>Images of text(using OCR) - scanning pictures with textual content (<a href="https://api.copyleaks.com/GeneralDocumentation/TechnicalSpecifications#supportedfiletypes">see supported files</a>)</li>
 </ul>
 </p>
 <h3>Integration</h3>
@@ -34,32 +34,51 @@ use Copyleaks\CopyleaksProcess;
  <p>To use the Copyleaks API you need to first have a Copyleaks account. The registration to Copyleaks takes a minute and is free of charge. <a href="https://copyleaks.com/Account/Register">Signup</a> and confirm your account to finalize your registration. </p>
  <p>You can generate your personal API key. Do so by entering your dashboard (<a href="https://api.copyleaks.com/businessesapi">Businesses dashboard/</a><a href="https://api.copyleaks.com/academicapi">Academic dashboard/</a><a href="https://api.copyleaks.com/websitesapi">Websites dashboard</a>), and under 'Access Keys' you will be able to see and generate your API keys.</p>
  <p>For more information check out our <a href="https://api.copyleaks.com/Guides/HowToUse">API guide</a>.</p>
-<h3>Example</h3>
+<h3>Usage</h3>
 <p><a href="https://github.com/Copyleaks/PHP-Plagiarism-Checker/blob/master/example.php">Example.php</a> will show you how to scan for plagiarism the URL: 'https://www.copyleaks.com'. All you have to do is to update the following two lines with your email and API key:
 </p>
 <pre>
 $email = 'Your-Email-Address-Here';
 $apiKey = 'Your-API-Key-Here';
 </pre>
-
 <p>This example shows how to scan a URL using the line:</p>
 <pre> $process  = $clCloud->createByURL('https://www.copyleaks.com',$additionalHeaders); </pre>
-<p>You can change 'createByURL' with 'createByFile' to scan local files:</p>
-<pre> $process = $clCloud->createByFile('./tests/test.txt',$additionalHeaders); </pre>
-<p>or with 'createByOCR to scan local images containing text:</p>
-<pre>$process  = $clCloud->createByOCR('./tests/c2253306-637a-44c3-8fe0-e0b5d237da32.jpg','English',$additionalHeaders);</pre>
-<p>Wait for scan to complete:</p>
+<p>Available create methods are: <code>createByURL</code>, <code>createByFile</code>, <code>createByFiles</code>, <code>createByOCR</code> and <code>createByText</code>.</p>
+<p>You can recieve a callback once the process if finished. Add this additional header when you create the process:</p>
+<pre>$additionalHeaders = array($clConst['HTTP_CALLBACK'].': http://your.website.com/callbacks/' </pre>
+<p>For testing purposes you can use http://requestb.in</p><BR/>
+<p>Or you can wait for the scan to complete:</p>
 <pre>
-while ($process->getStatus() != 'Finished')
-{
-    sleep(3);              
-}
+  while ($process->getStatus() != 100)
+	{
+	    sleep(2);              
+	}
 </pre>
-<p>Get the results:</p> 
-<pre>print_r($Process->getResult());</pre>
-
+<p>And get the results:</p> 
+<pre>$results = $process->getResult();
+	// Print the results
+	foreach ($results as $result) {
+		echo $result;
+	}
+</pre>
+<h3>Configuration</h3>
+<p>You can set specific headers:</p>
+<pre>$additionalHeaders = array(
+  $clConst['SANDBOX_MODE_HEADER'], // Sandbox mode - Scan without consuming any credits and get back dummy results
+  $clConst['HTTP_CALLBACK'].': http://your.website.com/callbacks/', # For a fast testing of callbacks option we recommend to use http://requestb.in
+  $clConst['IN_PROGRESS_RESULT'].': http://your.website.com/callback/results/,
+  $clConst['EMAIL_CALLBACK'].': myemail@company.com',
+  $clConst['CLIENT_CUSTOM_PREFIX'].'name: some name'
+  $clConst['PARTIAL_SCAN_HEADER'],
+  $clConst['COMPARE_ONLY'] # Compare files in between - available only on createByFiles
+  );
+ </pre>
+<p>For more info about the optional headers see <a href="https://api.copyleaks.com/GeneralDocumentation/RequestHeaders">API Request Headers</a>
+</p>
 <h3>Read More</h3>
 <ul>
+<li><a href="https://api.copyleaks.com/">API Homepage</a></li>
 <li><a href="https://api.copyleaks.com/Guides/HowToUse">Copyleaks API guide</a></li>
+<li><a href="https://copyleaks.com/">Copyleaks Homepage</a></li>
 </ul>
 
