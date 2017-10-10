@@ -44,7 +44,7 @@ $apiKey = 'Your-API-Key-Here';
 <p>This example shows how to scan a URL using the line:</p>
 <pre> $process  = $clCloud->createByURL('https://www.copyleaks.com',$additionalHeaders); </pre>
 <p>Available create methods are: <code>createByURL</code>, <code>createByFile</code>, <code>createByFiles</code>, <code>createByOCR</code> and <code>createByText</code>.</p>
-<p>You can recieve a callback once the process if finished. Add this additional header when you create the process:</p>
+<p>You can recieve a callback once the process is finished. Add this additional header when you create the process:</p>
 <pre>$additionalHeaders = array($clConst['HTTP_CALLBACK'].': http://your.website.com/callbacks/' </pre>
 <p>For testing purposes you can use http://requestb.in</p><BR/>
 <p>Or you can wait for the scan to complete:</p>
@@ -61,6 +61,8 @@ $apiKey = 'Your-API-Key-Here';
 		echo $result;
 	}
 </pre>
+<h3>Examples</h3>
+<p>See <code>example_asynchronous.php</code> for an example using callbacks and <code>example_synchronous.php</code> for an synced example that update the status programatically</p> 
 <h3>Configuration</h3>
 <p>You can set specific headers:</p>
 <pre>$additionalHeaders = array(
