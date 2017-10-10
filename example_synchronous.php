@@ -22,8 +22,8 @@ $clConst = $config->getConstants();
 // Use the email that you used to register to Copyleaks.
 // If you don't have an account yet register on https://copyleaks.com/account/register
 // Your API-KEY is available at the dashboards on https://api.copyleaks.com/. Choose the dashboard of the product that you would like to use.
-$email = 'eladbitton1@gmail.com';#'<Your-email-address-here>';
-$apiKey = 'C71C7F28-E923-4D31-8827-DADD376B6597';#'<Your-API-Key-Here>';
+$email = '<Your-email-address-here>';
+$apiKey = '<Your-API-Key-Here>';
 
 // Login to Copyleaks Cloud
 try{
