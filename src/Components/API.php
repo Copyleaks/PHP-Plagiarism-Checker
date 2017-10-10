@@ -51,9 +51,6 @@ class API{
 	}
 	
 	public function setOcrLanguage($lang=''){
-		if(!$this->languageSupported($lang))
-			throw new Exception("LANGUAGE ".$lang." IS NOT SUPPORTED BY COPYLEAKS OCR");
-
 		$this->ocrLanguage = $lang;
 	}
 
