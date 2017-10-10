@@ -11,7 +11,7 @@ Using Copyleaks SDK you can detect plagiarism in:
 <li>Images of text(using OCR) - scanning pictures with textual content (<a href="https://api.copyleaks.com/GeneralDocumentation/TechnicalSpecifications#supportedfiletypes">see supported files</a>)</li>
 </ul>
 </p>
-<h3>Integration</h3>
+<h3>Installation</h3>
 <p>Integrate with the Copyleaks SDK in one of two options:</p>
 <ul>
 <li><b>Recommended:</b> Use the Package Manager - <a href="https://packagist.org/packages/copyleaks/php-plagiarism-checker">Packagist</a>.
@@ -42,24 +42,23 @@ $email = 'Your-Email-Address-Here';
 $apiKey = 'Your-API-Key-Here';
 </pre>
 <p>This example shows how to scan a URL using the line:</p>
-<pre> $process  = $clCloud->createByURL('https://www.copyleaks.com',$additionalHeaders); </pre>
+<pre>$process  = $clCloud->createByURL('https://www.copyleaks.com',$additionalHeaders); </pre>
 <p>Available create methods are: <code>createByURL</code>, <code>createByFile</code>, <code>createByFiles</code>, <code>createByOCR</code> and <code>createByText</code>.</p>
 <p>You can recieve a callback once the process is finished. Add this additional header when you create the process:</p>
 <pre>$additionalHeaders = array($clConst['HTTP_CALLBACK'].': http://your.website.com/callbacks/' </pre>
 <p>For testing purposes you can use http://requestb.in</p><BR/>
 <p>Or you can wait for the scan to complete:</p>
 <pre>
-  while ($process->getStatus() != 100)
-	{
-	    sleep(2);              
-	}
+while ($process->getStatus() != 100){
+	sleep(2);              
+}
 </pre>
 <p>And get the results:</p> 
 <pre>$results = $process->getResult();
-	// Print the results
-	foreach ($results as $result) {
-		echo $result;
-	}
+// Print the results
+foreach ($results as $result) {
+	echo $result;
+}
 </pre>
 <h3>Examples</h3>
 <p>See <code>example_asynchronous.php</code> for an example using callbacks and <code>example_synchronous.php</code> for an synced example that update the status programatically</p> 
