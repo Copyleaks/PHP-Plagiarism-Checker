@@ -29,7 +29,8 @@ class API{
 
 		!$fileType ? $this->defaultHeaders[] = 'Content-type: application/json' : NULL;
 		!$fileType ? $this->defaultHeaders[] = sprintf('Content-Length: %d', strlen($this->dataForRequest)) : NULL;
-		$this->headersForRequest = array();
+		$this->headersForRequest = array();		
+		ini_set('max_execution_time', 180);
 	}
 
 	//ADD ADDITIONAL OR CUSTOM HEADERS
@@ -61,37 +62,51 @@ class API{
 	}
 
 	//CREATE CONTENT FOR MULTI PART REQUEST
-	private function createContentMessage($_file=array(),$_mimeBoundary=""){
-		if(count($_file) < 1)
+	private function createContentMessage($_files = '', $_mimeBoundary = ""){
+		if(count($_files) < 1)
 			throw new Exception("createContentMessage FAILED");
-
+		
 		$_eol = "\r\n";
 		$_content = "";
-
-		$_content = "--".$_mimeBoundary.$_eol.
-					// "Content-Disposition: form-data; name=\"".$this->constants['FORM_FIELD_FILE']."['".$_file['name']."']\"; filename=\"".$_file['name']."\"".$_eol.
-					"Content-Disposition: form-data; name=\"".$this->constants['FORM_FIELD_FILE']."\"; filename=\"".$_file['name']."\"".$_eol.
-					"Content-Type: ". $this->constants['FILES_EXTENSIONS'][$_file['extension']] .$_eol.
-					"Content-Transfer-Encoding: binary".$_eol.$_eol.
-					$_file['content'].$_eol;
-
+		foreach ($_files as $_file) {
+			$_content .= "--".$_mimeBoundary.$_eol.
+						 "Content-Disposition: form-data; name=\"".$this->constants['FORM_FIELD_FILE']."\"; filename=\"".$_file['name']."\"".$_eol.
+						 "Content-Type: ". mime_content_type($_file['fullPath']) .$_eol.
+						 "Content-Transfer-Encoding: binary".$_eol.$_eol.
+						 $_file['content'].$_eol;
+		}
 		
 		// signal end of request (note the trailing "--")
 		$_content .= "--".$_mimeBoundary."--".$_eol.$_eol;
-
-		return $_content;		
+		return $_content;
 	}
 
 	//Content generator for API requests by type of API method
-	public function manageContent($type='',$file='',$loginTokenHeader='',$additionalHeaders=array()){
-		$_file = strlen($file)>0? $this->handleFiles($file,$type) : '';
+	public function manageContent($type='',$files = array(),$loginTokenHeader='',$additionalHeaders=array()){
+		if (count($files) > 0){
+			$handled_files = array();
+			foreach ($files as $file) {
+				array_push($handled_files, $this->handleFiles($file, $type));
+			}
+		}
 		$_mimeBoundary=md5(time());
 
 
 		switch ($type) {
 			case 'FILE':
 			case 'OCR':
-				$this->dataForRequest = $this->createContentMessage($this->currentFile,$_mimeBoundary);
+				$this->dataForRequest = $this->createContentMessage($handled_files, $_mimeBoundary);
+				$_headers = array(
+								sprintf('Content-Length: %d', strlen($this->dataForRequest)),
+								$this->constants['MULTIPART_HEADER'].$_mimeBoundary,
+								$loginTokenHeader
+								);
+
+				$_requestHeaders = $this->manageHeaders($_headers,$additionalHeaders);
+				
+				break;
+			case 'FILES':
+				$this->dataForRequest = $this->createContentMessage($handled_files, $_mimeBoundary);
 				$_headers = array(
 								sprintf('Content-Length: %d', strlen($this->dataForRequest)),
 								$this->constants['MULTIPART_HEADER'].$_mimeBoundary,
@@ -158,33 +173,11 @@ class API{
 
 		}else
 			throw new Exception("FILE NOT EXISTS ");
-		
-
-		switch ($type) {
-			case 'FILE':
-				if(!$this->fileExtensionAllowed($_fileExtension))
-					throw new Exception("EXTENSION ".$_fileExtension." IS NOT SUPPORTED FOR FILE SCAN");
-				break;
-			case 'OCR':
-				if(!$this->ocrExtensionAllowed($_fileExtension))
-					throw new Exception("EXTENSION ".$_fileExtension." IS NOT SUPPORTED FOR OCR SCAN");
-				break;
-			default:
-				# code...
-				break;
-		}
 
 		if($_fileSize == 0 || $_fileSize >= $this->constants['MAX_FILE_SIZE_BYTES'])
 			throw new Exception("FILE IS TOO LARGE > 25MB ");
-		
 
-		if(!$this->extensionAllowed($_fileExtension))
-			throw new Exception("FILE EXTENSION NOT SUPPORTED ");
-		
-
-		$this->currentFile = array('name' => $_fileName, 'size'=>$_fileSize, 'extension'=>$_fileExtension, 'content'=> $_fileBinary );
-
-		return $this->currentFile;
+		return array('fullPath' => $file, 'name' => $_fileName, 'size'=>$_fileSize, 'extension'=>$_fileExtension, 'content'=> $_fileBinary );
 
 	}
 
@@ -237,26 +230,6 @@ class API{
 			default:
 				throw new Exception('INCORRECT VALIDATION TYPE');
 		}
-	}
-
-	//check if file's extension supported by Copyleaks
-	private function extensionAllowed($extension=''){
-		return in_array($extension, $this->constants['ALLOWED_EXTENSIONS']);
-	}
-
-	//check if file's extension supported by File upload
-	private function fileExtensionAllowed($extension=''){
-		return in_array($extension, array_keys($this->constants['FILES_EXTENSIONS']));
-	}
-
-	//check if file's extension supported by OCR
-	private function ocrExtensionAllowed($extension=''){
-		return in_array($extension, array_keys($this->constants['OCR_EXTENSIONS']));
-	}
-
-	//check if languages code supported for OCR
-	private function languageSupported($lang=''){
-		return in_array($lang, array_keys($this->constants['OCR_LANGUGAES']));
 	}
 
 	public function processCreated($test = array()){
