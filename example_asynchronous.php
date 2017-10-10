@@ -48,7 +48,7 @@ echo "<Br/><strong>Logged in successfully</strong><Br/>";
 try{
 	// For more information about the optional headers please visit: https://api.copyleaks.com/GeneralDocumentation/RequestHeaders
 	$additionalHeaders = array($clConst['SANDBOX_MODE_HEADER'], // Sandbox mode - Scan without consuming any credits and get back dummy results
-                                $clConst['HTTP_CALLBACK'].': https://requestb.in/169uq9o1'//http://your.website.com/callbacks/' # For a fast testing of callbacks option we recommend to use http://requestb.in
+                                $clConst['HTTP_CALLBACK'].': http://your.website.com/callbacks/' # For a fast testing of callbacks option we recommend to use http://requestb.in
 								//$clConst['IN_PROGRESS_RESULT'].': http://your.website.com/callback/results/,
 								//$clConst['EMAIL_CALLBACK'].': myemail@company.com',
 								//$clConst['CLIENT_CUSTOM_PREFIX'].'name: some name'
@@ -58,14 +58,14 @@ try{
 	
 	
 	// Create process using one of the following option.
-	//$process  = $clCloud->createByURL("https://www.copyleaks.com", $additionalHeaders);
+	$process  = $clCloud->createByURL("https://www.copyleaks.com", $additionalHeaders);
 	// $process  = $clCloud->createByText('<ENTER YOUR STRING HERE>');
-	$process = $clCloud->createByFile('C:/Users/EB/Desktop/text.txt', $additionalHeaders);
-	//$processes = $clCloud->createByFiles(array('C:/Users/EB/Desktop/text.txt',
-	//										   'C:/Users/EB/Desktop/Chrome Wire.exe'),
+	//$process = $clCloud->createByFile(filePath, $additionalHeaders);
+	//$processes = $clCloud->createByFiles(array(firstFile,
+	//										     secondFile),
 	//									 $additionalHeaders); // Array with 2 elements - the first([0]) is the successfully created processes
 															  //						 the second([1]) is the error happend
-	$process  = $clCloud->createByOCR('./tests/c2253306-637a-44c3-8fe0-e0b5d237da32.jpg','English',$additionalHeaders);
+	//$process  = $clCloud->createByOCR(imagePath,'English',$additionalHeaders);
 
 	echo "<BR/><strong>Process created!</strong> (PID = '" . $process->processId . "') - You will get notified with a callback soon";
 

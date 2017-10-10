@@ -56,15 +56,15 @@ try{
 	
 	
 	// Create process using one of the following option.
-	//$process  = $clCloud->createByURL("https://www.copyleaks.com", $additionalHeaders);
+	$process  = $clCloud->createByURL("https://www.copyleaks.com", $additionalHeaders);
 	// $process  = $clCloud->createByText('<ENTER YOUR STRING HERE>');
-	$process = $clCloud->createByFile('C:/Users/EB/Desktop/text.txt', $additionalHeaders);
-	//$processes = $clCloud->createByFiles(array('C:/Users/EB/Desktop/text.txt',
-	//										   'C:/Users/EB/Desktop/Chrome Wire.exe'),
+	//$process = $clCloud->createByFile(filePath, $additionalHeaders);
+	//$processes = $clCloud->createByFiles(array(firstFile,
+	//										     secondFile),
 	//									 $additionalHeaders); // Array with 2 elements - the first([0]) is the successfully created processes
 															  //						 the second([1]) is the error happend
-	// $process  = $clCloud->createByOCR('./tests/c2253306-637a-44c3-8fe0-e0b5d237da32.jpg','English',$additionalHeaders);
-
+	//$process  = $clCloud->createByOCR(imagePath,'English',$additionalHeaders);
+	
 	echo "<BR/><strong>Process created!</strong> (PID = '" . $process->processId . "')";
 
 	echo '<BR/><BR/><strong>Processing Started</strong>';
