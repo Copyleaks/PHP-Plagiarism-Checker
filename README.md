@@ -33,26 +33,31 @@ use Copyleaks\CopyleaksProcess;
 <h3>Register and Get Your API Key</h3>
  <p>To use the Copyleaks API you need to first have a Copyleaks account. The registration to Copyleaks takes a minute and is free of charge. <a href="https://copyleaks.com/Account/Register">Signup</a> and confirm your account to finalize your registration. </p>
  <p>You can generate your personal API key. Do so by entering your dashboard (<a href="https://api.copyleaks.com/businessesapi">Businesses dashboard/</a><a href="https://api.copyleaks.com/academicapi">Academic dashboard/</a><a href="https://api.copyleaks.com/websitesapi">Websites dashboard</a>), and under 'Access Keys' you will be able to see and generate your API keys.</p>
- <p>For more information check out our <a href="https://api.copyleaks.com/Guides/HowToUse">API guide</a>.</p>
+<p>For more information check out our <a href="https://api.copyleaks.com/Guides/HowToUse">API guide</a>.</p>
+<h3>Examples</h3>
+<p>See <a href="https://github.com/Copyleaks/PHP-Plagiarism-Checker/blob/master/example_asynchronous.php"><code>example_asynchronous.php</code></a> for an example using callbacks and <a href="https://github.com/Copyleaks/PHP-Plagiarism-Checker/blob/master/example_synchronous.php"><code>example_synchronous.php</code></a> for a synced example that update the status programatically.</p>
 <h3>Usage</h3>
-<p><a href="https://github.com/Copyleaks/PHP-Plagiarism-Checker/blob/master/example.php">Example.php</a> will show you how to scan for plagiarism the URL: 'https://www.copyleaks.com'. All you have to do is to update the following two lines with your email and API key:
+<p>To scan for plagiarism the URL: 'https://www.copyleaks.com'. All you have to do is to update the following two lines with your email and API key:
 </p>
 <pre>
 $email = 'Your-Email-Address-Here';
 $apiKey = 'Your-API-Key-Here';
 </pre>
-<p>This example shows how to scan a URL using the line:</p>
-<pre>$process  = $clCloud->createByURL('https://www.copyleaks.com',$additionalHeaders); </pre>
-<p>Available create methods are: <code>createByURL</code>, <code>createByFile</code>, <code>createByFiles</code>, <code>createByOCR</code> and <code>createByText</code>.</p>
-<p>You can recieve a callback once the process is finished. Add this additional header when you create the process:</p>
+<p>Add this additional header to get a completion callback:</p>
 <pre>$additionalHeaders = array($clConst['HTTP_CALLBACK'].': http://your.website.com/callbacks/' </pre>
 <p>For testing purposes you can use http://requestb.in</p><BR/>
-<p>Or you can wait for the scan to complete:</p>
+
+<p>Create a process using createByUrl:</p>
+<pre>$process  = $clCloud->createByURL('https://www.copyleaks.com',$additionalHeaders); </pre>
+<p>Available create methods are: <code>createByURL</code>, <code>createByFile</code>, <code>createByFiles</code>, <code>createByOCR</code> and <code>createByText</code>.</p>
+
+<p>If you don't want to use callbacks you can wait for the scan to complete:</p>
 <pre>
 while ($process->getStatus() != 100){
 	sleep(2);              
 }
 </pre>
+
 <p>And get the results:</p> 
 <pre>$results = $process->getResult();
 // Print the results
@@ -60,8 +65,6 @@ foreach ($results as $result) {
 	echo $result;
 }
 </pre>
-<h3>Examples</h3>
-<p>See <code>example_asynchronous.php</code> for an example using callbacks and <code>example_synchronous.php</code> for an synced example that update the status programatically</p> 
 <h3>Configuration</h3>
 <p>You can set specific headers:</p>
 <pre>$additionalHeaders = array(
