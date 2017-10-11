@@ -76,8 +76,7 @@ foreach ($results as $result) {
   $clConst['PARTIAL_SCAN_HEADER'],
   $clConst['COMPARE_ONLY'] # Compare files in between - available only on createByFiles
   $clConst['IMPORT_FILE_TO_DATABASE'] # Import your file to our database only
-  );
- </pre>
+  );</pre>
 <p>For more info about the optional headers see <a href="https://api.copyleaks.com/GeneralDocumentation/RequestHeaders">API Request Headers</a>
 </p>
 <h3>Read More</h3>
