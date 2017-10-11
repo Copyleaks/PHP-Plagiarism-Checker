@@ -52,6 +52,7 @@ try{
 								//$clConst['CLIENT_CUSTOM_PREFIX'].'name: some name'
 								//$clConst['PARTIAL_SCAN_HEADER'],
 								//$clConst['COMPARE_ONLY'] # Compare files in between - available only on createByFiles
+								//$clConst['IMPORT_FILE_TO_DATABASE'] # Import your file to our database only
 								);
 	
 	

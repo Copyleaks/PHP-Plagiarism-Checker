@@ -18,6 +18,7 @@ class Config{
     const SANDBOX_MODE_HEADER = 'copyleaks-sandbox-mode';
     const PARTIAL_SCAN_HEADER = 'copyleaks-allow-partial-scan';
 	const COMPARE_ONLY = 'copyleaks-compare-documents-for-similarity';
+	const IMPORT_FILE_TO_DATABASE = 'copyleaks-index-only';
 	const DOWNLOADS_PATH = 'downloads';
 	const MISC_PATH = 'miscellaneous';
     const RESPONSE_CODE = 'reponse_code';
