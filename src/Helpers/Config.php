@@ -33,6 +33,19 @@ class Config{
     const MULTIPART_BOUNDARY = '--------------------------';
     const MULTIPART_HEADER   = 'Content-Type: multipart/form-data; boundary=';
     const FORM_FIELD_FILE 	 = 'file';
+
+    const FILES_EXTENSIONS = array(
+	    							'pdf' => 'application/pdf', 
+	    							'doc' => 'application/msword',
+	    							'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+	    							'txt' => 'text/plain',
+	    							'rtf' => 'application/rtf', //application/x-rtf,text/richtext
+	    							'png' => 'image/png',
+									'jpg' => 'image/jpeg', //image/pjpeg
+									'jpeg' => 'image/jpeg',
+									'gif' => 'image/gif',
+									'bmp' => 'image/bmp' //image/x-windows-bmp
+	    							);
 }
 
 ?>

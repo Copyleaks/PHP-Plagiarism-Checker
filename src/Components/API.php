@@ -68,7 +68,7 @@ class API{
 		foreach ($_files as $_file) {
 			$_content .= "--".$_mimeBoundary.$_eol.
 						 "Content-Disposition: form-data; name=\"".$this->constants['FORM_FIELD_FILE']."\"; filename=\"".$_file['name']."\"".$_eol.
-						 "Content-Type: ". mime_content_type($_file['fullPath']) .$_eol.
+						 "Content-Type: ".$this->constants['FILES_EXTENSIONS'][$_file['extension']].$_eol.
 						 "Content-Transfer-Encoding: binary".$_eol.$_eol.
 						 $_file['content'].$_eol;
 		}
