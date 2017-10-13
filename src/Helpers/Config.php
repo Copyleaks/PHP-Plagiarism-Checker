@@ -39,12 +39,25 @@ class Config{
 	    							'doc' => 'application/msword',
 	    							'docx' => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
 	    							'txt' => 'text/plain',
-	    							'rtf' => 'application/rtf', //application/x-rtf,text/richtext
+	    							'rtf' => 'application/rtf',
+									'xml' => 'application/xml',
+									'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+									'ppt' => 'application/vnd.ms-powerpoint',
+									'odt' => 'application/vnd.oasis.opendocument.text',
+									'chm' => 'application/vnd.ms-htmlhelp',
+									'epub' => 'application/epub+zip',
+									'odp' => 'application/vnd.oasis.opendocument.presentation',
+									'ppsx' => 'application/vnd.openxmlformats-officedocument.presentationml.slideshow',
+									'pages' => 'application/x-iwork-pages-sffpages',
+									'xlsx' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+									'xls' => 'application/vnd.ms-excel',
+									'csv' => 'text/csv',
+									'tex' => 'application/x-tex',
 	    							'png' => 'image/png',
-									'jpg' => 'image/jpeg', //image/pjpeg
+									'jpg' => 'image/jpeg',
 									'jpeg' => 'image/jpeg',
 									'gif' => 'image/gif',
-									'bmp' => 'image/bmp' //image/x-windows-bmp
+									'bmp' => 'image/bmp' 
 	    							);
 }
 
