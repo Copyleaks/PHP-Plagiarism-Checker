@@ -9,10 +9,10 @@ use Copyleaks\Products;
 $config = new \ReflectionClass('Copyleaks\Config');
 $clConst = $config->getConstants();
 
-/* 
+/*
 	CONSTRUCT ACCEPTS 3 PARAMETER (email, api_key, type of product).
 
-	AVAILABLE PRODUCTS: 
+	AVAILABLE PRODUCTS:
 	1. Businesses - Products::Businesses - https://api.copyleaks.com/businessesdocumentation
 	2. Education - Products::Education - https://api.copyleaks.com/academicdocumentation
 	3. Websites - Products::Websites - https://api.copyleaks.com/websitesdocumentation
@@ -34,7 +34,7 @@ try{
 }
 
 //validate login token
-if(!isset($clCloud->loginToken) || !$clCloud->loginToken->validate()){ 
+if(!isset($clCloud->loginToken) || !$clCloud->loginToken->validate()){
 	echo "<Br/><strong>Bad login credentials</strong>";
 	die();
 }
@@ -56,17 +56,17 @@ try{
 								//$clConst['COMPARE_ONLY'], # Compare files in between - available only on createByFiles
 								//$clConst['IMPORT_FILE_TO_DATABASE'] # Import your file to our database only
 								);
-	
-	
+
+
 	// Create process using one of the following option.
 	$process  = $clCloud->createByURL("https://www.copyleaks.com", $additionalHeaders);
-	// $process  = $clCloud->createByText('<ENTER YOUR STRING HERE>');
-	//$process = $clCloud->createByFile(filePath, $additionalHeaders);
+	//$process  = $clCloud->createByText('<ENTER YOUR STRING HERE>');
+	//$process = $clCloud->createByFile('FILE_PATH', $additionalHeaders);
 	//$processes = $clCloud->createByFiles(array(firstFile,
 	//										     secondFile),
 	//									 $additionalHeaders); // Array with 2 elements - the first([0]) is the successfully created processes
-															  //						 the second([1]) is the error happend
-	//$process  = $clCloud->createByOCR(imagePath,'English',$additionalHeaders);
+															  // the second([1]) is the error happend
+	//$process  = $clCloud->createByOCR('IMAGE_PATH','English',$additionalHeaders);
 
 	echo "<BR/><strong>Process created!</strong> (PID = '" . $process->processId . "') - You will get notified with a callback soon";
 
@@ -78,17 +78,17 @@ try{
 	//get processes list
 	//$process_list = $clCloud->getProcessList();
 	//print_r($process_list);
-	
+
 	//Get supported file types
 	//$supportedFileTypes = $clCloud->getSupportedFileTypes();
 	//echo "<BR/><BR/><strong>Supported File Types:</strong><BR/>";
 	//print_r($supportedFileTypes);
-	
+
 	//Get OCR's(Images of text) supported languages
 	//$ocrSupportedLanguages = $clCloud->getSupportedOCRLanguages();
 	//echo "<BR/><BR/><strong>Supported OCR(Images of text only) Languages:</strong><BR/>";
 	//print_r($ocrSupportedLanguages);
-	
+
 }catch(Exception $e){
 
 	echo "<br/>Failed with exception: ". $e->getMessage();

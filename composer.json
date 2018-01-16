@@ -6,7 +6,7 @@
     "require": {
 		"php": ">=7.0.0"
 	},
-	"keywords": ["plagiarism", "copyright", "copyrights", "Copyleaks", "infringement", "checker", "publisher", "academy" ],
+	"keywords": ["plagiarism", "copyrights", "Copyleaks", "infringement", "checker", "publisher", "education" ],
     "homepage": "https://api.copyleaks.com",
     "license": "MIT",
     "authors": [
