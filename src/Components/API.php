@@ -83,7 +83,12 @@ class API{
 		if (count($files) > 0){
 			$handled_files = array();
 			foreach ($files as $file) {
-				array_push($handled_files, $this->handleFiles($file, $type));
+				if ( is_array($files)){
+					array_push($handled_files, $this->handleFileObject($file, $type));
+				} else {
+					array_push($handled_files, $this->handleFiles($file, $type));
+				}
+				
 			}
 		}
 		$_mimeBoundary=md5(time());
@@ -175,6 +180,28 @@ class API{
 			throw new Exception("FILE IS TOO LARGE > 25MB ");
 
 		return array('fullPath' => $file, 'name' => $_fileName, 'size'=>$_fileSize, 'extension'=>$_fileExtension, 'content'=> $_fileBinary );
+
+	}
+
+	private function handleFileObject($fileObject='',$type=''){
+		$_fileSize=0;
+		$_fileName='';
+		$_fileExtension='';
+		$_fileBinary = '';
+
+		if (file_exists($fileObject['path'])) {
+			$_fileName = basename($fileObject['name']);
+			$_fileSize = filesize($fileObject['path']);
+			$_fileExtension = pathinfo($_fileName, PATHINFO_EXTENSION);	
+			$_fileBinary= @file_get_contents($fileObject['path']);
+
+		}else
+			throw new Exception("FILE NOT EXISTS ");
+
+		if($_fileSize == 0 || $_fileSize >= $this->constants['MAX_FILE_SIZE_BYTES'])
+			throw new Exception("FILE IS TOO LARGE > 25MB ");
+
+		return array('fullPath' => $fileObject['path'], 'name' => $_fileName, 'size'=>$_fileSize, 'extension'=>$_fileExtension, 'content'=> $_fileBinary );
 
 	}
 
