@@ -24,11 +24,14 @@ class CopyleaksCloud{
 	private $processList;
 	private $constants;
 
-	public function __construct($email, $apikey, $product){
+	public function __construct($email, $apikey, $product,$token=null){
 		$this->config = new \ReflectionClass('Copyleaks\Config');
 		$this->constants = $this->config->getConstants();
 		$this->typeOfService = $product;
-		$this->login($email, $apikey);
+		if ( $token == null)
+			$this->login($email, $apikey);
+		else 
+			$this->loginToken = $token;
 	}
 
 	public function login($email, $apikey){
