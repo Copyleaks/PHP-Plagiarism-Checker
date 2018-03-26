@@ -83,7 +83,7 @@ class API{
 		if (count($files) > 0){
 			$handled_files = array();
 			foreach ($files as $file) {
-				if ( is_array($files)){
+				if ( is_array($file)){
 					array_push($handled_files, $this->handleFileObject($file, $type));
 				} else {
 					array_push($handled_files, $this->handleFiles($file, $type));

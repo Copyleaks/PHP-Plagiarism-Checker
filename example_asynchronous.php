@@ -60,7 +60,7 @@ try{
 
 	// Create process using one of the following option.
 	$process  = $clCloud->createByURL("https://www.copyleaks.com", $additionalHeaders);
-	//$process  = $clCloud->createByText('<ENTER YOUR STRING HERE>');
+	//$process  = $clCloud->createByText('<ENTER YOUR STRING HERE>',$additionalHeaders);
 	//$process = $clCloud->createByFile('FILE_PATH', $additionalHeaders);
 	//$processes = $clCloud->createByFiles(array(firstFile,
 	//										     secondFile),
