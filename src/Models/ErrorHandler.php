@@ -10,7 +10,11 @@ class ErrorHandler{
 	public function __construct($errCode=-1,$content='',$fileName=''){ 
 		$this->config = new \ReflectionClass('Copyleaks\Config');
 		$this->constants = $this->config->getConstants();
-		$this->$fileName = $fileName;
+		// CR : check if this is being used.
+		if( $fileName != ''){
+			$this->$fileName = $fileName;
+		}
+		$this->fileName = $fileName;
 		if($errCode === -1){
 			$this->code = $errCode;
 			$this->msg = $this->internalError();

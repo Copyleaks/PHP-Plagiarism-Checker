@@ -136,14 +136,15 @@ class CopyleaksCloud{
 			array_push($success_processes, new CopyleaksProcess($process_response['ProcessId'],
 																$process_response['CreationTimeUTC'],
 																$this->loginToken->authHeader(),
-																$this->typeOfService));
+																$this->typeOfService,
+																$process_response['Filename']));
 		}
 		$response_errors = $response['response']['Errors'];
 		$errors = array();
 		foreach ($response_errors as $process_response){
 			array_push($errors, new Errorhandler((int)$process_response['ErrorCode'],
 													  $process_response['ErrorMessage'],
-													  $process_response['FileName']));
+													  $process_response['Filename']));
 		}
 		return array($success_processes, $errors);
 	}
