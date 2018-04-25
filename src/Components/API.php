@@ -205,6 +205,11 @@ class API{
 
 	}
 
+	function isJson($string) {
+		json_decode($string);
+		return (json_last_error() == JSON_ERROR_NONE);
+	}
+	
 	public function validateParams($type='',$params=array(),$content=''){
 		$_test = '';
 		$_content = isJson($content) ? json_decode($content,true) : $content;
