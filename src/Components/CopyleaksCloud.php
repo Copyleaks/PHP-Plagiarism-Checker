@@ -255,6 +255,12 @@ class CopyleaksCloud{
 		return $this->constants;
 	}
 
+	public function getSharingKey($pid){
+		$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION']
+					.'/'.$this->typeOfService ."/" . $pid . "/readonly/create-if-not-exists" ;
+
+		return $this->getRequests($_url);
+	}
 }
 
 ?>
