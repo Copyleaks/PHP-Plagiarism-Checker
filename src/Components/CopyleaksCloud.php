@@ -68,7 +68,7 @@ class CopyleaksCloud{
 	public function getCreditBalance(){
 
 		$_url = $this->constants['SERVICE_ENTRY_POINT'].$this->constants['SERVICE_VERSION']
-					.'/account/count-credits';
+					.'/' . $this->typeOfService . '/count-credits';
 
 		return $this->getRequests($_url);
 	}
