@@ -25,4 +25,20 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class SubmissionScanningExclude
+{
+  /**
+   * Exclude your submissions from results if their id matches the supplied pattern. Matched submissions will be excluded from batch, internal database and repositories results.
+   * * Supported pattern wildcards:
+   *  * '*' Matches any, zero or more, characters.
+   *  * '.' Matches a single (non whitespace) character
+   */
+  public string $idPattern;
+  /**
+   * @param string $idPattern - Exclude your submissions from results if their id matches the supplied pattern. Matched submissions will be excluded from batch, internal database and repositories results. Supported pattern wildcards: '*' Matches any, zero or more, characters.  '.' Matches a single (non whitespace) character
+   */
+  public function __construct(string $idPattern)
+  {
+    $this->idPattern = $idPattern;
+  }
+}

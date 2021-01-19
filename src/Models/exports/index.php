@@ -25,4 +25,8 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+include_once('ExportResults.php');
+include_once('ExportPdfReport.php');
+include_once('ExportCrawledVersion.php');
+
+include_once('CopyleaksExportModel.php');

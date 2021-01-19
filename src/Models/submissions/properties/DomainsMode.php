@@ -25,4 +25,14 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class SubmissionFilterDomainsMode
+{
+  /**
+   * When Include is selected, Copyleaks will filter out all results that are not part of the properties.filters.domains list.
+   */
+  const Include = 0;
+  /**
+   * When Exclude is selected, Copyleaks will only find results outside of the properties.filters.domains list.
+   */
+  const Exclude = 1;
+}

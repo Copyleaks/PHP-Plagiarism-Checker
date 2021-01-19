@@ -25,4 +25,13 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+include_once('CopyleaksAuthToken.php');
+include_once('CopyleaksDeleteRequestModel.php');
+include_once('CopyleaksStartRequestModel.php');
+include_once('IdObject.php');
+
+include_once('submissions/index.php');
+
+include_once('exports/index.php');
+
+include_once('exceptions/index.php');

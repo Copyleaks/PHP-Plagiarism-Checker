@@ -25,4 +25,12 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+use Exception;
+
+class CommandException extends Exception
+{
+  public function __construct($error, $code = 0, Exception $previous = null)
+  {
+    parent::__construct($error, $code, $previous);
+  }
+}

@@ -25,4 +25,33 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class CopyleaksConfig
+{
+  private static $_API_SERVER_URI = 'https://api.copyleaks.com';
+  private static $_IDENTITY_SERVER_URI = 'https://id.copyleaks.com';
+  private static $_USER_AGENT = 'php-sdk/3.0';
+
+
+  public static function SET_API_SERVER_URI($url)
+  {
+    self::$_API_SERVER_URI = $url;
+  }
+
+  public static function GET_API_SERVER_URI()
+  {
+    return self::$_API_SERVER_URI;
+  }
+
+  public static function SET_IDENTITY_SERVER_URI($url)
+  {
+    self::$_IDENTITY_SERVER_URI = $url;
+  }
+  public static function GET_IDENTITY_SERVER_URI()
+  {
+    return self::$_IDENTITY_SERVER_URI;
+  }
+  public static function GET_USER_AGENT()
+  {
+    return self::$_USER_AGENT;
+  }
+}

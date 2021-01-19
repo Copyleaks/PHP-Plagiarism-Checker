@@ -25,4 +25,24 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class SubmissionScanningRepository extends SubmissionRepository
+{
+  /**
+   * Compare the scanned document against MY submittions in the repository.
+   */
+  public bool $includeMySubmissions;
+  /**
+   * Compare the scanned document against OTHER users submittions in the repository.
+   */
+  public bool $includeOthersSubmissions;
+  /**
+   * @param bool $includeMySubmissions Compare the scanned document against MY submittions in the repository.
+   * @param bool $includeOthersSubmissions Compare the scanned document against OTHER users submittions in the repository.
+   */
+  public function __construct(string $id, bool $includeMySubmissions, bool $includeOthersSubmissions)
+  {
+    parent::__construct($id);
+    $this->includeMySubmissions = $includeMySubmissions;
+    $this->includeOthersSubmissions = $includeOthersSubmissions;
+  }
+}

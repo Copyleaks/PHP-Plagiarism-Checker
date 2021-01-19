@@ -25,4 +25,17 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class CopyleaksSubmissionModel
+{
+  /**
+   * Check inner properties for more details.
+   */
+  public SubmissionProperties $properties;
+  /**
+   * @param SubmissionProperties $properties Check inner properties for more details.
+   */
+  public function __construct(SubmissionProperties $properties)
+  {
+    $this->properties = $properties;
+  }
+}

@@ -25,4 +25,14 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class SubmissionRepository
+{
+  /**
+   * Id of a repository to add the scanned document to.
+   */
+  public string $id;
+  public function __construct(string $id)
+  {
+    $this->id = $id;
+  }
+}

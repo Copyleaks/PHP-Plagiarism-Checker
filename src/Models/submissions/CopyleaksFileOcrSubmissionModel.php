@@ -25,4 +25,25 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class CopyleaksFileOcrSubmissionModel extends CopyleaksFileSubmissionModel
+{
+  /**
+   * The language code of your content. The selected language should be on the OCR supported languages list. https://api.copyleaks.com/documentation/v3/specifications/ocr-languages
+   */
+  public string $langCode;
+  /**
+   * @param string $langCode The language code of your content. The selected language should be on the OCR supported languages list. https://api.copyleaks.com/documentation/v3/specifications/ocr-languages
+   * @param string $base64 A base64 data string of a file. If you would like to scan plain text, encode it as base64 and submit it.
+   * @param string $filename The name of the file as it will appear in the Copyleaks scan report Make sure to include the right extension for your filetype.
+   * @param SubmissionProperties $properties Check inner properties for more details.
+   */
+  public function __construct(
+    string $langCode,
+    string $base64,
+    string $filename,
+    SubmissionProperties $properties
+  ) {
+    parent::__construct($base64, $filename, $properties);
+    $this->langCode = $langCode;
+  }
+}

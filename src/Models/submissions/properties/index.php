@@ -25,4 +25,20 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+include_once('SubmissionProperties.php');
+
+include_once('Actions.php');
+include_once('Author.php');
+include_once('CopyleaksDB.php');
+include_once('DomainsMode.php');
+include_once('Exclude.php');
+include_once('Filter.php');
+include_once('Indexing.php');
+include_once('PdfProperties.php');
+include_once('Repository.php');
+include_once('Scanning.php');
+include_once('ScanningExclude.php');
+include_once('ScanningRepository.php');
+include_once('SensitiveDataProtection.php');
+include_once('SubmissionProperties.php');
+include_once('Webhooks.php');

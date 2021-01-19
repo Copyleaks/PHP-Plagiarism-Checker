@@ -25,4 +25,18 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class SubmissionActions
+{
+  /**
+   * Start scan immediately
+   */
+  const Scan = 0;
+  /**
+   * Check how many credits will be used for this scan.
+   */
+  const CheckCredits = 1;
+  /**
+   * Only index the file in the Copyleaks internal database. No credits will be used.
+   */
+  const IndexOnly = 2;
+}

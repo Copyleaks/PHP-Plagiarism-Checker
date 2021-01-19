@@ -25,4 +25,40 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class SubmissionPDF
+{
+  /**
+   * Add a request to generate a customizable export of the scan report, in a pdf format.
+   * Set to true in order to generate a pdf report for this scan.
+   */
+  public bool $create;
+  /**
+   * Customize the title for the PDF report.
+   */
+  public string $title;
+  /**
+   * Customize the logo image in the PDF report.
+   */
+  public string $largeLogo;
+  /**
+   * When set to true the text in the report will be aligned from right to left.
+   */
+  public bool $rtl;
+  /**
+   *@param bool $create Add a request to generate a customizable export of the scan report, in a pdf format. Set to true in order to generate a pdf report for this scan.
+   *@param string $title Customize the title for the PDF report.
+   *@param string $largeLogo Customize the logo image in the PDF report.
+   *@param bool $rtl When set to true the text in the report will be aligned from right to left.
+   */
+  public function __construct(
+    bool $create,
+    string $title,
+    string $largeLogo,
+    bool $rtl
+  ) {
+    $this->create = $create;
+    $this->title = $title;
+    $this->largeLogo = $largeLogo;
+    $this->rtl = $rtl;
+  }
+}

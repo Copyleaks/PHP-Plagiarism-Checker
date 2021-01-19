@@ -25,4 +25,24 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class CopyleaksURLSubmissionModel extends CopyleaksSubmissionModel
+{
+  /**
+   * The url to be scanned
+   */
+  public string $url;
+  /**
+   * Check inner properties for more details.
+   */
+  public SubmissionProperties $properties;
+  /**
+   * @param string $url The url to be scanned
+   * @param SubmissionProperties $properties Check inner properties for more details.
+   */
+  public function __construct(string $url, SubmissionProperties $properties)
+  {
+    $this->url = $url;
+    $this->properties = $properties;
+    parent::__construct($properties);
+  }
+}

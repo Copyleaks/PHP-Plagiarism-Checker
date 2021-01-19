@@ -22,7 +22,7 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
-
-namespace Copyleaks;
-
-include_once('src/index.php');
+include_once('AuthExipredException.php');
+include_once('CommandException.php');
+include_once('RateLimitException.php');
+include_once('UnderMaintenanceException.php');

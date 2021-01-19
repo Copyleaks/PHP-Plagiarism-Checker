@@ -25,4 +25,12 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+use Exception;
+
+class RateLimitException extends Exception
+{
+  public function __construct($code = 0, Exception $previous = null)
+  {
+    parent::__construct("Too many requests. Please wait before calling again.", $code, $previous);
+  }
+}

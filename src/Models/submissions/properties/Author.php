@@ -25,4 +25,19 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class SubmissionAuthor
+{
+  /**
+   * A unique identifier that represents the author of the content. Make sure to use the same ID for the same author.
+   * 
+   * Using this feature Copyleaks can detect the author's writing patterns and get better results.
+   */
+  public string $id;
+  /**
+   * @param string $id A unique identifier that represents the author of the content. Make sure to use the same ID for the same author. Using this feature Copyleaks can detect the author's writing patterns and get better results.
+   */
+  public function __construct(string $id)
+  {
+    $this->id = $id;
+  }
+}

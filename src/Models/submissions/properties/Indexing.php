@@ -25,4 +25,17 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+class SubmissionIndexing
+{
+  /**
+   * SubmissionRepository[] - Check inner properties for more details.
+   */
+  public array $repositories;
+  /**
+   * @param SubmissionRepository[] $repositories - Check inner properties of SubmissionRepository for more details.
+   */
+  public function __construct(array $repositories)
+  {
+    $this->repositories = $repositories;
+  }
+}

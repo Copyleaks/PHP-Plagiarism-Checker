@@ -1,23 +1,33 @@
 {
-    "name": "copyleaks/php-plagiarism-checker",
-    "description": "Copyleaks detects online plagiarism and checks content distribution. Use Copyleaks to find out if textual content is original and where it has been used before. This package shows how to integrate with the Copyleaks cloud to search for copyright infringement.",
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "require": {
-		"php": ">=7.0.0"
-	},
-	"keywords": ["plagiarism", "copyrights", "Copyleaks", "infringement", "checker", "publisher", "education" ],
-    "homepage": "https://api.copyleaks.com",
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Copyleaks ltd",
-            "email": "support@copyleaks.com",
-            "homepage": "https://copyleaks.com",
-            "role": "Developer"
-        }
-    ],
-    "autoload": {
-        "files": ["autoload.php"]
+  "name": "copyleaks/php-plagiarism-checker",
+  "description": "Copyleaks detects online plagiarism and checks content distribution. Use Copyleaks to find out if textual content is original and where it has been used before. This package shows how to integrate with the Copyleaks cloud to search for copyright infringement.",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "require": {
+    "php": ">=7.0.0"
+  },
+  "keywords": [
+    "plagiarism",
+    "copyrights",
+    "Copyleaks",
+    "infringement",
+    "checker",
+    "publisher",
+    "education"
+  ],
+  "homepage": "https://api.copyleaks.com",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Copyleaks ltd",
+      "email": "support@copyleaks.com",
+      "homepage": "https://copyleaks.com",
+      "role": "Developer"
     }
+  ],
+  "autoload": {
+    "files": [
+      "autoload.php"
+    ]
+  }
 }

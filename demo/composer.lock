@@ -1,0 +1,71 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "17297d943f3e200a46df73f2d8ad0898",
+    "packages": [
+        {
+            "name": "copyleaks/php-plagiarism-checker",
+            "version": "v1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Copyleaks/PHP-Plagiarism-Checker.git",
+                "reference": "56e6bf97b220e4fff5f57045e7e90d890f100996"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Copyleaks/PHP-Plagiarism-Checker/zipball/56e6bf97b220e4fff5f57045e7e90d890f100996",
+                "reference": "56e6bf97b220e4fff5f57045e7e90d890f100996",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "autoload.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Copyleaks ltd",
+                    "email": "support@copyleaks.com",
+                    "homepage": "https://copyleaks.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Copyleaks detects online plagiarism and checks content distribution. Use Copyleaks to find out if textual content is original and where it has been used before. This package shows how to integrate with the Copyleaks cloud to search for copyright infringement.",
+            "homepage": "https://api.copyleaks.com",
+            "keywords": [
+                "Copyleaks",
+                "checker",
+                "copyrights",
+                "education",
+                "infringement",
+                "plagiarism",
+                "publisher"
+            ],
+            "support": {
+                "issues": "https://github.com/Copyleaks/PHP-Plagiarism-Checker/issues",
+                "source": "https://github.com/Copyleaks/PHP-Plagiarism-Checker/tree/v1.4"
+            },
+            "time": "2019-02-17T11:48:16+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
+}
