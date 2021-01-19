@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17297d943f3e200a46df73f2d8ad0898",
+    "content-hash": "64aa9431e21ef2ee1e3b5844f92bc320",
     "packages": [
         {
             "name": "copyleaks/php-plagiarism-checker",
-            "version": "v1.4",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Copyleaks/PHP-Plagiarism-Checker.git",
-                "reference": "56e6bf97b220e4fff5f57045e7e90d890f100996"
+                "reference": "c2aa8f379f41b86a1728c83d0fb3beee9698e50d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Copyleaks/PHP-Plagiarism-Checker/zipball/56e6bf97b220e4fff5f57045e7e90d890f100996",
-                "reference": "56e6bf97b220e4fff5f57045e7e90d890f100996",
+                "url": "https://api.github.com/repos/Copyleaks/PHP-Plagiarism-Checker/zipball/c2aa8f379f41b86a1728c83d0fb3beee9698e50d",
+                "reference": "c2aa8f379f41b86a1728c83d0fb3beee9698e50d",
                 "shasum": ""
             },
             "require": {
@@ -54,9 +54,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Copyleaks/PHP-Plagiarism-Checker/issues",
-                "source": "https://github.com/Copyleaks/PHP-Plagiarism-Checker/tree/v1.4"
+                "source": "https://github.com/Copyleaks/PHP-Plagiarism-Checker/tree/3.0.0"
             },
-            "time": "2019-02-17T11:48:16+00:00"
+            "time": "2021-01-19T11:04:49+00:00"
         }
     ],
     "packages-dev": [],

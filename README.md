@@ -25,9 +25,9 @@ For more information check out our [API guide](https://api.copyleaks.com/documen
 
 ## Usage
 ```php
-include_once('autoload.php');
+include_once('vendor/copyleaks/php-plagiarism-checker/autoload.php');
 use Copyleaks\Copyleaks;
-use Copyleaks\CopyleaksAuthToken;
+
 $copyleaks = new Copyleaks();
 $loginResult = $copyleaks->login(<your email>,<your api key>);
 echo json_encode($loginResult);

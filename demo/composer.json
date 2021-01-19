@@ -1,12 +1,12 @@
 {
-    "name": "copyleaks/demo",
-    "authors": [
-        {
-            "name": "Bayan Abuawad",
-            "email": "bayana@copyleaks.com"
-        }
-    ],
-    "require": {
-        "copyleaks/php-plagiarism-checker": "^1.4"
+  "name": "copyleaks/demo",
+  "authors": [
+    {
+      "name": "Bayan Abuawad",
+      "email": "bayana@copyleaks.com"
     }
+  ],
+  "require": {
+    "copyleaks/php-plagiarism-checker": "^3.0"
+  }
 }
