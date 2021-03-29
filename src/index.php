@@ -29,6 +29,6 @@ include_once('app.config.php');
 include_once('services/http-client.service.php');
 include_once("utils/status-code.utils.php");
 
-include_once("models/Index.php");
+include_once("Models/Index.php");
 
 include_once("copyleaks.php");
