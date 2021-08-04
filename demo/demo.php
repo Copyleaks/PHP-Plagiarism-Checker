@@ -104,8 +104,7 @@ class Test
         new SubmissionScanning(true, new SubmissionScanningExclude('php-test-*'), null, new SubmissionScanningCopyleaksDB(true, true)),
         new SubmissionIndexing((array)[new SubmissionRepository('repoId')]),
         new SubmissionExclude(true, true, true, true, true),
-        new SubmissionPDF(true, 'title', 'https://lti.copyleaks.com/images/copyleaks50x50.png', false),
-        new SubmissionSensitiveData(true, true, true, true, true, true, true, true)
+        new SubmissionPDF(true, 'title', 'https://lti.copyleaks.com/images/copyleaks50x50.png', false)
       )
     );
 
@@ -132,8 +131,7 @@ class Test
         new SubmissionScanning(true, new SubmissionScanningExclude('php-test-*'), null, new SubmissionScanningCopyleaksDB(true, true)),
         new SubmissionIndexing((array)[new SubmissionRepository('repoId')]),
         new SubmissionExclude(true, true, true, true, true),
-        new SubmissionPDF(true, 'title', 'https://lti.copyleaks.com/images/copyleaks50x50.png', false),
-        new SubmissionSensitiveData(true, true, true, true, true, true, true, true)
+        new SubmissionPDF(true, 'title', 'https://lti.copyleaks.com/images/copyleaks50x50.png', false)
       )
     );
 
@@ -159,8 +157,7 @@ class Test
         new SubmissionScanning(true, new SubmissionScanningExclude('php-test-*'), null, new SubmissionScanningCopyleaksDB(true, true)),
         new SubmissionIndexing((array)[new SubmissionRepository('repoId')]),
         new SubmissionExclude(true, true, true, true, true),
-        new SubmissionPDF(true, 'title', 'https://lti.copyleaks.com/images/copyleaks50x50.png', false),
-        new SubmissionSensitiveData(true, true, true, true, true, true, true, true)
+        new SubmissionPDF(true, 'title', 'https://lti.copyleaks.com/images/copyleaks50x50.png', false)
       )
     );
 
