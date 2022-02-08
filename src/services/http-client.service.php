@@ -27,10 +27,8 @@ namespace Copyleaks;
 
 use InvalidArgumentException;
 
-class HttpClientService
-{
-  public static function Execute(string $verb, string $url, array $headers, $data = null)
-  {
+class HttpClientService {
+  public static function Execute(string $verb, string $url, array $headers, $data = null) {
     //open connection
     $ch = curl_init();
 
@@ -85,7 +83,7 @@ class HttpClientService
     if (isSuccessStatusCode($statusCode)) {
       if (isset($result)) {
         $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-        if ($contentType == 'application/json; charset=utf-8') {
+        if (strpos($contentType, 'application/json') !== false) {
           curl_close($ch);
           return json_decode($result);
         } else {
