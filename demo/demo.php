@@ -30,17 +30,14 @@ use Copyleaks\SubmissionSensitiveData;
 use Copyleaks\SubmissionWebhooks;
 use Throwable;
 
-class Test
-{
+class Test {
   public Copyleaks $copyleaks;
   public string $webookUrl;
-  public function __construct()
-  {
+  public function __construct() {
     $this->copyleaks = new Copyleaks();
   }
 
-  public function run(string $email, string $key, string $webook)
-  {
+  public function run(string $email, string $key, string $webook) {
     $this->webookUrl = $webook;
     try {
       CopyleaksConfig::SET_IDENTITY_SERVER_URI("https://id.copyleaks.com");
@@ -72,8 +69,7 @@ class Test
     }
   }
 
-  private function TEST_export(CopyleaksAuthToken $authToken)
-  {
+  private function TEST_export(CopyleaksAuthToken $authToken) {
     $model = new CopyleaksExportModel(
       "$this->webookUrl/export-webhook",
       array(new ExportResults("2a1b402420", "$this->webookUrl/export-webhook/result/2a1b402420", "POST", array(array("key", "value")))),
@@ -84,8 +80,7 @@ class Test
     $this->logInfo("-export-");
   }
 
-  private function TEST_submitOcrFile(CopyleaksAuthToken $authToken)
-  {
+  private function TEST_submitOcrFile(CopyleaksAuthToken $authToken) {
     $submission = new CopyleaksFileOcrSubmissionModel(
       "en",
       "aGVsbG8gd29ybGQ=",
@@ -112,8 +107,7 @@ class Test
     $this->logInfo("-submitFileOcr-");
   }
 
-  private function TEST_submitFile(CopyleaksAuthToken $authToken)
-  {
+  private function TEST_submitFile(CopyleaksAuthToken $authToken) {
     $submission = new CopyleaksFileSubmissionModel(
       "aGVsbG8gd29ybGQ=",
       "php.txt",
@@ -139,8 +133,7 @@ class Test
     $this->logInfo("-submitFile-");
   }
 
-  private function TEST_submitUrl(CopyleaksAuthToken $authToken)
-  {
+  private function TEST_submitUrl(CopyleaksAuthToken $authToken) {
     $submission = new CopyleaksURLSubmissionModel(
       "https://copyleaks.com",
       new SubmissionProperties(
@@ -165,15 +158,13 @@ class Test
     $this->logInfo("-submitUrl-");
   }
 
-  private function TEST_start(CopyleaksAuthToken $authToken)
-  {
+  private function TEST_start(CopyleaksAuthToken $authToken) {
     $model = new CopyleaksStartRequestModel(array("cqcps25xxh5cloxe"), CopyleaksStartErrorHandlings::IGNORE);
     $start = $this->copyleaks->start('education', $authToken, $model);
     $this->logInfo("-start-", $start);
   }
 
-  private function TEST_delete(CopyleaksAuthToken $authToken)
-  {
+  private function TEST_delete(CopyleaksAuthToken $authToken) {
     $idsToDelete = array(new IdObject("cqcps25xxh5cloxe"));
 
     $model = new CopyleaksDeleteRequestModel($idsToDelete, true, "https://glacial-refuge-96501.herokuapp.com/18ml1by1/delete-hook");
@@ -182,24 +173,21 @@ class Test
     $this->logInfo("-delete-", $delete);
   }
 
-  private function TEST_CreditsBalance(CopyleaksAuthToken $authToken)
-  {
+  private function TEST_CreditsBalance(CopyleaksAuthToken $authToken) {
     $EducationCreditsBalance = $this->copyleaks->getCreditsBalance('education', $authToken);
     $this->logInfo("-getCreditsBalance:Education-", $EducationCreditsBalance);
     $BusinessesCreditsBalance = $this->copyleaks->getCreditsBalance('businesses', $authToken);
     $this->logInfo("-getCreditsBalance:Businesses-", $BusinessesCreditsBalance);
   }
 
-  private function TEST_UsagesHistoryCsv(CopyleaksAuthToken $authToken)
-  {
+  private function TEST_UsagesHistoryCsv(CopyleaksAuthToken $authToken) {
     $EducationUsagesHistoryCsv = $this->copyleaks->getUsagesHistoryCsv('education', $authToken, '01-01-2021', '02-02-2021');
     $this->logInfo("-getUsagesHistoryCsv:Education-", $EducationUsagesHistoryCsv);
     $BusinessesUsagesHistoryCsv = $this->copyleaks->getUsagesHistoryCsv('businesses', $authToken, '01-01-2021', '02-02-2021');
     $this->logInfo("-getUsagesHistoryCsv:Businesses-", $BusinessesUsagesHistoryCsv);
   }
 
-  private function TEST_MISC()
-  {
+  private function TEST_MISC() {
     $OCRSupportedLanguages = $this->copyleaks->getOCRSupportedLanguages();
     $this->logInfo("-getOCRSupportedLanguages-", $OCRSupportedLanguages);
 
@@ -210,8 +198,7 @@ class Test
     $this->logInfo("-getReleaseNotes-", $ReleaseNotes);
   }
 
-  private function logInfo($title, $info = null)
-  {
+  private function logInfo($title, $info = null) {
     echo "\n";
     echo "----------------" . $title . "----------------" . "\n\n";
     if ($info) {
