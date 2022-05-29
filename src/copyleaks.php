@@ -92,20 +92,18 @@ class Copyleaks
   /**
    * Starting a new process by providing a file to scan.
    * For more info:
-   * https://api.copyleaks.com/documentation/v3/education/submit/file
-   * https://api.copyleaks.com/documentation/v3/businesses/submit/file
+   * https://api.copyleaks.com/documentation/v3/scans/submit/file
    * * Exceptions:
    * * * CommandExceptions: Server reject the request. See response status code,
    *     headers and content for more info.
    * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
    *     We recommend to implement exponential backoff algorithm as described here:
    *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * @param string $product Which product (education or businesses) is being use.
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    * @param string $scanId Attach your own scan Id
    * @param CopyleaksFileSubmissionModel $submission Submission properties
    */
-  public function submitFile(string $product, CopyleaksAuthToken $authToken, string $scanId, CopyleaksFileSubmissionModel $submission)
+  public function submitFile(CopyleaksAuthToken $authToken, string $scanId, CopyleaksFileSubmissionModel $submission)
   {
     if (!isset($scanId)) {
       throw new InvalidArgumentException("Invalid scanId");
@@ -114,10 +112,9 @@ class Copyleaks
       throw new InvalidArgumentException("Invalid submission");
     }
 
-    $this->validateProduct($product);
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/$product/submit/file/$scanId";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/submit/file/$scanId";
 
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
@@ -129,20 +126,18 @@ class Copyleaks
   /**
    * Starting a new process by providing a OCR image file to scan.
    * For more info:
-   * https://api.copyleaks.com/documentation/v3/education/submit/ocr
-   * https://api.copyleaks.com/documentation/v3/businesses/submit/ocr
+   * https://api.copyleaks.com/documentation/v3/scans/submit/ocr
    * * Exceptions:
    * * * CommandExceptions: Server reject the request. See response status code,
    *     headers and content for more info.
    * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
    *     We recommend to implement exponential backoff algorithm as described here:
    *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * @param string $product Which product (education or businesses) is being use.
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    * @param string $scanId Attach your own scan Id
    * @param CopyleaksFileOcrSubmissionModel $submission Submission properties
    */
-  public function submitFileOcr(string $product, CopyleaksAuthToken $authToken, string $scanId, CopyleaksFileOcrSubmissionModel $submission)
+  public function submitFileOcr(CopyleaksAuthToken $authToken, string $scanId, CopyleaksFileOcrSubmissionModel $submission)
   {
     if (!isset($scanId)) {
       throw new InvalidArgumentException("Invalid scanId");
@@ -151,10 +146,9 @@ class Copyleaks
       throw new InvalidArgumentException("Invalid submission");
     }
 
-    $this->validateProduct($product);
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/$product/submit/ocr/$scanId";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/submit/ocr/$scanId";
 
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
@@ -166,20 +160,18 @@ class Copyleaks
   /**
    * Starting a new process by providing a URL to scan.
    * For more info:
-   * https://api.copyleaks.com/documentation/v3/education/submit/url
-   * https://api.copyleaks.com/documentation/v3/businesses/submit/url
+   * https://api.copyleaks.com/documentation/v3/scans/submit/url
    * * Exceptions:
    * * * CommandExceptions: Server reject the request. See response status code,
    *     headers and content for more info.
    * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
    *     We recommend to implement exponential backoff algorithm as described here:
    *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * @param string $product Which product (education or businesses) is being use.
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    * @param string $scanId Attach your own scan Id
    * @param CopyleaksURLSubmissionModel $submission Submission properties
    */
-  public function submitUrl(string $product, CopyleaksAuthToken $authToken, string $scanId, CopyleaksURLSubmissionModel $submission)
+  public function submitUrl(CopyleaksAuthToken $authToken, string $scanId, CopyleaksURLSubmissionModel $submission)
   {
     if (!isset($scanId)) {
       throw new InvalidArgumentException("Invalid scanId");
@@ -188,10 +180,9 @@ class Copyleaks
       throw new InvalidArgumentException("Invalid submission");
     }
 
-    $this->validateProduct($product);
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/$product/submit/url/$scanId";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/submit/url/$scanId";
 
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
@@ -244,28 +235,25 @@ class Copyleaks
   /**
    * Start scanning all the files you submitted for a price-check.
    * For more info:
-   * https://api.copyleaks.com/documentation/v3/education/start
-   * https://api.copyleaks.com/documentation/v3/businesses/start
+   * https://api.copyleaks.com/documentation/v3/scans/start
    * * Exceptions:
    * * * CommandExceptions: Server reject the request. See response status code,
    *     headers and content for more info.
    * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
    *     We recommend to implement exponential backoff algorithm as described here:
    *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * @param string $product Which product (education or businesses) is being use.
    * @param CopyleaksAuthToken $authToken Your login token to Copyleaks server.
    * @param CopyleaksStartRequestModel $data Include information about which scans should be started.
    */
-  public function start(string $product, CopyleaksAuthToken $authToken, CopyleaksStartRequestModel $data)
+  public function start(CopyleaksAuthToken $authToken, CopyleaksStartRequestModel $data)
   {
     if (!isset($data)) {
       throw new InvalidArgumentException("Invalid Data");
     }
 
-    $this->validateProduct($product);
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/${product}/start";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/start";
 
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
@@ -277,28 +265,25 @@ class Copyleaks
   /**
    * Delete the specific process from the server.
    * For more info:
-   * https://api.copyleaks.com/documentation/v3/education/delete
-   * https://api.copyleaks.com/documentation/v3/businesses/delete
+   * https://api.copyleaks.com/documentation/v3/scans/delete
    * * Exceptions:
    * * * CommandExceptions: Server reject the request. See response status code,
    *     headers and content for more info.
    * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
    *     We recommend to implement exponential backoff algorithm as described here:
    *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * @param string $product Which product (education or businesses) is being use.
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    * @param CopyleaksDeleteRequestModel $data
    */
-  public function delete(string $product, CopyleaksAuthToken $authToken, CopyleaksDeleteRequestModel $data)
+  public function delete(CopyleaksAuthToken $authToken, CopyleaksDeleteRequestModel $data)
   {
     if (!isset($data)) {
       throw new InvalidArgumentException("Invalid Data");
     }
 
-    $this->validateProduct($product);
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3.1/${product}/delete";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3.1/scans/delete";
 
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
@@ -310,28 +295,25 @@ class Copyleaks
   /**
    * Resend status webhooks for existing scans.
    * For more info:
-   * https://api.copyleaks.com/documentation/v3/education/webhook-resend
-   * https://api.copyleaks.com/documentation/v3/businesses/webhook-resend
+   * https://api.copyleaks.com/documentation/v3/scans/webhook-resend
    * * Exceptions:
    * * * CommandExceptions: Server reject the request. See response status code,
    *     headers and content for more info.
    * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
    *     We recommend to implement exponential backoff algorithm as described here:
    *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * @param string $product Which product (education or businesses) is being use.
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    * @param string $scanId Copyleaks scan Id
    */
-  public function resendWebhook(string $product, CopyleaksAuthToken $authToken, string $scanId)
+  public function resendWebhook(CopyleaksAuthToken $authToken, string $scanId)
   {
     if (!isset($scanId)) {
       throw new InvalidArgumentException("Invalid scanId");
     }
 
-    $this->validateProduct($product);
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/$product/scans/$scanId/webhooks/resend";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/$scanId/webhooks/resend";
 
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
@@ -343,8 +325,7 @@ class Copyleaks
   /**
    * Get current credits balance for the Copyleaks account.
    * For more info:
-   * https://api.copyleaks.com/documentation/v3/education/credits
-   * https://api.copyleaks.com/documentation/v3/businesses/credits
+   * https://api.copyleaks.com/documentation/v3/scans/credits
    * * Exceptions:
    * * * CommandExceptions: Server reject the request. See response status code,
    *     headers and content for more info.
@@ -352,15 +333,13 @@ class Copyleaks
    *     We recommend to implement exponential backoff algorithm as described here:
    *     https://api.copyleaks.com/documentation/v3/exponential-backoff
    * * * RateLimitException: Too many requests. Please wait before calling again.
-   * @param string $product Which product (education or businesses) is being use.
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    */
-  public function getCreditsBalance(string $product, CopyleaksAuthToken $authToken)
+  public function getCreditsBalance(CopyleaksAuthToken $authToken)
   {
-    $this->validateProduct($product);
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/$product/credits";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/credits";
 
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
@@ -373,8 +352,7 @@ class Copyleaks
    * This endpoint allows you to export your usage history between two dates.
    * The output results will be exported to a csv file and it will be attached to the response.
    * For more info:
-   * https://api.copyleaks.com/documentation/v3/education/usages/history
-   * https://api.copyleaks.com/documentation/v3/businesses/usages/history
+   * https://api.copyleaks.com/documentation/v3/scans/usages/history
    * * Exceptions:
    * * * CommandExceptions: Server reject the request. See response status code,
    *     headers and content for more info.
@@ -382,12 +360,11 @@ class Copyleaks
    *     We recommend to implement exponential backoff algorithm as described here:
    *     https://api.copyleaks.com/documentation/v3/exponential-backoff
    * * * RateLimitException: Too many requests. Please wait before calling again.
-   * @param string $product Which product (education or businesses) is being use.
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token.
    * @param string $startDate The start date to collect usage history from. Date Format: `dd-MM-yyyy`.
    * @param string $endDate The end date to collect usage history from. Date Format: `dd-MM-yyyy`.
    */
-  public function getUsagesHistoryCsv(string $product, CopyleaksAuthToken $authToken, string $startDate, string $endDate)
+  public function getUsagesHistoryCsv(CopyleaksAuthToken $authToken, string $startDate, string $endDate)
   {
     if (!isset($startDate)) {
       throw new InvalidArgumentException("Invalid startDate");
@@ -397,10 +374,9 @@ class Copyleaks
       throw new InvalidArgumentException("Invalid endDate");
     }
 
-    $this->validateProduct($product);
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/$product/usages/history?start=$startDate&end=$endDate";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/usages/history?start=$startDate&end=$endDate";
 
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
@@ -477,12 +453,5 @@ class Copyleaks
       'User-Agent' => CopyleaksConfig::GET_USER_AGENT()
     ];
     return HttpClientService::Execute('GET', $url, $headers);
-  }
-
-  private function validateProduct(string $product)
-  {
-    if (!isset($product) || ($product != 'education' && $product != 'businesses')) {
-      throw new InvalidArgumentException("Invalid product, product must be set to 'education' or 'businesses'");
-    }
   }
 }
