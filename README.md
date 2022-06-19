@@ -19,7 +19,7 @@ composer require copyleaks/php-plagiarism-checker
 ## Register and Get Your API Key
 To use the Copyleaks API you need to first be a registered user. The registration to Copyleaks takes a minute and is free of charge. [Signup](https://api.copyleaks.com/?register=true) and make sure to confirm your account.
 
-As a signed user you can generate your personal API key. Do so on your [dashboard home](https://api.copyleaks.com/dashboard/:product) under 'API Access Credentials'.
+As a signed user you can generate your personal API key. Do so on your [dashboard home](https://api.copyleaks.com/dashboard) under 'API Access Credentials'.
 
 For more information check out our [API guide](https://api.copyleaks.com/documentation/v3).
 
@@ -31,6 +31,14 @@ use Copyleaks\Copyleaks;
 $copyleaks = new Copyleaks();
 $loginResult = $copyleaks->login(<your email>,<your api key>);
 echo json_encode($loginResult);
+```
+* (Option) To change the Identity server URI (default:"https://id.copyleaks.com"):
+```rb
+CopyleaksConfig::SET_IDENTITY_SERVER_URI("<your identity server URI>"); 
+```
+* (Option) To change the API server URI (default:"https://api.copyleaks.com"):
+```rb
+CopyleaksConfig::SET_API_SERVER_URI("<your API server URI>");
 ```
 
 ## Demo

@@ -93,7 +93,7 @@ class Test {
         6,
         1,
         true,
-        SubmissionActions::CheckCredits,
+        SubmissionActions::Scan,
         new SubmissionAuthor('php-test'),
         new SubmissionFilter(true, true, true),
         new SubmissionScanning(true, new SubmissionScanningExclude('php-test-*'), null, new SubmissionScanningCopyleaksDB(true, true)),
@@ -103,7 +103,7 @@ class Test {
       )
     );
 
-    $this->copyleaks->submitFileOcr('education', $authToken, time(), $submission);
+    $this->copyleaks->submitFileOcr($authToken, time(), $submission);
     $this->logInfo("-submitFileOcr-");
   }
 
@@ -119,7 +119,7 @@ class Test {
         6,
         1,
         true,
-        SubmissionActions::CheckCredits,
+        SubmissionActions::Scan,
         new SubmissionAuthor('php-test'),
         new SubmissionFilter(true, true, true),
         new SubmissionScanning(true, new SubmissionScanningExclude('php-test-*'), null, new SubmissionScanningCopyleaksDB(true, true)),
@@ -129,7 +129,7 @@ class Test {
       )
     );
 
-    $this->copyleaks->submitFile('education', $authToken, time(), $submission);
+    $this->copyleaks->submitFile($authToken, time(), $submission);
     $this->logInfo("-submitFile-");
   }
 
@@ -144,7 +144,7 @@ class Test {
         6,
         1,
         true,
-        SubmissionActions::CheckCredits,
+        SubmissionActions::Scan,
         new SubmissionAuthor('php-test'),
         new SubmissionFilter(true, true, true),
         new SubmissionScanning(true, new SubmissionScanningExclude('php-test-*'), null, new SubmissionScanningCopyleaksDB(true, true)),
@@ -154,13 +154,13 @@ class Test {
       )
     );
 
-    $this->copyleaks->submitUrl('education', $authToken, time(), $submission);
+    $this->copyleaks->submitUrl($authToken, time(), $submission);
     $this->logInfo("-submitUrl-");
   }
 
   private function TEST_start(CopyleaksAuthToken $authToken) {
     $model = new CopyleaksStartRequestModel(array("cqcps25xxh5cloxe"), CopyleaksStartErrorHandlings::IGNORE);
-    $start = $this->copyleaks->start('education', $authToken, $model);
+    $start = $this->copyleaks->start($authToken, $model);
     $this->logInfo("-start-", $start);
   }
 
@@ -168,23 +168,20 @@ class Test {
     $idsToDelete = array(new IdObject("cqcps25xxh5cloxe"));
 
     $model = new CopyleaksDeleteRequestModel($idsToDelete, true, "https://glacial-refuge-96501.herokuapp.com/18ml1by1/delete-hook");
-    $delete = $this->copyleaks->delete('education', $authToken, $model);
+    $delete = $this->copyleaks->delete($authToken, $model);
 
     $this->logInfo("-delete-", $delete);
   }
 
   private function TEST_CreditsBalance(CopyleaksAuthToken $authToken) {
-    $EducationCreditsBalance = $this->copyleaks->getCreditsBalance('education', $authToken);
-    $this->logInfo("-getCreditsBalance:Education-", $EducationCreditsBalance);
-    $BusinessesCreditsBalance = $this->copyleaks->getCreditsBalance('businesses', $authToken);
-    $this->logInfo("-getCreditsBalance:Businesses-", $BusinessesCreditsBalance);
+    $CreditsBalance = $this->copyleaks->getCreditsBalance($authToken);
+    $this->logInfo("-getCreditsBalance:", $CreditsBalance);
+
   }
 
   private function TEST_UsagesHistoryCsv(CopyleaksAuthToken $authToken) {
-    $EducationUsagesHistoryCsv = $this->copyleaks->getUsagesHistoryCsv('education', $authToken, '01-01-2021', '02-02-2021');
-    $this->logInfo("-getUsagesHistoryCsv:Education-", $EducationUsagesHistoryCsv);
-    $BusinessesUsagesHistoryCsv = $this->copyleaks->getUsagesHistoryCsv('businesses', $authToken, '01-01-2021', '02-02-2021');
-    $this->logInfo("-getUsagesHistoryCsv:Businesses-", $BusinessesUsagesHistoryCsv);
+    $UsagesHistoryCsv = $this->copyleaks->getUsagesHistoryCsv($authToken, '01-01-2021', '02-02-2021');
+    $this->logInfo("-getUsagesHistoryCsv:", $UsagesHistoryCsv);
   }
 
   private function TEST_MISC() {
