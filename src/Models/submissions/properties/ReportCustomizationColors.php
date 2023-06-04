@@ -25,25 +25,30 @@
 
 namespace Copyleaks;
 
-class SubmissionRepository
+class ReportCustomizationColors
 {
-  /**
-   * Id of a repository to add the scanned document to.
-   */
-  public string $id;
+  public ?string $mainStrip;
 
-  public ?int $maskingPolicy;
+  public ?string $titles;
+
+  public ?string $identical;
+
+  public ?string $minorChanges;
+
+  public ?string $relatedMeaning;
 
   public function __construct(
-    string $id, 
-    ?int $maskingPolicy = null)
+    ?string $mainStrip = null, 
+    ?string $titles = null, 
+    ?string $identical = null, 
+    ?string $minorChanges = null, 
+    ?string $relatedMeaning = null
+    )
   {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
-    }
+    $this->mainStrip = $mainStrip;
+    $this->titles = $titles;
+    $this->identical = $identical;
+    $this->minorChanges = $minorChanges;
+    $this->relatedMeaning = $relatedMeaning;
   }
 }

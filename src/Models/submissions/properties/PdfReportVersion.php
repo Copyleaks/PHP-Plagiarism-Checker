@@ -25,25 +25,9 @@
 
 namespace Copyleaks;
 
-class SubmissionRepository
+class PdfReportVersion
 {
-  /**
-   * Id of a repository to add the scanned document to.
-   */
-  public string $id;
+  const V1 = 1;
 
-  public ?int $maskingPolicy;
-
-  public function __construct(
-    string $id, 
-    ?int $maskingPolicy = null)
-  {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
-    }
-  }
+  const V2 = 2;
 }

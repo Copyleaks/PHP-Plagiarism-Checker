@@ -48,6 +48,13 @@ class SubmissionExclude
    */
   public bool $htmlTemplate;
 
+  public bool $citations;
+
+  public array $documentTemplateIds;
+
+  public ?ExcludeCode $code;
+
+
   /**
    * @param bool $quotes Exclude quoted text from the scan. 
    * @param bool $references Exclude referenced text from the scan. 
@@ -60,12 +67,18 @@ class SubmissionExclude
     bool $references = false,
     bool $tableOfContents = false,
     bool $titles = false,
-    bool $htmlTemplate = false
+    bool $htmlTemplate = false,
+    bool $citations = false,
+    array $documentTemplateIds = array(),
+    ?ExcludeCode $code = null
+
   ) {
-    $this->quotes = $quotes;
-    $this->references = $references;
-    $this->tableOfContents = $tableOfContents;
-    $this->titles = $titles;
-    $this->htmlTemplate = $htmlTemplate;
+    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
+      return $value !== null;
+    });
+
+    foreach ($filteredProperties as $property => $value) {
+        $this->$property = $value;
+    }
   }
 }

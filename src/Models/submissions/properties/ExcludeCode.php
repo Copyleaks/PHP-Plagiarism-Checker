@@ -25,25 +25,13 @@
 
 namespace Copyleaks;
 
-class SubmissionRepository
+class ExcludeCode
 {
-  /**
-   * Id of a repository to add the scanned document to.
-   */
-  public string $id;
-
-  public ?int $maskingPolicy;
+  public bool $comments;
 
   public function __construct(
-    string $id, 
-    ?int $maskingPolicy = null)
+    bool $comments = false)
   {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
-    }
+    $this->comments = $comments;
   }
 }

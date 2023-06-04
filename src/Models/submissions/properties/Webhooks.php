@@ -46,7 +46,12 @@ class SubmissionWebhooks
    */
   public function __construct(string $status, string $newResult = null)
   {
-    $this->newResult = $newResult;
-    $this->status = $status;
+    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
+      return $value !== null;
+    });
+
+    foreach ($filteredProperties as $property => $value) {
+        $this->$property = $value;
+    }
   }
 }

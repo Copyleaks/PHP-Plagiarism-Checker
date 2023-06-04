@@ -102,6 +102,18 @@ class SubmissionProperties
    */
   public ?SubmissionSensitiveData $sensitiveDataProtection;
 
+  public ?int $scanMethodAlgorithm;
+
+  public ?int $priority;
+
+  public ?array $customMetadata;
+
+  public ?AIGeneratedText $aiGeneratedText;
+
+  public ?AdditionalResults $additionalResults;
+
+
+
   /**
    *@param SubmissionWebhooks $webhooks - Check inner properties for more details.
    *@param bool $includeHtml - By default, Copyleaks will present the report in text format. If set to true, Copyleaks will also include html format.
@@ -134,22 +146,19 @@ class SubmissionProperties
     ?SubmissionIndexing $indexing = null,
     ?SubmissionExclude $exclude = null,
     ?SubmissionPDF $pdf = null,
-    ?SubmissionSensitiveData $sensitiveDataProtection = null
+    ?SubmissionSensitiveData $sensitiveDataProtection = null,
+    ?int $priority = null,
+    ?int $scanMethodAlgorithm = null,
+    ?array $customMetadata = null,
+    ?AIGeneratedText $aiGeneratedText = null,
+    ?AdditionalResults $additionalResults = null
   ) {
-    $this->webhooks = $webhooks;
-    $this->includeHtml = $includeHtml;
-    $this->developerPayload = $developerPayload;
-    $this->sandbox = $sandbox;
-    $this->expiration = $expiration;
-    $this->sensitivityLevel = $sensitivityLevel;
-    $this->cheatDetection = $cheatDetection;
-    $this->action = $action;
-    $this->author = $author;
-    $this->filters = $filters;
-    $this->scanning = $scanning;
-    $this->indexing = $indexing;
-    $this->exclude = $exclude;
-    $this->pdf = $pdf;
-    $this->sensitiveDataProtection = $sensitiveDataProtection;
+    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
+      return $value !== null;
+    });
+
+    foreach ($filteredProperties as $property => $value) {
+        $this->$property = $value;
+    }
   }
 }

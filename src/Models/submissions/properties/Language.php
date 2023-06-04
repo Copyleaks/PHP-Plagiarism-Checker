@@ -25,25 +25,13 @@
 
 namespace Copyleaks;
 
-class SubmissionRepository
+class Language
 {
-  /**
-   * Id of a repository to add the scanned document to.
-   */
-  public string $id;
-
-  public ?int $maskingPolicy;
+  public string $code;
 
   public function __construct(
-    string $id, 
-    ?int $maskingPolicy = null)
+    string $code)
   {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
-    }
+    $this->code = $code;
   }
 }

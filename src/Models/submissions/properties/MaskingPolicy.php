@@ -25,25 +25,11 @@
 
 namespace Copyleaks;
 
-class SubmissionRepository
+class MaskingPolicy
 {
-  /**
-   * Id of a repository to add the scanned document to.
-   */
-  public string $id;
+  const NoMasking = 0;
 
-  public ?int $maskingPolicy;
+  const MaskUnlessOwner = 1;
 
-  public function __construct(
-    string $id, 
-    ?int $maskingPolicy = null)
-  {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
-    }
-  }
+  const MaskAll = 2;
 }
