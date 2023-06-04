@@ -102,14 +102,27 @@ class SubmissionProperties
    */
   public ?SubmissionSensitiveData $sensitiveDataProtection;
 
+  /**
+   *  Choose the algorithm goal. You can set this value depending on your use-case.
+   */
   public ?int $scanMethodAlgorithm;
 
   public ?int $priority;
 
+  /**
+   * Add custom properties that will be attached to your document in a Copyleaks repository.
+   * 
+   * If this document is found as a repository result, your custom properties will be added to the result.
+   */
   public ?array $customMetadata;
 
+  /**
+   * Check inner properties for more details.
+   */
   public ?AIGeneratedText $aiGeneratedText;
-
+  /**
+   * Check inner properties for more details.
+   */
   public ?AdditionalResults $additionalResults;
 
 
@@ -130,6 +143,11 @@ class SubmissionProperties
    *@param SubmissionExclude $exclude - Check inner properties for more details.
    *@param SubmissionPDF $pdf - Check inner properties for more details.
    *@param SubmissionSensitiveData $sensitiveDataProtection - Check inner properties for more details.
+   *@param ScanMethodAlgorithm $scanMethodAlgorithm - Choose the algorithm goal. You can set this value depending on your use-case.
+   *@param Priority $priority
+   *@param CustomMetadata[] $customMetadata - Add custom properties that will be attached to your document in a Copyleaks repository.
+   *@param AIGeneratedText $aiGeneratedText - Check inner properties for more details.
+   *@param AdditionalResults $additionalResults - Check inner properties for more details.
    */
   public function __construct(
     SubmissionWebhooks $webhooks,

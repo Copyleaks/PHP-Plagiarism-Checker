@@ -27,7 +27,14 @@ namespace Copyleaks;
 
 class Language
 {
+    /**
+     * Language code for cross language plagiarism detection.
+     */
   public string $code;
+
+    /**
+   * @param string $code Language code for cross language plagiarism detection. 
+   */
 
   public function __construct(
     string $code)

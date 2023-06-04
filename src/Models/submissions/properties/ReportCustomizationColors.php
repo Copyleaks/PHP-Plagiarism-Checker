@@ -27,16 +27,36 @@ namespace Copyleaks;
 
 class ReportCustomizationColors
 {
+    /**
+     * The color of the main strip in the header
+     */
   public ?string $mainStrip;
 
+    /**
+     * The color for titles in copyleaks result report
+     */
   public ?string $titles;
-
+    /**
+     * The highlight color for identical matches
+     */
   public ?string $identical;
-
+    /**
+     * The highlight color for minor changes matches
+     */
   public ?string $minorChanges;
-
+    /**
+     * The highlight color for related meaning matches
+     */
   public ?string $relatedMeaning;
 
+
+    /**
+   *@param string $mainStrip - The color of the main strip in the header
+   *@param string $titles - The color for titles in copyleaks result report
+   *@param string $identical - The highlight color for identical matches
+   *@param string $minorChanges - The highlight color for minor changes matches
+   *@param string $relatedMeaning - The highlight color for related meaning matches
+   */
   public function __construct(
     ?string $mainStrip = null, 
     ?string $titles = null, 

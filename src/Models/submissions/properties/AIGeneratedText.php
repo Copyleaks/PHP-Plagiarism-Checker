@@ -27,8 +27,14 @@ namespace Copyleaks;
 
 class AIGeneratedText
 {
+    /**
+     * Detects whether the text was written by an AI.
+     */
   public bool $detect;
 
+    /**
+   * @param bool $detect Detects whether the text was written by an AI.
+   */
   public function __construct(
     bool $detect = false)
   {

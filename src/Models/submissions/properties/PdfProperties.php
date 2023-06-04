@@ -45,10 +45,16 @@ class SubmissionPDF
    */
   public bool $rtl;
 
+  /**
+   * PDF version to generate
+   */
   public ?int $version;
 
   public ?string $smallLogo;
 
+  /**
+   * Check inner properties for more details.
+   */
   public ?ReportCustomizationColors $colors;
 
   /**
@@ -56,6 +62,9 @@ class SubmissionPDF
    *@param string $title Customize the title for the PDF report.
    *@param string $largeLogo Customize the logo image in the PDF report.
    *@param bool $rtl When set to true the text in the report will be aligned from right to left.
+   *@param PdfReportVersion $version PDF version to generate
+   *@param ReportCustomizationColors $colors heck inner properties for more details.
+
    */
   public function __construct(
     bool $create,
