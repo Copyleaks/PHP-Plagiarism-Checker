@@ -123,8 +123,6 @@ class SubmissionProperties
   /**
    * Check inner properties for more details.
    */
-  public ?AdditionalResults $additionalResults;
-
 
 
   /**
@@ -147,7 +145,6 @@ class SubmissionProperties
    *@param Priority $priority
    *@param CustomMetadata[] $customMetadata - Add custom properties that will be attached to your document in a Copyleaks repository.
    *@param AIGeneratedText $aiGeneratedText - Check inner properties for more details.
-   *@param AdditionalResults $additionalResults - Check inner properties for more details.
    */
   public function __construct(
     SubmissionWebhooks $webhooks,
@@ -168,8 +165,7 @@ class SubmissionProperties
     ?int $priority = null,
     ?int $scanMethodAlgorithm = null,
     ?array $customMetadata = null,
-    ?AIGeneratedText $aiGeneratedText = null,
-    ?AdditionalResults $additionalResults = null
+    ?AIGeneratedText $aiGeneratedText = null
   ) {
     $filteredProperties = array_filter(get_defined_vars(), function ($value) {
       return $value !== null;

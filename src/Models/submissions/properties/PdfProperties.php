@@ -49,9 +49,7 @@ class SubmissionPDF
    * PDF version to generate
    */
   public ?int $version;
-
-  public ?string $smallLogo;
-
+  
   /**
    * Check inner properties for more details.
    */
