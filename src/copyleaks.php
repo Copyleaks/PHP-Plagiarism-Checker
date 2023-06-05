@@ -103,6 +103,7 @@ class Copyleaks
    * @param string $scanId Attach your own scan Id
    * @param CopyleaksFileSubmissionModel $submission Submission properties
    */
+
   public function submitFile(CopyleaksAuthToken $authToken, string $scanId, CopyleaksFileSubmissionModel $submission)
   {
     if (!isset($scanId)) {
@@ -119,6 +120,8 @@ class Copyleaks
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
     $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
+
+    ObjectFilter::filterNullProperties($submission);
 
     HttpClientService::Execute('PUT', $url, $headers, $submission);
   }
@@ -154,6 +157,8 @@ class Copyleaks
 
     $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
 
+    ObjectFilter::filterNullProperties($submission);
+
     HttpClientService::Execute('PUT', $url, $headers, $submission);
   }
 
@@ -187,6 +192,8 @@ class Copyleaks
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
     $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
+
+    ObjectFilter::filterNullProperties($submission);
 
     HttpClientService::Execute('PUT', $url, $headers, $submission);
   }
