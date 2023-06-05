@@ -25,12 +25,18 @@
 
 namespace Copyleaks;
 
-include_once('app.config.php');
-include_once('services/http-client.service.php');
-include_once("utils/status-code.utils.php");
-include_once("utils/ObjectFilter.utils.php");
+class  ObjectFilter
+{
+    public static function filterNullProperties($object)
+    {
+        foreach ($object as $property => $value) {
+            if (is_object($value) || is_array($value)) {
+                self::filterNullProperties($value);
+            }
 
-
-include_once("Models/Index.php");
-
-include_once("copyleaks.php");
+            if ($value === null) {
+                unset($object->$property);
+            }
+        }
+    }
+}
