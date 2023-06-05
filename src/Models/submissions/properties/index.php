@@ -42,3 +42,4 @@ include_once('ScanningRepository.php');
 include_once('SensitiveDataProtection.php');
 include_once('SubmissionProperties.php');
 include_once('Webhooks.php');
+include_once('utils/ObjectFilter.php');

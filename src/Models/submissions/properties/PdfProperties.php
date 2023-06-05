@@ -70,15 +70,14 @@ class SubmissionPDF
     string $largeLogo,
     bool $rtl,
     ?int $version = null,
-    ?string $smallLogo = null,
     ?ReportCustomizationColors $colors = null
   ) {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
-    }
+    $this->create = $create;
+    $this->title = $title;
+    $this->largeLogo = $largeLogo;
+    $this->rtl = $rtl; 
+    $this->largeLogo = $largeLogo;
+    $this->version = $version; 
+    $this->colors = $colors; 
   }
 }

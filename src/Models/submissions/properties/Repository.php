@@ -38,12 +38,7 @@ class SubmissionRepository
     string $id, 
     ?int $maskingPolicy = null)
   {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
-    }
+    $this->id = $id;
+    $this->maskingPolicy = $maskingPolicy;
   }
 }

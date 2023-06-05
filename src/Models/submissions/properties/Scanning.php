@@ -56,12 +56,8 @@ class SubmissionScanning
     array $repositories = null,
     SubmissionScanningCopyleaksDB $copyleaksDb = null
   ) {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
-    }
-  }
+    $this->internet = $internet;
+    $this->exclude = $exclude;
+    $this->repositories = $repositories;
+    $this->copyleaksDb = $copyleaksDb;  }
 }

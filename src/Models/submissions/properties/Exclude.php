@@ -85,12 +85,13 @@ class SubmissionExclude
     ?ExcludeCode $code = null
 
   ) {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
-    }
+    $this->quotes = $quotes;
+    $this->references = $references;
+    $this->tableOfContents = $tableOfContents;
+    $this->titles = $titles;
+    $this->htmlTemplate = $htmlTemplate;
+    $this->citations = $citations;
+    $this->documentTemplateIds = $documentTemplateIds;
+    $this->code = $code;
   }
 }

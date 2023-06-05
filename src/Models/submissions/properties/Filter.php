@@ -79,12 +79,12 @@ class SubmissionFilter
     array $domains = array(),
     int $domainsMode = SubmissionFilterDomainsMode::Exclude
   ) {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
+    $this->identicalEnabled = $identicalEnabled;
+    $this->minorChangesEnabled = $minorChangesEnabled;
+    $this->relatedMeaningEnabled = $relatedMeaningEnabled;
+    $this->minCopiedWords = $minCopiedWords;
+    $this->safeSearch = $safeSearch;
+    $this->domains = $domains;
+    $this->domainsMode = $domainsMode;
     }
-  }
 }

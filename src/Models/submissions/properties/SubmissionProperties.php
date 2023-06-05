@@ -25,6 +25,8 @@
 
 namespace Copyleaks;
 
+use Copyleaks\ObjectFilter;
+
 class SubmissionProperties
 {
   /**
@@ -167,12 +169,24 @@ class SubmissionProperties
     ?array $customMetadata = null,
     ?AIGeneratedText $aiGeneratedText = null
   ) {
-    $filteredProperties = array_filter(get_defined_vars(), function ($value) {
-      return $value !== null;
-    });
-
-    foreach ($filteredProperties as $property => $value) {
-        $this->$property = $value;
-    }
+    $this->webhooks = $webhooks;
+    $this->includeHtml = $includeHtml;
+    $this->developerPayload = $developerPayload;
+    $this->sandbox = $sandbox;
+    $this->expiration = $expiration;
+    $this->sensitivityLevel = $sensitivityLevel;
+    $this->cheatDetection = $cheatDetection;
+    $this->action = $action;
+    $this->author = $author;
+    $this->filters = $filters;
+    $this->scanning = $scanning;
+    $this->indexing = $indexing;
+    $this->exclude = $exclude;
+    $this->pdf = $pdf;
+    $this->sensitiveDataProtection = $sensitiveDataProtection; 
+    $this->priority = $priority;
+    $this->scanMethodAlgorithm = $scanMethodAlgorithm;
+    $this->customMetadata = $customMetadata;
+    $this->aiGeneratedText = $aiGeneratedText;
   }
 }
