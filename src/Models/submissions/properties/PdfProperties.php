@@ -76,7 +76,6 @@ class SubmissionPDF
     $this->title = $title;
     $this->largeLogo = $largeLogo;
     $this->rtl = $rtl; 
-    $this->largeLogo = $largeLogo;
     $this->version = $version; 
     $this->colors = $colors; 
   }

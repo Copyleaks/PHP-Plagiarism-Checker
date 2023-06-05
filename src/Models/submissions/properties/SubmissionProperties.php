@@ -122,10 +122,6 @@ class SubmissionProperties
    * Check inner properties for more details.
    */
   public ?AIGeneratedText $aiGeneratedText;
-  /**
-   * Check inner properties for more details.
-   */
-
 
   /**
    *@param SubmissionWebhooks $webhooks - Check inner properties for more details.
