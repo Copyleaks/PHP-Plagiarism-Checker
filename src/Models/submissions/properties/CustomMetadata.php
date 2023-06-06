@@ -25,12 +25,20 @@
 
 namespace Copyleaks;
 
-include_once('app.config.php');
-include_once('services/http-client.service.php');
-include_once("utils/status-code.utils.php");
-include_once("utils/ObjectFilter.utils.php");
+class CustomMetadata
+{
+  /**
+   * Id of a repository to add the scanned document to.
+   */
+  public string $key;
 
+  public string $value;
 
-include_once("Models/Index.php");
-
-include_once("copyleaks.php");
+  public function __construct(
+    string $key, 
+    string $value)
+  {
+    $this->key = $key;
+    $this->value = $value;
+  }
+}

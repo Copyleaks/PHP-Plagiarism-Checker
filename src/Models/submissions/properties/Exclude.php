@@ -49,23 +49,49 @@ class SubmissionExclude
   public bool $htmlTemplate;
 
   /**
+   * Exclude citations from the scan.
+   */
+  public bool $citations;
+
+  /**
+   * Exclude text based on text found within other documents.
+   */
+  public array $documentTemplateIds;
+
+  /**
+   * Check inner properties for more details.
+   */
+  public ?ExcludeCode $code;
+
+
+  /**
    * @param bool $quotes Exclude quoted text from the scan. 
    * @param bool $references Exclude referenced text from the scan. 
    * @param bool $tableOfContents Exclude table of contents from the scan. 
    * @param bool $titles Exclude titles from the scan. 
    * @param bool $htmlTemplate When the scanned document is an HTML document, exclude irrelevant text that appears across the site like the website footer or header.
+   * @param bool $citations Exclude citations from the scan.
+   * @param string[] $documentTemplateIds Exclude text based on text found within other documents.
+   * @param ExcludeCode $code Exclude titles from the scan. 
    */
   public function __construct(
     bool $quotes = false,
     bool $references = false,
     bool $tableOfContents = false,
     bool $titles = false,
-    bool $htmlTemplate = false
+    bool $htmlTemplate = false,
+    bool $citations = false,
+    array $documentTemplateIds = array(),
+    ?ExcludeCode $code = null
+
   ) {
     $this->quotes = $quotes;
     $this->references = $references;
     $this->tableOfContents = $tableOfContents;
     $this->titles = $titles;
     $this->htmlTemplate = $htmlTemplate;
+    $this->citations = $citations;
+    $this->documentTemplateIds = $documentTemplateIds;
+    $this->code = $code;
   }
 }

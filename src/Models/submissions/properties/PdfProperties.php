@@ -44,21 +44,39 @@ class SubmissionPDF
    * When set to true the text in the report will be aligned from right to left.
    */
   public bool $rtl;
+
+  /**
+   * PDF version to generate
+   */
+  public ?int $version;
+  
+  /**
+   * Check inner properties for more details.
+   */
+  public ?ReportCustomizationColors $colors;
+
   /**
    *@param bool $create Add a request to generate a customizable export of the scan report, in a pdf format. Set to true in order to generate a pdf report for this scan.
    *@param string $title Customize the title for the PDF report.
    *@param string $largeLogo Customize the logo image in the PDF report.
    *@param bool $rtl When set to true the text in the report will be aligned from right to left.
+   *@param PdfReportVersion $version PDF version to generate
+   *@param ReportCustomizationColors $colors heck inner properties for more details.
+
    */
   public function __construct(
     bool $create,
     string $title,
     string $largeLogo,
-    bool $rtl
+    bool $rtl,
+    ?int $version = null,
+    ?ReportCustomizationColors $colors = null
   ) {
     $this->create = $create;
     $this->title = $title;
     $this->largeLogo = $largeLogo;
-    $this->rtl = $rtl;
+    $this->rtl = $rtl; 
+    $this->version = $version; 
+    $this->colors = $colors; 
   }
 }

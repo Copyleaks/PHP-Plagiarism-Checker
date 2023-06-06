@@ -25,12 +25,20 @@
 
 namespace Copyleaks;
 
-include_once('app.config.php');
-include_once('services/http-client.service.php');
-include_once("utils/status-code.utils.php");
-include_once("utils/ObjectFilter.utils.php");
+class Language
+{
+    /**
+     * Language code for cross language plagiarism detection.
+     */
+  public string $code;
 
+    /**
+   * @param string $code Language code for cross language plagiarism detection. 
+   */
 
-include_once("Models/Index.php");
-
-include_once("copyleaks.php");
+  public function __construct(
+    string $code)
+  {
+    $this->code = $code;
+  }
+}

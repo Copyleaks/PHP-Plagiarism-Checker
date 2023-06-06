@@ -25,12 +25,13 @@
 
 namespace Copyleaks;
 
-include_once('app.config.php');
-include_once('services/http-client.service.php');
-include_once("utils/status-code.utils.php");
-include_once("utils/ObjectFilter.utils.php");
+class ExcludeCode
+{
+  public bool $comments;
 
-
-include_once("Models/Index.php");
-
-include_once("copyleaks.php");
+  public function __construct(
+    bool $comments = false)
+  {
+    $this->comments = $comments;
+  }
+}

@@ -25,6 +25,8 @@
 
 namespace Copyleaks;
 
+use Copyleaks\ObjectFilter;
+
 class SubmissionProperties
 {
   /**
@@ -103,6 +105,25 @@ class SubmissionProperties
   public ?SubmissionSensitiveData $sensitiveDataProtection;
 
   /**
+   *  Choose the algorithm goal. You can set this value depending on your use-case.
+   */
+  public ?int $scanMethodAlgorithm;
+
+  public ?int $priority;
+
+  /**
+   * Add custom properties that will be attached to your document in a Copyleaks repository.
+   * 
+   * If this document is found as a repository result, your custom properties will be added to the result.
+   */
+  public ?array $customMetadata;
+
+  /**
+   * Check inner properties for more details.
+   */
+  public ?AIGeneratedText $aiGeneratedText;
+
+  /**
    *@param SubmissionWebhooks $webhooks - Check inner properties for more details.
    *@param bool $includeHtml - By default, Copyleaks will present the report in text format. If set to true, Copyleaks will also include html format.
    *@param string $developerPayload - Add custom developer payload that will then be provided on the webhooks. https://api.copyleaks.com/documentation/v3/webhooks
@@ -118,6 +139,10 @@ class SubmissionProperties
    *@param SubmissionExclude $exclude - Check inner properties for more details.
    *@param SubmissionPDF $pdf - Check inner properties for more details.
    *@param SubmissionSensitiveData $sensitiveDataProtection - Check inner properties for more details.
+   *@param ScanMethodAlgorithm $scanMethodAlgorithm - Choose the algorithm goal. You can set this value depending on your use-case.
+   *@param Priority $priority
+   *@param CustomMetadata[] $customMetadata - Add custom properties that will be attached to your document in a Copyleaks repository.
+   *@param AIGeneratedText $aiGeneratedText - Check inner properties for more details.
    */
   public function __construct(
     SubmissionWebhooks $webhooks,
@@ -134,7 +159,11 @@ class SubmissionProperties
     ?SubmissionIndexing $indexing = null,
     ?SubmissionExclude $exclude = null,
     ?SubmissionPDF $pdf = null,
-    ?SubmissionSensitiveData $sensitiveDataProtection = null
+    ?SubmissionSensitiveData $sensitiveDataProtection = null,
+    ?int $priority = null,
+    ?int $scanMethodAlgorithm = null,
+    ?array $customMetadata = null,
+    ?AIGeneratedText $aiGeneratedText = null
   ) {
     $this->webhooks = $webhooks;
     $this->includeHtml = $includeHtml;
@@ -150,6 +179,10 @@ class SubmissionProperties
     $this->indexing = $indexing;
     $this->exclude = $exclude;
     $this->pdf = $pdf;
-    $this->sensitiveDataProtection = $sensitiveDataProtection;
+    $this->sensitiveDataProtection = $sensitiveDataProtection; 
+    $this->priority = $priority;
+    $this->scanMethodAlgorithm = $scanMethodAlgorithm;
+    $this->customMetadata = $customMetadata;
+    $this->aiGeneratedText = $aiGeneratedText;
   }
 }

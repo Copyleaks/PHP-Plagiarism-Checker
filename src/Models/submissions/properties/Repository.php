@@ -31,8 +31,14 @@ class SubmissionRepository
    * Id of a repository to add the scanned document to.
    */
   public string $id;
-  public function __construct(string $id)
+
+  public ?int $maskingPolicy;
+
+  public function __construct(
+    string $id, 
+    ?int $maskingPolicy = null)
   {
     $this->id = $id;
+    $this->maskingPolicy = $maskingPolicy;
   }
 }

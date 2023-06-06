@@ -47,6 +47,6 @@ class SubmissionWebhooks
   public function __construct(string $status, string $newResult = null)
   {
     $this->newResult = $newResult;
-    $this->status = $status;
+    $this->status = $status;  
   }
 }

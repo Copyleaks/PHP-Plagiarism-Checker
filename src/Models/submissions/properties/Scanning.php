@@ -59,6 +59,5 @@ class SubmissionScanning
     $this->internet = $internet;
     $this->exclude = $exclude;
     $this->repositories = $repositories;
-    $this->copyleaksDb = $copyleaksDb;
-  }
+    $this->copyleaksDb = $copyleaksDb;  }
 }

@@ -25,12 +25,11 @@
 
 namespace Copyleaks;
 
-include_once('app.config.php');
-include_once('services/http-client.service.php');
-include_once("utils/status-code.utils.php");
-include_once("utils/ObjectFilter.utils.php");
+class MaskingPolicy
+{
+  const NoMasking = 0;
 
+  const MaskUnlessOwner = 1;
 
-include_once("Models/Index.php");
-
-include_once("copyleaks.php");
+  const MaskAll = 2;
+}

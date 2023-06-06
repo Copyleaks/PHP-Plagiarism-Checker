@@ -86,5 +86,5 @@ class SubmissionFilter
     $this->safeSearch = $safeSearch;
     $this->domains = $domains;
     $this->domainsMode = $domainsMode;
-  }
+    }
 }

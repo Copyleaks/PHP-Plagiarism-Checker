@@ -25,12 +25,10 @@
 
 namespace Copyleaks;
 
-include_once('app.config.php');
-include_once('services/http-client.service.php');
-include_once("utils/status-code.utils.php");
-include_once("utils/ObjectFilter.utils.php");
+class ScanMethodAlgorithm
+{
+  const MaximumCoverage = 0;
 
+  const MaximumResults = 1;
 
-include_once("Models/Index.php");
-
-include_once("copyleaks.php");
+}
