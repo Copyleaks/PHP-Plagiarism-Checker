@@ -223,7 +223,7 @@ class Copyleaks
 
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/downloads/${scanId}/export/${exportId}";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/downloads/{$scanId}/export/{$exportId}";
 
     $authorization = "Authorization: Bearer $authToken->accessToken";
 
