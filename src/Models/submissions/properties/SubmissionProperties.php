@@ -109,8 +109,6 @@ class SubmissionProperties
    */
   public ?int $scanMethodAlgorithm;
 
-  public ?int $priority;
-
   /**
    * Add custom properties that will be attached to your document in a Copyleaks repository.
    * 
@@ -140,7 +138,6 @@ class SubmissionProperties
    *@param SubmissionPDF $pdf - Check inner properties for more details.
    *@param SubmissionSensitiveData $sensitiveDataProtection - Check inner properties for more details.
    *@param ScanMethodAlgorithm $scanMethodAlgorithm - Choose the algorithm goal. You can set this value depending on your use-case.
-   *@param Priority $priority
    *@param CustomMetadata[] $customMetadata - Add custom properties that will be attached to your document in a Copyleaks repository.
    *@param AIGeneratedText $aiGeneratedText - Check inner properties for more details.
    */
@@ -160,7 +157,6 @@ class SubmissionProperties
     ?SubmissionExclude $exclude = null,
     ?SubmissionPDF $pdf = null,
     ?SubmissionSensitiveData $sensitiveDataProtection = null,
-    ?int $priority = null,
     ?int $scanMethodAlgorithm = null,
     ?array $customMetadata = null,
     ?AIGeneratedText $aiGeneratedText = null
@@ -180,7 +176,6 @@ class SubmissionProperties
     $this->exclude = $exclude;
     $this->pdf = $pdf;
     $this->sensitiveDataProtection = $sensitiveDataProtection; 
-    $this->priority = $priority;
     $this->scanMethodAlgorithm = $scanMethodAlgorithm;
     $this->customMetadata = $customMetadata;
     $this->aiGeneratedText = $aiGeneratedText;
