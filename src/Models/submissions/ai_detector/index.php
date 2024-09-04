@@ -25,11 +25,6 @@
 
 namespace Copyleaks;
 
-include_once('properties/index.php');
-
-include_once('CopyleaksSubmissionModel.php');
-include_once('CopyleaksFileSubmissionModel.php');
-include_once('CopyleaksFileOcrSubmissionModel.php');
-
-include_once('ai_detector/index.php');
-include_once('writing_assistant/index.php');
+include_once('CopyleaksAiDetectionSubmissionModel.php');
+include_once('CopyleaksNaturalLanguageSubmissionModel.php');
+include_once('CopyleaksSourceCodeSubmissionModel.php');
