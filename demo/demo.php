@@ -8,6 +8,10 @@ use Copyleaks\CopyleaksConfig;
 use Copyleaks\CopyleaksDeleteRequestModel;
 use Copyleaks\CopyleaksExportModel;
 use Copyleaks\CopyleaksFileOcrSubmissionModel;
+use Copyleaks\CopyleaksNaturalLanguageSubmissionModel;
+use Copyleaks\CopyleaksSourceCodeSubmissionModel;
+use Copyleaks\CopyleaksWritingAssistantSubmissionModel;
+use Copyleaks\ScoreWeights;
 use Copyleaks\CopyleaksFileSubmissionModel;
 use Copyleaks\CopyleaksStartErrorHandlings;
 use Copyleaks\CopyleaksStartRequestModel;
@@ -63,6 +67,12 @@ class Test {
       // $this->TEST_submitOcrFile($loginResult);
 
       // $this->TEST_export($loginResult);
+
+      // $this->TEST_aiDetectionSubmitNaturalLanguage($loginResult);
+
+      // $this->TEST_aiDetectionSubmitSourceCode($loginResult);
+
+      // $this->TEST_writingAssistant($loginResult);
 
     } catch (Throwable $th) {
       echo $th->getMessage();
@@ -156,6 +166,65 @@ class Test {
 
     $this->copyleaks->submitUrl($authToken, time(), $submission);
     $this->logInfo("-submitUrl-");
+  }
+
+  private function TEST_aiDetectionSubmitNaturalLanguage(CopyleaksAuthToken $authToken) {
+    $sampleText = "Lions are social animals, living in groups called prides, typically consisting of several females, their offspring, and a few males. Female lions are the primary hunters, working together to catch prey. Lions are known for their strength, teamwork, and complex social structures.";
+
+    $submission = new CopyleaksNaturalLanguageSubmissionModel(
+      $sampleText,
+    );
+    $submission->sandbox = true;
+
+    $response = $this->copyleaks->aiDetectionClient->submitNaturalLanguage($authToken, time(), $submission);
+    $this->logInfo('AI Detection - submitNaturalLanguage', $response);
+  }
+
+  private function TEST_aiDetectionSubmitSourceCode(CopyleaksAuthToken $authToken) {
+    $sampleCode = "def add(a, b):\n" .
+    "    return a + b\n" .
+    "\n" .
+    "def multiply(a, b):\n" .
+    "    return a * b\n" .
+    "\n" .
+    "def main():\n" .
+    "    x = 5\n" .
+    "    y = 10\n" .
+    "    sum_result = add(x, y)\n" .
+    "    product_result = multiply(x, y)\n" .
+    "    print(f'Sum: {sum_result}')\n" .
+    "    print(f'Product: {product_result}')\n" .
+    "\n" .
+    "if __name__ == '__main__':\n" .
+    "    main();";
+
+    $submission = new CopyleaksSourceCodeSubmissionModel(
+      $sampleCode,
+      'sampleCode.py'
+    );
+
+    $submission->sandbox = true;
+
+    $response = $this->copyleaks->aiDetectionClient->submitSourceCode($authToken, time(), $submission);
+    $this->logInfo('AI Detection - submitSourceCode', $response);
+  }
+
+  private function TEST_writingAssistant(CopyleaksAuthToken $authToken) {
+    $sampleText = "Lions are the only cat that live in groups, called pride. A prides typically consists of a few adult males, several feales, and their offspring. This social structure is essential for hunting and raising young cubs. Female lions, or lionesses are the primary hunters of the prid. They work together in cordinated groups to take down prey usually targeting large herbiores like zbras, wildebeest and buffalo. Their teamwork and strategy during hunts highlight the intelligence and coperation that are key to their survival.";
+
+    $scoreWeights = new ScoreWeights(
+      0.1, 0.2, 0.3, 0.4
+    );
+
+    $submission = new CopyleaksWritingAssistantSubmissionModel(
+      $sampleText,
+    );
+
+    $submission->sandbox = true;
+    $submission->score = $scoreWeights;
+
+    $response = $this->copyleaks->writingAssistantClient->submitText($authToken, time(), $submission);
+    $this->logInfo('Writing Assistant - submitText', $response);
   }
 
   private function TEST_start(CopyleaksAuthToken $authToken) {
