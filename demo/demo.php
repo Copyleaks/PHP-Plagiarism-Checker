@@ -37,8 +37,10 @@ use Throwable;
 class Test {
   public Copyleaks $copyleaks;
   public string $webookUrl;
+  private $base64pdfLogo;
   public function __construct() {
     $this->copyleaks = new Copyleaks();
+    $this->base64pdfLogo = file_get_contents('base64logo.txt');
   }
 
   public function run(string $email, string $key, string $webook) {
@@ -109,7 +111,7 @@ class Test {
         new SubmissionScanning(true, new SubmissionScanningExclude('php-test-*'), null, new SubmissionScanningCopyleaksDB(true, true)),
         new SubmissionIndexing((array)[new SubmissionRepository('repoId')]),
         new SubmissionExclude(true, true, true, true, true),
-        new SubmissionPDF(true, 'title', 'https://lti.copyleaks.com/images/copyleaks50x50.png', false)
+        new SubmissionPDF(true, 'title', $this->base64pdfLogo, false)
       )
     );
 
@@ -135,7 +137,7 @@ class Test {
         new SubmissionScanning(true, new SubmissionScanningExclude('php-test-*'), null, new SubmissionScanningCopyleaksDB(true, true)),
         new SubmissionIndexing((array)[new SubmissionRepository('repoId')]),
         new SubmissionExclude(true, true, true, true, true),
-        new SubmissionPDF(true, 'title', 'https://lti.copyleaks.com/images/copyleaks50x50.png', false)
+        new SubmissionPDF(true, 'title', $this->base64pdfLogo, false)
       )
     );
 
@@ -160,7 +162,7 @@ class Test {
         new SubmissionScanning(true, new SubmissionScanningExclude('php-test-*'), null, new SubmissionScanningCopyleaksDB(true, true)),
         new SubmissionIndexing((array)[new SubmissionRepository('repoId')]),
         new SubmissionExclude(true, true, true, true, true),
-        new SubmissionPDF(true, 'title', 'https://lti.copyleaks.com/images/copyleaks50x50.png', false)
+        new SubmissionPDF(true, 'title', $this->base64pdfLogo, false)
       )
     );
 
