@@ -25,11 +25,5 @@
 
 namespace Copyleaks;
 
-include_once('properties/index.php');
-
-include_once('CopyleaksSubmissionModel.php');
-include_once('CopyleaksFileSubmissionModel.php');
-include_once('CopyleaksFileOcrSubmissionModel.php');
-
-include_once('ai_detector/index.php');
-include_once('writing_assistant/index.php');
+include_once('CopyleaksWritingAssistantSubmissionModel.php');
+include_once('ScoreWeights.php');

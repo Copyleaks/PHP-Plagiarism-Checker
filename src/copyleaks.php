@@ -27,10 +27,23 @@ namespace Copyleaks;
 
 use Copyleaks\CopyleaksConfig;
 use Copyleaks\HttpClientService;
+use Copyleaks\AIDetectionClient;
+use Copyleaks\WritingAssistantClient;
+
 use InvalidArgumentException;
 
 class Copyleaks
 {
+  
+  public AIDetectionClient $aiDetectionClient;
+  public WritingAssistantClient $writingAssistantClient;
+
+  public function __construct()
+  {
+      $this->aiDetectionClient = new AIDetectionClient();
+      $this->writingAssistantClient = new WritingAssistantClient();
+  }
+
   /**
    * Login to Copyleaks authentication server.
    * For more info: https://api.copyleaks.com/documentation/v3/account/login.

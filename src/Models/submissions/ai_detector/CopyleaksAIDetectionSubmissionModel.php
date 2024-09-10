@@ -25,11 +25,18 @@
 
 namespace Copyleaks;
 
-include_once('properties/index.php');
+class CopyleaksAiDetectionSubmissionModel
+{
+    public string $text;
+    public bool $sandbox;
 
-include_once('CopyleaksSubmissionModel.php');
-include_once('CopyleaksFileSubmissionModel.php');
-include_once('CopyleaksFileOcrSubmissionModel.php');
-
-include_once('ai_detector/index.php');
-include_once('writing_assistant/index.php');
+    /**
+     * @param string $text A text string.
+     * @param bool $sandbox Use sandbox mode to test your integration with the Copyleaks API for free.
+     */
+    public function __construct(string $text, bool $sandbox)
+    {
+        $this->text = $text;
+        $this->sandbox = $sandbox;
+    }
+}

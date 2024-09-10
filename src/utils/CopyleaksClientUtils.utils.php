@@ -25,11 +25,18 @@
 
 namespace Copyleaks;
 
-include_once('properties/index.php');
+class CopyleaksClientUtils
+{
+  public static function verifyAuthToken(CopyleaksAuthToken $authToken)
+  {
+    if (!isset($authToken)) {
+      throw new InvalidArgumentException("authToken is required");
+    }
 
-include_once('CopyleaksSubmissionModel.php');
-include_once('CopyleaksFileSubmissionModel.php');
-include_once('CopyleaksFileOcrSubmissionModel.php');
-
-include_once('ai_detector/index.php');
-include_once('writing_assistant/index.php');
+    $date =  strtotime('+ 5 minutes'); // adds 5 minutes ahead for a safety shield.
+    $expiresDate = strtotime($authToken->expires);
+    if ($expiresDate <= $date) {
+      throw new AuthExipredException(); // expired
+    }
+  }
+}

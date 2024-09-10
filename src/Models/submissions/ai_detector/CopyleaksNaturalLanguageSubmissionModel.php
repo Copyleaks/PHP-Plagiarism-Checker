@@ -25,11 +25,18 @@
 
 namespace Copyleaks;
 
-include_once('properties/index.php');
+class CopyleaksNaturalLanguageSubmissionModel extends CopyleaksAiDetectionSubmissionModel
+{
+    public ?string $language;
 
-include_once('CopyleaksSubmissionModel.php');
-include_once('CopyleaksFileSubmissionModel.php');
-include_once('CopyleaksFileOcrSubmissionModel.php');
-
-include_once('ai_detector/index.php');
-include_once('writing_assistant/index.php');
+    /**
+     * @param string $text A text string.
+     * @param bool $sandbox Use sandbox mode to test your integration with the Copyleaks API for free.
+     * @param string|null $language The language code of your content. The selected language should be on the Supported Languages list above. If the 'language' field is not supplied , our system will automatically detect the language of the content
+     */
+    public function __construct(string $text, bool $sandbox = false, ?string $language = null)
+    {
+        parent::__construct($text, $sandbox);
+        $this->language = $language;
+    }
+}

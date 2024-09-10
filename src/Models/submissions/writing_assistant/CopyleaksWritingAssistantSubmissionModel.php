@@ -25,11 +25,24 @@
 
 namespace Copyleaks;
 
-include_once('properties/index.php');
+class CopyleaksWritingAssistantSubmissionModel
+{
+    public string $text;
+    public ?bool $sandbox;
+    public ?string $language;
+    public ?ScoreWeights $score;
 
-include_once('CopyleaksSubmissionModel.php');
-include_once('CopyleaksFileSubmissionModel.php');
-include_once('CopyleaksFileOcrSubmissionModel.php');
-
-include_once('ai_detector/index.php');
-include_once('writing_assistant/index.php');
+    /**
+     * @param string $text Text to produce Writing Assistant report for. 1 >= characters <= 25000
+     * @param bool|null $sandbox Use sandbox mode to test your integration with the Copyleaks API without consuming any credits.
+     * @param string|null $language The language code of your content. The selected language should be on the Supported Languages list above.If the 'language' field is not supplied , our system will automatically detect the language of the content.
+     * @param ScoreWeights|null
+     */
+    public function __construct(string $text, ?bool $sandbox = null, ?string $language = null, ?ScoreWeights $score = null)
+    {
+        $this->text = $text;
+        $this->sandbox = $sandbox;
+        $this->language = $language;
+        $this->score = $score;
+    }
+}

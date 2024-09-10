@@ -25,11 +25,18 @@
 
 namespace Copyleaks;
 
-include_once('properties/index.php');
+class CopyleaksSourceCodeSubmissionModel extends CopyleaksAiDetectionSubmissionModel
+{
+    public string $filename;
 
-include_once('CopyleaksSubmissionModel.php');
-include_once('CopyleaksFileSubmissionModel.php');
-include_once('CopyleaksFileOcrSubmissionModel.php');
-
-include_once('ai_detector/index.php');
-include_once('writing_assistant/index.php');
+    /**
+     * @param string $text A text string.
+     * @param string $filename The name of the file. Make sure to include the right extension for your file type.
+     * @param bool $sandbox Use sandbox mode to test your integration with the Copyleaks API for free.
+     */
+    public function __construct(string $text, string $filename, bool $sandbox = false)
+    {
+        parent::__construct($text, $sandbox);
+        $this->filename = $filename;
+    }
+}
