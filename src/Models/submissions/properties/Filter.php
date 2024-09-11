@@ -62,6 +62,11 @@ class SubmissionFilter
   public int $domainsMode;
 
   /**
+   * when set to true it will allow results from the same domain as the submitted url.
+   */
+  private bool $allowSameDomain;
+
+  /**
    *@param bool $identicalEnabled Enable matching of exact words in the text.
    *@param bool $minorChangesEnabled Enable matching of nearly identical words with small differences like slow becomes slowly.
    *@param bool $relatedMeaningEnabled Enable matching of paraphrased content stating similar ideas with different words.
@@ -69,6 +74,7 @@ class SubmissionFilter
    *@param bool $safeSearch Block explicit adult content from the scan results such as web pages containing inappropriate images and videos. SafeSearch is not 100% effective with all websites.
    *@param array $domains list of domains to either include or exclude from the scan - depending on the value of domainsMode.
    *@param SubmissionFilterDomainsMode $domainsMode Include or Exclude the list of domains you specified under the domains property
+   *@param bool allowSameDomain when set to true it will allow results from the same domain as the submitted url.
    */
   public function __construct(
     bool $identicalEnabled = true,
@@ -77,7 +83,8 @@ class SubmissionFilter
     ?int $minCopiedWords = null,
     bool $safeSearch = false,
     array $domains = array(),
-    int $domainsMode = SubmissionFilterDomainsMode::Exclude
+    int $domainsMode = SubmissionFilterDomainsMode::Exclude,
+    bool $allowSameDomain = false
   ) {
     $this->identicalEnabled = $identicalEnabled;
     $this->minorChangesEnabled = $minorChangesEnabled;
@@ -86,5 +93,6 @@ class SubmissionFilter
     $this->safeSearch = $safeSearch;
     $this->domains = $domains;
     $this->domainsMode = $domainsMode;
+    $this->allowSameDomain = $allowSameDomain;
     }
 }
