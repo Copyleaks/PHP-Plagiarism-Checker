@@ -32,6 +32,6 @@ include_once("utils/ObjectFilter.utils.php");
 include_once("utils/CopyleaksClientUtils.utils.php");
 
 include_once("Models/Index.php");
-include_once("clients/Index.php");
+include_once("clients/index.php");
 
 include_once("copyleaks.php");
