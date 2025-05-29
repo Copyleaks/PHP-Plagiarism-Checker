@@ -1,17 +1,17 @@
 <?php
 
-
 namespace Copyleaks;
+
 use Copyleaks\Webhook;
-use Copyleaks\Task;
+use Copyleaks\NewResultScore;
 
-class NewResultWebhook extends Webhook{
-
-public ?NewResultScore $score;
-public ?array $internet;
-public ?array $database;
-public ?array $batch;
-public ?array $repositories;
+class NewResultWebhook extends Webhook
+{
+    public ?NewResultScore $score;
+    public ?array $internet;
+    public ?array $database;
+    public ?array $batch;
+    public ?array $repositories;
 
     public function __construct(
         ?NewResultScore $score = null,
@@ -21,10 +21,20 @@ public ?array $repositories;
         ?array $repositories = null
     ) {
         $this->score = $score;
-        $this->score = $internet;
-        $this->score = $database;
-        $this->score = $batch;
-        $this->score = $repositories;
+        $this->internet = $internet;
+        $this->database = $database;
+        $this->batch = $batch;
+        $this->repositories = $repositories;
+    }
 
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            isset($data['score']) ? NewResultScore::fromArray($data['score']) : null,
+            $data['internet'] ?? null,
+            $data['database'] ?? null,
+            $data['batch'] ?? null,
+            $data['repositories'] ?? null
+        );
     }
 }
