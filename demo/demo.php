@@ -32,6 +32,8 @@ use Copyleaks\SubmissionScanningCopyleaksDB;
 use Copyleaks\SubmissionScanningExclude;
 use Copyleaks\SubmissionSensitiveData;
 use Copyleaks\SubmissionWebhooks;
+use Copyleaks\CopyleaksTextModerationRequestModel;
+use Copyleaks\CopyleaksTextModerationResponseModel;
 use Throwable;
 
 class Test {
@@ -75,6 +77,8 @@ class Test {
       // $this->TEST_aiDetectionSubmitSourceCode($loginResult);
 
       // $this->TEST_writingAssistant($loginResult);
+      $this->TEST_textModeration($loginResult);
+
 
     } catch (Throwable $th) {
       echo $th->getMessage();
@@ -265,7 +269,20 @@ class Test {
     $ReleaseNotes = $this->copyleaks->getReleaseNotes();
     $this->logInfo("-getReleaseNotes-", $ReleaseNotes);
   }
+private function TEST_textModeration(CopyleaksAuthToken $authToken) {
 
+     $textModerationRequest = new CopyleaksTextModerationRequestModel(
+        "This is a sample text for moderation.",  // text
+        true,                                     // sandbox mode (optional, defaults to false)
+        "en",                                     // language (optional, can be null for auto-detection)
+        ["violence", "toxic"]                 // labels
+    );
+
+    $response = $this->copyleaks->textModerationClient->submitText($authToken, time(), $textModerationRequest);
+    $textModerationResponse= CopyleaksTextModerationResponseModel::fromArray($response);
+
+    $this->logInfo('Text Moderation - submitText', $textModerationResponse);
+  }
   private function logInfo($title, $info = null) {
     echo "\n";
     echo "----------------" . $title . "----------------" . "\n\n";

@@ -25,7 +25,19 @@
 
 namespace Copyleaks;
 
-include_once('AIDetectionClient.php');
-include_once('WritingAssistantClient.php');
-include_once('TextModerationClient.php');
+class CopyleaksTextModerationRequestModel
+{
+  public string $text;
+  public bool $sandbox;
+  public string $accessToken;
+  public string $language;
+  public $labels;
 
+  public function __construct(string $text, bool $sandbox, string $language,array $labels)
+  {
+    $this->text = $text;
+    $this->sandbox = $sandbox;
+    $this->language = $language;
+    $this->labels = $labels;
+  }
+}
