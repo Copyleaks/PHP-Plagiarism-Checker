@@ -4,7 +4,15 @@ namespace Copyleaks;
 
 class Error
 {
+    /**
+     * @var int|null Error code that represents the reason for failure.
+     * Refer to the full error table for details.
+     */
     public ?int $code;
+
+    /**
+     * @var string|null Error message that represents the reason for failure.
+     */
     public ?string $message;
 
     public function __construct(?int $code = null, ?string $message = null)

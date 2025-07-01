@@ -6,20 +6,42 @@ use Copyleaks\Metadata;
 
 class NewResultsInternet
 {
+ /**
+     * @var string|null Unique result ID to identify the result.
+     */
     public ?string $id;
+
+    /**
+     * @var string|null Document title. Mostly extracted from the document content.
+     */
     public ?string $title;
+
+    /**
+     * @var string|null Document brief introduction. Mostly extracted from the document content.
+     */
     public ?string $introduction;
+
+    /**
+     * @var int|null Total matched words between this result and the scanned document.
+     */
     public ?int $matchedWords;
-    public ?string $scanId;
+
+    /**
+     * @var Metadata|null Metadata object associated with this result.
+     */
     public ?Metadata $metadata;
+
+    /**
+     * @var string|null Public URL of the resource.
+     */
     public ?string $url;
+
 
     public function __construct(
         ?string $id = null,
         ?string $title = null,
         ?string $introduction = null,
         ?int $matchedWords = null,
-        ?string $scanId = null,
         ?Metadata $metadata = null,
         ?string $url = null
     ) {
@@ -27,7 +49,6 @@ class NewResultsInternet
         $this->title = $title;
         $this->introduction = $introduction;
         $this->matchedWords = $matchedWords;
-        $this->scanId = $scanId;
         $this->metadata = $metadata;
         $this->url = $url;
     }
@@ -39,7 +60,6 @@ class NewResultsInternet
             $data['title'] ?? null,
             $data['introduction'] ?? null,
             isset($data['matchedWords']) ? (int)$data['matchedWords'] : null,
-            $data['scanId'] ?? null,
             isset($data['metadata']) && is_array($data['metadata']) ? Metadata::fromArray($data['metadata']) : null,
             $data['url'] ?? null
         );

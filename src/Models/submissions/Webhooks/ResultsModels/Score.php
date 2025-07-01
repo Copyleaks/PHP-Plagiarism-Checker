@@ -4,9 +4,25 @@ namespace Copyleaks;
 
 class Score
 {
+    /**
+     * @var int|null Number of words which matched exactly.
+     */
     public ?int $identicalWords;
+
+    /**
+     * @var int|null Number of nearly identical words with small differences like 'slow' and 'slowly'.
+     */
     public ?int $minorChangedWords;
+
+    /**
+     * @var int|null Number of paraphrased words showing similar ideas with different words.
+     */
     public ?int $relatedMeaningWords;
+
+    /**
+     * @var float|null The percentage of similar words from all results.
+     * The calculation does not include excluded references, quotations, etc.
+     */
     public ?float $aggregatedScore;
 
     public function __construct(
@@ -23,11 +39,6 @@ class Score
 
     public static function fromArray($data): self
     {
-        // 🔒 Validate input type
-        if (!is_array($data)) {
-            // Convert to default Score object
-            return new self();
-        }
 
         return new self(
             $data['identicalWords'] ?? null,

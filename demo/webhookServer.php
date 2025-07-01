@@ -52,11 +52,17 @@ $app->post('/webhook/completed', function (Request $request, Response $response)
     }
     //desrialze the json payload into CompletedWebhook model
     $statusWebhook = CompletedWebhook::fromArray($data);
-
+    #var_dump($statusWebhook);
     logWebhook('completed', $statusWebhook);
-
-    $response->getBody()->write("Webhook 'completed' processed");
-    return $response->withStatus(200);
+    // Create a response array
+    $responseData = [
+        'status' => 'success',
+        'message' => "Webhook 'completed' processed",
+        'data' => $statusWebhook 
+    ];
+    
+    $response->getBody()->write(json_encode($responseData));
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
 });
 
 $app->post('/webhook/error', function (Request $request, Response $response) {
@@ -66,13 +72,18 @@ $app->post('/webhook/error', function (Request $request, Response $response) {
         return $response->withStatus(400);
     }
     //desrialze the json payload into ErrorWebhook model
-    $notifications = ErrorWebhook::fromArray($data);
+    $error = ErrorWebhook::fromArray($data);
 
-    logWebhook('error', $notifications);
-
-
-    $response->getBody()->write("Webhook 'error' processed");
-    return $response->withStatus(200);
+    logWebhook('error', $error);
+    // Create a response array
+    $responseData = [
+        'status' => 'success',
+        'message' => "Webhook 'error' processed",
+        'data' => $error 
+    ];
+    
+    $response->getBody()->write(json_encode($responseData));
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
 });
 
 
@@ -83,11 +94,18 @@ $app->post('/webhook/creditsChecked', function (Request $request, Response $resp
         return $response->withStatus(400);
     }
     //desrialze the json payload into CreditsCheckedWebhook model
-    $indexed = CreditsCheckedWebhook::fromArray($data);
-    logWebhook('creditsChecked', $indexed);
-
-    $response->getBody()->write("Webhook 'creditsChecked' processed");
-    return $response->withStatus(200);
+    $credits_checked = CreditsCheckedWebhook::fromArray($data);
+    logWebhook('creditsChecked', $credits_checked);
+    
+    // Create a response array
+    $responseData = [
+        'status' => 'success',
+        'message' => "Webhook 'creditsChecked' processed",
+        'data' => $credits_checked 
+    ];
+    
+    $response->getBody()->write(json_encode($responseData));
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
 });
 
 $app->post('/webhook/indexed', function (Request $request, Response $response) {
@@ -100,9 +118,16 @@ $app->post('/webhook/indexed', function (Request $request, Response $response) {
     //desrialze the json payload into IndexedWebhook model
     $indexed = IndexedWebhook::fromArray($data);
     logWebhook('indexed', $indexed);
-
-    $response->getBody()->write("Webhook 'indexed' processed");
-    return $response->withStatus(200);
+    
+    // Create a response array
+    $responseData = [
+        'status' => 'success',
+        'message' => "Webhook 'indexed' processed",
+        'data' => $indexed 
+    ];
+    
+    $response->getBody()->write(json_encode($responseData));
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
 });
 
 $app->post('/webhook/new-results', function (Request $request, Response $response) {
@@ -112,12 +137,18 @@ $app->post('/webhook/new-results', function (Request $request, Response $respons
         return $response->withStatus(400);
     }
     //desrialze the json payload into NewResultWebhook model
-    $results = NewResultWebhook::fromArray($data);
+    $new_results = NewResultWebhook::fromArray($data);
 
-    logWebhook('new-results', $results);
-
-    $response->getBody()->write("Webhook 'new-results' processed");
-    return $response->withStatus(200);
+    logWebhook('new-results', $new_results);
+    // Create a response array
+    $responseData = [
+        'status' => 'success',
+        'message' => "Webhook 'new_results' processed",
+        'data' => $new_results 
+    ];
+    
+    $response->getBody()->write(json_encode($responseData));
+    return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
 });
 
 

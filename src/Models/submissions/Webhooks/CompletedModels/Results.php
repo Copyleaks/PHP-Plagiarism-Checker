@@ -7,14 +7,14 @@ class Results
     public ?array $database;
     public ?array $batch;
     public ?array $repositories;
-    public ?array $score;
+    public ?Score $score;
     public ?array $internet;
 
     public function __construct(
         ?array $database = null,
         ?array $batch = null,
         ?array $repositories = null,
-        ?array $score = null,
+        ?Score $score = null,
         ?array $internet = null
     ) {
         $this->database = $database;
@@ -24,10 +24,6 @@ class Results
         $this->internet = $internet;
     }
 
-    /**
-     * Deserialize from an array, mapping submodules to their classes.
-     * Assumes each element in arrays is an associative array to be passed to the submodule constructor.
-     */
     public static function fromArray(array $data): self
     {
         $database = isset($data['database']) && is_array($data['database'])
@@ -42,8 +38,8 @@ class Results
             ? array_map(fn($item) => Repositories::fromArray($item), $data['repositories'])
             : null;
 
-        $score = isset($data['score']) && is_array($data['score'])
-            ? array_map(fn($item) => Score::fromArray($item), $data['score'])
+         $score = isset($data['score']) 
+            ? Score::fromArray($data['score'])
             : null;
 
         $internet = isset($data['internet']) && is_array($data['internet'])

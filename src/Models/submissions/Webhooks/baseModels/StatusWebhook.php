@@ -4,6 +4,9 @@ namespace Copyleaks;
 
 class StatusWebhook extends Webhook
 {
+      /**
+     * @var int The current status of the scan.
+     */
     public int $status;
 
     public function __construct(string $payload, int $status)

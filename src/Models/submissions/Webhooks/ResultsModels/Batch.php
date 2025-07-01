@@ -6,6 +6,9 @@ use Copyleaks\SharedResultsModel;
 
 class Batch extends SharedResultsModel
 {
+    /**
+     * @var Tags[]|null Tags object array. Each element in the array is an instance of the Tags class.
+     */
     public ?array $tags;
 
     public function __construct(?array $tags = [])

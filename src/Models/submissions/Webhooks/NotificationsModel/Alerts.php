@@ -4,12 +4,43 @@ namespace Copyleaks;
 
 class Alerts
 {
-    public ?string $category;
+    /**
+     * @var int|null Scan alert category.
+     * Note: Changed to int|null as per C# 'int Category' but your PHP request used '?string $category'.
+     * Assuming 'category' is an integer code. If it's truly a string, adjust type accordingly.
+     */
+    public ?int $category;
+
+    /**
+     * @var string|null Scan alert code. The code is unique for each scan alert.
+     */
     public ?string $code;
+
+    /**
+     * @var string|null Scan alert human-readable title.
+     */
     public ?string $title;
+
+    /**
+     * @var string|null Provides human-readable information about the scan alert.
+     */
     public ?string $message;
+
+    /**
+     * @var string|null URL to a resource describing the specific scan alert.
+     */
     public ?string $helpLink;
-    public ?string $severity;
+
+    /**
+     * @var int|null Specifies the importance of the scan alert.
+     * Note: Changed to int|null as per C# 'int Severity' but your PHP request used '?string $severity'.
+     * Assuming 'severity' is an integer code. If it's truly a string, adjust type accordingly.
+     */
+    public ?int $severity;
+
+    /**
+     * @var string|null Additional data about the scan alert. Supplied as a JSON string.
+     */
     public ?string $additionalData;
 
     public function __construct(
