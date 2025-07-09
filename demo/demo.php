@@ -32,6 +32,8 @@ use Copyleaks\SubmissionScanningCopyleaksDB;
 use Copyleaks\SubmissionScanningExclude;
 use Copyleaks\SubmissionSensitiveData;
 use Copyleaks\SubmissionWebhooks;
+use Copyleaks\CopyleaksTextModerationRequestModel;
+use Copyleaks\CopyleaksTextModerationResponseModel;
 use Throwable;
 
 class Test {
@@ -75,6 +77,8 @@ class Test {
       // $this->TEST_aiDetectionSubmitSourceCode($loginResult);
 
       // $this->TEST_writingAssistant($loginResult);
+      $this->TEST_textModeration($loginResult);
+
 
     } catch (Throwable $th) {
       echo $th->getMessage();
@@ -265,7 +269,32 @@ class Test {
     $ReleaseNotes = $this->copyleaks->getReleaseNotes();
     $this->logInfo("-getReleaseNotes-", $ReleaseNotes);
   }
+private function TEST_textModeration(CopyleaksAuthToken $authToken) {
 
+     $textModerationRequest = new CopyleaksTextModerationRequestModel(
+    "This is some text to scan.", // text
+    true,                        // sandbox mode
+    "en",                        // language
+    [
+        ["id" => "other-v1"],
+        ["id" => "adult-v1"],
+        ["id" => "toxic-v1"],
+        ["id" => "violent-v1"],
+        ["id" => "profanity-v1"],
+        ["id" => "self-harm-v1"],
+        ["id" => "harassment-v1"],
+        ["id" => "hate-speech-v1"],
+        ["id" => "drugs-v1"],
+        ["id" => "firearms-v1"],
+        ["id" => "cybersecurity-v1"]
+    ] // labels
+    );
+
+    $response = $this->copyleaks->textModerationClient->submitText($authToken, time(), $textModerationRequest);
+    $textModerationResponse= CopyleaksTextModerationResponseModel::fromArray(json_decode(json_encode($response), true));
+
+    $this->logInfo('Text Moderation - submitText', $textModerationResponse);
+  }
   private function logInfo($title, $info = null) {
     echo "\n";
     echo "----------------" . $title . "----------------" . "\n\n";

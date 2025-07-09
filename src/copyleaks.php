@@ -29,6 +29,7 @@ use Copyleaks\CopyleaksConfig;
 use Copyleaks\HttpClientService;
 use Copyleaks\AIDetectionClient;
 use Copyleaks\WritingAssistantClient;
+use Copyleaks\TextModerationClient;
 
 use InvalidArgumentException;
 
@@ -37,11 +38,13 @@ class Copyleaks
   
   public AIDetectionClient $aiDetectionClient;
   public WritingAssistantClient $writingAssistantClient;
+  public TextModerationClient $textModerationClient;
 
   public function __construct()
   {
       $this->aiDetectionClient = new AIDetectionClient();
       $this->writingAssistantClient = new WritingAssistantClient();
+      $this->textModerationClient=new TextModerationClient();
   }
 
   /**
