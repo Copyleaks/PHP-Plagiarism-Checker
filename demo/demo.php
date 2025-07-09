@@ -66,7 +66,7 @@ class Test {
 
       // $this->TEST_submitUrl($loginResult);
 
-      // $this->TEST_submitFile($loginResult);
+      $this->TEST_submitFile($loginResult);
 
       // $this->TEST_submitOcrFile($loginResult);
 
