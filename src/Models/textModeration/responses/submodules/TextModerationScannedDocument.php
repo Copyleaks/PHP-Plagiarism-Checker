@@ -3,11 +3,22 @@ namespace Copyleaks;
 use DateTime;
 class TextModerationScannedDocument
 {
+    /** The scan id given by the user. */
     public $scanId;
+
+    /** Total number of words found in the scanned text. */
     public $totalWords;
+
+    /** Total excluded words from the text. */
     public $totalExcluded;
+
+    /** The cost of credits for this scan. */
     public $actualCredits;
+
+    /** The amount of credits that was expected to be spent on the scan. */
     public $expectedCredits;
+
+    /** Creation time of the scan. */
     public $creationTime;
 
     /**
@@ -35,36 +46,9 @@ class TextModerationScannedDocument
      *
      * @param array $data
      * @return TextModerationScannedDocument
-     * @throws InvalidArgumentException if required fields are missing.
      */
-    public static function fromArray(array $data)
+    public static function fromArray(?array $data)
     {
-        // Check for required fields
-        if (!isset($data['scanId'])) {
-            throw new InvalidArgumentException("The 'scanId' field is required.");
-        }
-
-        if (!isset($data['totalWords'])) {
-            throw new InvalidArgumentException("The 'totalWords' field is required.");
-        }
-
-        if (!isset($data['totalExcluded'])) {
-            throw new InvalidArgumentException("The 'totalExcluded' field is required.");
-        }
-
-        if (!isset($data['actualCredits'])) {
-            throw new InvalidArgumentException("The 'actualCredits' field is required.");
-        }
-
-        if (!isset($data['expectedCredits'])) {
-            throw new InvalidArgumentException("The 'expectedCredits' field is required.");
-        }
-
-        if (!isset($data['creationTime'])) {
-            throw new InvalidArgumentException("The 'creationTime' field is required.");
-        }
-
-        
         $creationTime = new DateTime($data['creationTime']);
 
         return new self(

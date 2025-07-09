@@ -272,14 +272,26 @@ class Test {
 private function TEST_textModeration(CopyleaksAuthToken $authToken) {
 
      $textModerationRequest = new CopyleaksTextModerationRequestModel(
-        "This is a sample text for moderation.",  // text
-        true,                                     // sandbox mode (optional, defaults to false)
-        "en",                                     // language (optional, can be null for auto-detection)
-        ["violence", "toxic"]                 // labels
+    "This is some text to scan.", // text
+    true,                        // sandbox mode
+    "en",                        // language
+    [
+        ["id" => "other-v1"],
+        ["id" => "adult-v1"],
+        ["id" => "toxic-v1"],
+        ["id" => "violent-v1"],
+        ["id" => "profanity-v1"],
+        ["id" => "self-harm-v1"],
+        ["id" => "harassment-v1"],
+        ["id" => "hate-speech-v1"],
+        ["id" => "drugs-v1"],
+        ["id" => "firearms-v1"],
+        ["id" => "cybersecurity-v1"]
+    ] // labels
     );
 
     $response = $this->copyleaks->textModerationClient->submitText($authToken, time(), $textModerationRequest);
-    $textModerationResponse= CopyleaksTextModerationResponseModel::fromArray($response);
+    $textModerationResponse= CopyleaksTextModerationResponseModel::fromArray(json_decode(json_encode($response), true));
 
     $this->logInfo('Text Moderation - submitText', $textModerationResponse);
   }

@@ -5,8 +5,8 @@ namespace Demo;
 // open terminal and go to demo folder  run:  php -d xdebug.mode=off -S localhost:8080 webhookServer.php
 // in a new terminal go to demo folder and run : php run.php
 // if you are using ngrok expose you localhost: run ngrok http 8080
-// include_once('../autoload.php');
 // in order to be able to run the demo run composer install
+include_once('../autoload.php');
 include_once('./demo.php');
 
 use Demo\Test;

@@ -2,7 +2,10 @@
 namespace Copyleaks;
 class TextModerationsLegend
 {
+    /** The numerical index of the label. */
     public $index;
+
+    /** A unique string identifier for the label. This ID serves as a machine-readable way to identify the label type. */
     public $id;
 
     /**
@@ -24,17 +27,8 @@ class TextModerationsLegend
      * @return TextModerationsLegend
      * @throws InvalidArgumentException if required fields are missing.
      */
-    public static function fromArray(array $data)
+    public static function fromArray(?array $data)
     {
-        
-        if (!isset($data['index'])) {
-            throw new InvalidArgumentException("The 'index' field is required.");
-        }
-
-        if (!isset($data['id'])) {
-            throw new InvalidArgumentException("The 'id' field is required.");
-        }
-
         return new self($data['index'], $data['id']);
     }
 }

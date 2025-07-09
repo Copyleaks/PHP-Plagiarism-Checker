@@ -27,14 +27,38 @@ namespace Copyleaks;
 
 class CopyleaksTextModerationRequestModel
 {
+
+  /**
+   * Text to produce Text Moderation report for.
+   */
   public string $text;
+
+  /**
+   * Use sandbox mode to test your integration with the Copyleaks API without consuming any credits.
+   */
   public bool $sandbox;
-  public string $accessToken;
+
+  /**
+   * The language code of your content. The selected language should be on the Supported Languages list above.
+   * If the 'language' field is not specified, our system will automatically detect the language of the content.
+   */
   public string $language;
+
+  /**
+   * A list of label configurations to be used for the moderation process.
+   */
   public $labels;
 
-  public function __construct(string $text, bool $sandbox, string $language,array $labels)
+  public function __construct(string $text, bool $sandbox=true, string $language=null,array $labels)
   {
+    if (is_null($text)) {
+      throw new \InvalidArgumentException('Text cannot be null.');
+    }
+
+    if (is_null($sandbox)) {
+      $sandbox = false;
+    }
+
     $this->text = $text;
     $this->sandbox = $sandbox;
     $this->language = $language;

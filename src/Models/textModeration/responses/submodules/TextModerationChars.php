@@ -3,8 +3,19 @@
 namespace Copyleaks;
 class TextModerationChars
 {
+    /**
+     * Start character position of the labelled segment.
+     */
     public $labels;
+
+    /**
+     * Predicted label index for the corresponding segment. The index can be resolved to its ID using the supplied legend.
+     */
     public $starts;
+
+    /**
+     * Labelled segment character length.
+     */
     public $lengths;
 
     /**
@@ -25,24 +36,9 @@ class TextModerationChars
      * Create an instance of TextModerationChars from an array.
      *
      * @param array $data
-     * @return TextModerationChars
-     * @throws InvalidArgumentException if required fields are missing or not arrays.
      */
-    public static function fromArray(array $data)
+    public static function fromArray(?array $data)
     {
-        // Check for required fields
-        if (!isset($data['labels']) || !is_array($data['labels'])) {
-            throw new InvalidArgumentException("The 'labels' field is required and must be an array.");
-        }
-
-        if (!isset($data['starts']) || !is_array($data['starts'])) {
-            throw new InvalidArgumentException("The 'starts' field is required and must be an array.");
-        }
-
-        if (!isset($data['lengths']) || !is_array($data['lengths'])) {
-            throw new InvalidArgumentException("The 'lengths' field is required and must be an array.");
-        }
-
         return new self($data['labels'], $data['starts'], $data['lengths']);
     }
 }

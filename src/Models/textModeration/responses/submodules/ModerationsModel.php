@@ -3,6 +3,7 @@
 namespace Copyleaks;
 class ModerationsModel
 {
+    /** Moderated text segments corresponding to the submitted text. Each position in the inner arrays corresponds to a single segment in the textual version */
     public $text;
 
     public function __construct(Text $text)
@@ -10,14 +11,8 @@ class ModerationsModel
         $this->text = $text;
     }
 
-    public static function fromArray(array $data)
-    {
-        // Check for required fields
-        if (!isset($data['text']) || !is_array($data['text'])) {
-            return null;
-        }
-
-        
+    public static function fromArray(?array $data)
+    {      
         $text = Text::fromArray($data['text']);
 
         return new self($text);

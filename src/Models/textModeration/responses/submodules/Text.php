@@ -3,6 +3,9 @@
 namespace Copyleaks;
 class Text
 {
+    /**
+     * An object that groups together several arrays detailing the properties of labelled segments.
+     */
     public $chars;
 
     /**
@@ -24,13 +27,8 @@ class Text
      * @param array $data
      * @return Text
      */
-    public static function fromArray(array $data)
+    public static function fromArray(?array $data)
     {
-        // Check for required fields
-        if (!isset($data['chars']) || !is_array($data['chars'])) {
-            return new self(null);
-        }
-
         $chars = TextModerationChars::fromArray($data['chars']);
 
         return new self($chars);
