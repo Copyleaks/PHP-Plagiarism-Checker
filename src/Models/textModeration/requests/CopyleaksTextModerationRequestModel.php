@@ -55,6 +55,10 @@ class CopyleaksTextModerationRequestModel
       throw new \InvalidArgumentException('Text cannot be null.');
     }
 
+    if (!is_array($labels) || count($labels) < 1 || count($labels) > 32) {
+        throw new \InvalidArgumentException('Labels must be an array with at least 1 and no more than 32 elements.');
+    }
+    
     if (is_null($sandbox)) {
       $sandbox = false;
     }
