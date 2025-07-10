@@ -22,10 +22,12 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
-
 namespace Copyleaks;
 
-include_once('AIDetectionClient.php');
-include_once('WritingAssistantClient.php');
-include_once('TextModerationClient.php');
-
+include_once('requests/CopyleaksTextModerationRequestModel.php');
+include_once('responses/CopyleaksTextModerationResponseModel.php');
+include_once "responses/submodules/ModerationsModel.php";
+include_once "responses/submodules/Text.php";
+include_once "responses/submodules/TextModerationChars.php";
+include_once "responses/submodules/TextModerationScannedDocument.php";
+include_once "responses/submodules/TextModerationsLegend.php";

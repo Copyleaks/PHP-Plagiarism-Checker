@@ -35,3 +35,4 @@ include_once('submissions/index.php');
 include_once('exports/index.php');
 
 include_once('exceptions/Index.php');
+include_once('textModeration/index.php');
