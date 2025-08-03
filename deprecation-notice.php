@@ -8,7 +8,6 @@ $reset = "\033[0m";
 $composerJson = file_get_contents(__DIR__ . '/composer.json');
 $packageInfo = json_decode($composerJson, true);
 $packageName = $packageInfo['name'] ?? 'your-package';
-$packageVersion = $packageInfo['version'] ?? '1.0.0';
 
 echo <<<EOT
 
