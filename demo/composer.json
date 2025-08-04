@@ -1,5 +1,13 @@
 {
   "name": "copyleaks/demo",
+  "scripts": {
+        "post-install-cmd": [
+            "php ../deprecation-notice.php"
+        ],
+        "post-update-cmd": [
+            "php ../deprecation-notice.php"
+        ]
+    },
   "authors": [
     {
       "name": "Bayan Abuawad",
