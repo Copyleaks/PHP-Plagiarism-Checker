@@ -133,7 +133,10 @@ class Copyleaks
     $this->verifyAuthToken($authToken);
 
     $fileExtension = $this->getFileExtension($submission->filename);
-
+  if (empty($fileExtension)) {
+      error_log("Unable to determine file extension for: " . $submission->filename);
+      throw new \Exception("File extension could not be determined");
+  }
     if (in_array($fileExtension, SupportedFilesTypes::SUPPORTED_CODE_EXTENSIONS)) {
         DeprecationService::showDeprecationMessage();
     }
