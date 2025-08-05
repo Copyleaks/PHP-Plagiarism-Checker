@@ -29,7 +29,7 @@ use Exception;
 
 class UnderMaintenanceException extends Exception
 {
-  public function __construct($code = 0, Exception $previous = null)
+  public function __construct($code = 0, ?Exception $previous = null)
   {
     parent::__construct("Copyleaks is Under Maintenance, please visit https://status.copyleaks.com", $code, $previous);
   }

@@ -29,7 +29,7 @@ use Exception;
 
 class CommandException extends Exception
 {
-  public function __construct($error, $code = 0, Exception $previous = null)
+  public function __construct($error, $code = 0, ?Exception $previous = null)
   {
     parent::__construct($error, $code, $previous);
   }
