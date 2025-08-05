@@ -26,7 +26,7 @@
 namespace Copyleaks;
 
 use InvalidArgumentException;
-
+use Copyleaks\DeprecationService;
 class AIDetectionClient
 {
     /**
@@ -87,7 +87,7 @@ class AIDetectionClient
         }
 
         CopyleaksClientUtils::verifyAuthToken($authToken);
-
+        DeprecationService::showDeprecationMessage();
         $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v2/writer-detector/source-code/$scanId/check";
         $authorization = "Authorization: Bearer " . $authToken->accessToken;
         $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);

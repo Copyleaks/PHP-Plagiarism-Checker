@@ -22,17 +22,22 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
-
 namespace Copyleaks;
 
-include_once('CopyleaksAuthToken.php');
-include_once('CopyleaksDeleteRequestModel.php');
-include_once('CopyleaksStartRequestModel.php');
-include_once('IdObject.php');
+class DeprecationService
+{
+    public static function showDeprecationMessage()
+    {
+        // Trace equivalent - using error_log for logging
+        error_log("DEPRECATION NOTICE: AI Code Detection will be discontinued on August 29, 2025. Please remove AI code detection integrations before the sunset date.");
 
-include_once('submissions/index.php');
-
-include_once('exports/index.php');
-include_once('constants/Index.php');
-include_once('exceptions/Index.php');
-include_once('textModeration/index.php');
+        // Red colored console output using ANSI escape codes
+        echo "\033[31m"; // Red color
+        echo "════════════════════════════════════════════════════════════════════\n";
+        echo "DEPRECATION NOTICE !!!\n";
+        echo "AI Code Detection will be discontinued on August 29, 2025.\n";
+        echo "Please remove AI code detection integrations before the sunset date.\n";
+        echo "════════════════════════════════════════════════════════════════════\n";
+        echo "\033[0m"; // Reset color
+    }
+}

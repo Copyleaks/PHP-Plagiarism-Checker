@@ -66,7 +66,7 @@ class Test {
 
       // $this->TEST_submitUrl($loginResult);
 
-      $this->TEST_submitFile($loginResult);
+      // $this->TEST_submitFile($loginResult);
 
       // $this->TEST_submitOcrFile($loginResult);
 
@@ -74,10 +74,10 @@ class Test {
 
       // $this->TEST_aiDetectionSubmitNaturalLanguage($loginResult);
 
-      // $this->TEST_aiDetectionSubmitSourceCode($loginResult);
+      $this->TEST_aiDetectionSubmitSourceCode($loginResult);
 
       // $this->TEST_writingAssistant($loginResult);
-      $this->TEST_textModeration($loginResult);
+      // $this->TEST_textModeration($loginResult);
 
 
     } catch (Throwable $th) {
@@ -125,7 +125,7 @@ class Test {
 
   private function TEST_submitFile(CopyleaksAuthToken $authToken) {
     $submission = new CopyleaksFileSubmissionModel(
-      "aGVsbG8gd29ybGQ=",
+      "SGVsbG8gV29ybGQ=",
       "php.txt",
       new SubmissionProperties(
         new SubmissionWebhooks("$this->webookUrl/{STATUS}"),
