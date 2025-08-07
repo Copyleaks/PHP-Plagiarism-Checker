@@ -22,17 +22,35 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
-
 namespace Copyleaks;
 
-include_once('CopyleaksAuthToken.php');
-include_once('CopyleaksDeleteRequestModel.php');
-include_once('CopyleaksStartRequestModel.php');
-include_once('IdObject.php');
-
-include_once('submissions/index.php');
-
-include_once('exports/index.php');
-include_once('constants/Index.php');
-include_once('exceptions/Index.php');
-include_once('textModeration/index.php');
+class SupportedFilesTypes
+{
+   public const SUPPORTED_CODE_EXTENSIONS = [
+        'ts',
+        'py',
+        'go',
+        'cs',
+        'c',
+        'h',
+        'idc',
+        'cpp',
+        'hpp',
+        'c++',
+        'h++',
+        'cc',
+        'hh',
+        'java',
+        'js',
+        'swift',
+        'rb',
+        'pl',
+        'php',
+        'sh',
+        'm',
+        'scala',
+        'rs',
+        'vbs',
+        'css'
+    ];
+}

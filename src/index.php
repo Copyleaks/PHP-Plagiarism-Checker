@@ -35,3 +35,4 @@ include_once("Models/Index.php");
 include_once("clients/index.php");
 
 include_once("copyleaks.php");
+include_once("deprecationService.php");
