@@ -30,7 +30,8 @@ use Copyleaks\HttpClientService;
 use Copyleaks\AIDetectionClient;
 use Copyleaks\WritingAssistantClient;
 use Copyleaks\TextModerationClient;
-
+use Copyleaks\SupportedFilesTypes;
+use Copyleaks\DeprecationService;
 use InvalidArgumentException;
 
 class Copyleaks
@@ -131,6 +132,15 @@ class Copyleaks
 
     $this->verifyAuthToken($authToken);
 
+    $fileExtension = $this->getFileExtension($submission->filename);
+  if (empty($fileExtension)) {
+      error_log("Unable to determine file extension for: " . $submission->filename);
+      throw new \Exception("File extension could not be determined");
+  }
+    if (in_array($fileExtension, SupportedFilesTypes::SUPPORTED_CODE_EXTENSIONS)) {
+        DeprecationService::showDeprecationMessage();
+    }
+
     $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/submit/file/$scanId";
 
     $authorization = "Authorization: Bearer $authToken->accessToken";
@@ -141,7 +151,19 @@ class Copyleaks
 
     HttpClientService::Execute('PUT', $url, $headers, $submission);
   }
-
+  function getFileExtension($filename)
+  {
+      if (empty($filename)) {
+          return '';
+      }
+      
+      $lastDotPos = strrpos($filename, '.');
+      if ($lastDotPos !== false && $lastDotPos < strlen($filename) - 1) {
+          return strtolower(substr($filename, $lastDotPos + 1));
+      }
+      
+      return '';
+  }
   /**
    * Starting a new process by providing a OCR image file to scan.
    * For more info:
