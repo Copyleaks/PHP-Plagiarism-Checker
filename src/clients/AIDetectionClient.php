@@ -26,7 +26,6 @@
 namespace Copyleaks;
 
 use InvalidArgumentException;
-use Copyleaks\DeprecationService;
 class AIDetectionClient
 {
     /**
@@ -55,40 +54,6 @@ class AIDetectionClient
         CopyleaksClientUtils::verifyAuthToken($authToken);
 
         $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v2/writer-detector/$scanId/check";
-        $authorization = "Authorization: Bearer " . $authToken->accessToken;
-        $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-
-        ObjectFilter::filterNullProperties($submission);
-
-        return HttpClientService::Execute('POST-JSON', $url, $headers, $submission);
-    }
-
-    /**
-     * Use Copyleaks AI Content Detection to differentiate between human source code and AI written source code.
-     * 
-     * * Exceptions:
-     * * CommandExceptions: Server reject the request. See response status code,
-     * headers and content for more info.
-     * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-     * We recommend to implement exponential backoff algorithm as described here:
-     * https://api.copyleaks.com/documentation/v3/exponential-backoff
-     *
-     * @param authToken  Copyleaks authentication token
-     * @param scanId     Attach your own scan Id
-     * @param submission Submission model
-     */
-    public function submitSourceCode(CopyleaksAuthToken $authToken, string $scanId, CopyleaksSourceCodeSubmissionModel $submission)
-    {
-        if (!isset($scanId)) {
-            throw new InvalidArgumentException("Invalid scanId");
-        }
-        if (!isset($submission)) {
-            throw new InvalidArgumentException("Invalid submission");
-        }
-
-        CopyleaksClientUtils::verifyAuthToken($authToken);
-        DeprecationService::showDeprecationMessage();
-        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v2/writer-detector/source-code/$scanId/check";
         $authorization = "Authorization: Bearer " . $authToken->accessToken;
         $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
 

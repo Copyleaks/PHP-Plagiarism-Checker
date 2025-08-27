@@ -9,7 +9,6 @@ use Copyleaks\CopyleaksDeleteRequestModel;
 use Copyleaks\CopyleaksExportModel;
 use Copyleaks\CopyleaksFileOcrSubmissionModel;
 use Copyleaks\CopyleaksNaturalLanguageSubmissionModel;
-use Copyleaks\CopyleaksSourceCodeSubmissionModel;
 use Copyleaks\CopyleaksWritingAssistantSubmissionModel;
 use Copyleaks\ScoreWeights;
 use Copyleaks\CopyleaksFileSubmissionModel;
@@ -74,11 +73,9 @@ class Test {
 
       // $this->TEST_aiDetectionSubmitNaturalLanguage($loginResult);
 
-      $this->TEST_aiDetectionSubmitSourceCode($loginResult);
-
       // $this->TEST_writingAssistant($loginResult);
-      // $this->TEST_textModeration($loginResult);
 
+      // $this->TEST_textModeration($loginResult);
 
     } catch (Throwable $th) {
       echo $th->getMessage();
@@ -184,35 +181,6 @@ class Test {
 
     $response = $this->copyleaks->aiDetectionClient->submitNaturalLanguage($authToken, time(), $submission);
     $this->logInfo('AI Detection - submitNaturalLanguage', $response);
-  }
-
-  private function TEST_aiDetectionSubmitSourceCode(CopyleaksAuthToken $authToken) {
-    $sampleCode = "def add(a, b):\n" .
-    "    return a + b\n" .
-    "\n" .
-    "def multiply(a, b):\n" .
-    "    return a * b\n" .
-    "\n" .
-    "def main():\n" .
-    "    x = 5\n" .
-    "    y = 10\n" .
-    "    sum_result = add(x, y)\n" .
-    "    product_result = multiply(x, y)\n" .
-    "    print(f'Sum: {sum_result}')\n" .
-    "    print(f'Product: {product_result}')\n" .
-    "\n" .
-    "if __name__ == '__main__':\n" .
-    "    main();";
-
-    $submission = new CopyleaksSourceCodeSubmissionModel(
-      $sampleCode,
-      'sampleCode.py'
-    );
-
-    $submission->sandbox = true;
-
-    $response = $this->copyleaks->aiDetectionClient->submitSourceCode($authToken, time(), $submission);
-    $this->logInfo('AI Detection - submitSourceCode', $response);
   }
 
   private function TEST_writingAssistant(CopyleaksAuthToken $authToken) {
