@@ -22,17 +22,6 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
+include_once('CopyleaksTextModerationConstants.php');
+include_once('CopyleaksTextModerationLanguages.php');
 
-namespace Copyleaks;
-
-include_once('CopyleaksAuthToken.php');
-include_once('CopyleaksDeleteRequestModel.php');
-include_once('CopyleaksStartRequestModel.php');
-include_once('IdObject.php');
-
-include_once('submissions/index.php');
-
-include_once('exports/index.php');
-include_once('exceptions/Index.php');
-include_once('textModeration/index.php');
-include_once('constants/index.php');

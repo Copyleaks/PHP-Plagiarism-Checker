@@ -25,14 +25,22 @@
 
 namespace Copyleaks;
 
-include_once('CopyleaksAuthToken.php');
-include_once('CopyleaksDeleteRequestModel.php');
-include_once('CopyleaksStartRequestModel.php');
-include_once('IdObject.php');
+/**
+ * Provides a collection of constants representing different text moderation categories
+ * supported by the Copyleaks Text Moderation API.
+ */
+class CopyleaksTextModerationConstants
+{
+    public const ADULT_V1 = "adult-v1";
+    public const TOXIC_V1 = "toxic-v1";
+    public const VIOLENT_V1 = "violent-v1";
+    public const PROFANITY_V1 = "profanity-v1";
+    public const SELF_HARM_V1 = "self-harm-v1";
+    public const HARASSMENT_V1 = "harassment-v1";
+    public const HATE_SPEECH_V1 = "hate-speech-v1";
+    public const DRUGS_V1 = "drugs-v1";
+    public const FIREARMS_V1 = "firearms-v1";
+    public const CYBERSECURITY_V1 = "cybersecurity-v1";
+}
 
-include_once('submissions/index.php');
-
-include_once('exports/index.php');
-include_once('exceptions/Index.php');
-include_once('textModeration/index.php');
-include_once('constants/index.php');
+?>
