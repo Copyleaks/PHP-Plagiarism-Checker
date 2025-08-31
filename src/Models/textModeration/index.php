@@ -25,6 +25,7 @@
 namespace Copyleaks;
 
 include_once('requests/CopyleaksTextModerationRequestModel.php');
+include_once('requests/CopyleaksTextModerationLabel.php');
 include_once('responses/CopyleaksTextModerationResponseModel.php');
 include_once "responses/submodules/ModerationsModel.php";
 include_once "responses/submodules/Text.php";

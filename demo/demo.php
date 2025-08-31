@@ -9,7 +9,6 @@ use Copyleaks\CopyleaksDeleteRequestModel;
 use Copyleaks\CopyleaksExportModel;
 use Copyleaks\CopyleaksFileOcrSubmissionModel;
 use Copyleaks\CopyleaksNaturalLanguageSubmissionModel;
-use Copyleaks\CopyleaksSourceCodeSubmissionModel;
 use Copyleaks\CopyleaksWritingAssistantSubmissionModel;
 use Copyleaks\ScoreWeights;
 use Copyleaks\CopyleaksFileSubmissionModel;
@@ -34,6 +33,10 @@ use Copyleaks\SubmissionSensitiveData;
 use Copyleaks\SubmissionWebhooks;
 use Copyleaks\CopyleaksTextModerationRequestModel;
 use Copyleaks\CopyleaksTextModerationResponseModel;
+use Copyleaks\CopyleaksTextModerationLanguages;
+use Copyleaks\CopyleaksTextModerationConstants;
+use Copyleaks\CopyleaksTextModerationLabel;
+
 use Throwable;
 
 class Test {
@@ -74,11 +77,9 @@ class Test {
 
       // $this->TEST_aiDetectionSubmitNaturalLanguage($loginResult);
 
-      $this->TEST_aiDetectionSubmitSourceCode($loginResult);
-
       // $this->TEST_writingAssistant($loginResult);
-      // $this->TEST_textModeration($loginResult);
 
+      $this->TEST_textModeration($loginResult);
 
     } catch (Throwable $th) {
       echo $th->getMessage();
@@ -186,35 +187,6 @@ class Test {
     $this->logInfo('AI Detection - submitNaturalLanguage', $response);
   }
 
-  private function TEST_aiDetectionSubmitSourceCode(CopyleaksAuthToken $authToken) {
-    $sampleCode = "def add(a, b):\n" .
-    "    return a + b\n" .
-    "\n" .
-    "def multiply(a, b):\n" .
-    "    return a * b\n" .
-    "\n" .
-    "def main():\n" .
-    "    x = 5\n" .
-    "    y = 10\n" .
-    "    sum_result = add(x, y)\n" .
-    "    product_result = multiply(x, y)\n" .
-    "    print(f'Sum: {sum_result}')\n" .
-    "    print(f'Product: {product_result}')\n" .
-    "\n" .
-    "if __name__ == '__main__':\n" .
-    "    main();";
-
-    $submission = new CopyleaksSourceCodeSubmissionModel(
-      $sampleCode,
-      'sampleCode.py'
-    );
-
-    $submission->sandbox = true;
-
-    $response = $this->copyleaks->aiDetectionClient->submitSourceCode($authToken, time(), $submission);
-    $this->logInfo('AI Detection - submitSourceCode', $response);
-  }
-
   private function TEST_writingAssistant(CopyleaksAuthToken $authToken) {
     $sampleText = "Lions are the only cat that live in groups, called pride. A prides typically consists of a few adult males, several feales, and their offspring. This social structure is essential for hunting and raising young cubs. Female lions, or lionesses are the primary hunters of the prid. They work together in cordinated groups to take down prey usually targeting large herbiores like zbras, wildebeest and buffalo. Their teamwork and strategy during hunts highlight the intelligence and coperation that are key to their survival.";
 
@@ -271,23 +243,24 @@ class Test {
   }
 private function TEST_textModeration(CopyleaksAuthToken $authToken) {
 
+    $labelsArray=[
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::ADULT_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::TOXIC_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::VIOLENT_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::PROFANITY_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::SELF_HARM_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::HARASSMENT_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::HATE_SPEECH_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::DRUGS_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::FIREARMS_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::CYBERSECURITY_V1)
+    ]; // labels
+
      $textModerationRequest = new CopyleaksTextModerationRequestModel(
     "This is some text to scan.", // text
     true,                        // sandbox mode
-    "en",                        // language
-    [
-        ["id" => "other-v1"],
-        ["id" => "adult-v1"],
-        ["id" => "toxic-v1"],
-        ["id" => "violent-v1"],
-        ["id" => "profanity-v1"],
-        ["id" => "self-harm-v1"],
-        ["id" => "harassment-v1"],
-        ["id" => "hate-speech-v1"],
-        ["id" => "drugs-v1"],
-        ["id" => "firearms-v1"],
-        ["id" => "cybersecurity-v1"]
-    ] // labels
+    CopyleaksTextModerationLanguages::ENGLISH,                        // language
+    $labelsArray
     );
 
     $response = $this->copyleaks->textModerationClient->submitText($authToken, time(), $textModerationRequest);

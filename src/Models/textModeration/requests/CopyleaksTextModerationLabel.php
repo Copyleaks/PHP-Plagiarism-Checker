@@ -24,33 +24,21 @@
 */
 namespace Copyleaks;
 
-class SupportedFilesTypes
+class CopyleaksTextModerationLabel
 {
-   public const SUPPORTED_CODE_EXTENSIONS = [
-        'ts',
-        'py',
-        'go',
-        'cs',
-        'c',
-        'h',
-        'idc',
-        'cpp',
-        'hpp',
-        'c++',
-        'h++',
-        'cc',
-        'hh',
-        'java',
-        'js',
-        'swift',
-        'rb',
-        'pl',
-        'php',
-        'sh',
-        'm',
-        'scala',
-        'rs',
-        'vbs',
-        'css'
-    ];
+    /**
+     * Id of the label.
+     * @var string
+     */
+    public string $id; 
+
+    /**
+     * Constructs a new CopyleaksTextModerationLabel instance.
+     * @param string $id The unique identifier of the label.
+     */
+    public function __construct(string $id)
+    {
+        $this->id = $id;
+    }
+
 }

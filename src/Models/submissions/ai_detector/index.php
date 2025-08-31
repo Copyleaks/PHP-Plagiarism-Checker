@@ -27,4 +27,3 @@ namespace Copyleaks;
 
 include_once('CopyleaksAIDetectionSubmissionModel.php');
 include_once('CopyleaksNaturalLanguageSubmissionModel.php');
-include_once('CopyleaksSourceCodeSubmissionModel.php');

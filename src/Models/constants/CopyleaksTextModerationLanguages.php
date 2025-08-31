@@ -25,5 +25,12 @@
 
 namespace Copyleaks;
 
-include_once('SupportedFilesTypes.php');
+/**
+ * Supported languages for text moderation.
+ */
+class CopyleaksTextModerationLanguages
+{
+    public const ENGLISH = "en";
+}
 
+?>

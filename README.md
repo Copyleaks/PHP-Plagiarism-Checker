@@ -1,49 +1,218 @@
-# Copyleaks PHP SDK
+# Copyleaks SDK
+The official [Copyleaks](https://copyleaks.com/) PHP library, supporting PHP versions >=7.4.0.
 
-Copyleaks SDK is a simple framework that allows you to scan text for plagiarism and detect content distribution online, using the Copyleaks plagiarism checker cloud.
+## 🚀 Getting Started
+Before you start, ensure you have the following:
 
-Using Copyleaks SDK you can check for plagiarism in:
-* Online content and webpages
-* Local and cloud files (see [supported files](https://api.copyleaks.com/documentation/specifications#2-supported-file-types))
-* Free text
-* OCR (Optical Character Recognition) - scanning pictures with textual content (see [supported files](https://api.copyleaks.com/documentation/specifications#6-supported-image-types-ocr))
+*   An active Copyleaks account. If you don’t have one, [sign up for free](https://copyleaks.com/signup).
+*   You can find your API key on the [API Dashboard](https://api.copyleaks.com/dashboard).
 
-## Installation
+Once you have your account and API key:
+
+**Install the SDK**:
 
 Install using [Packagist](https://packagist.org/packages/copyleaks/php-plagiarism-checker)
-
 ```bash
 composer require copyleaks/php-plagiarism-checker
 ```
 
-## Register and Get Your API Key
-To use the Copyleaks API you need to first be a registered user. The registration to Copyleaks takes a minute and is free of charge. [Signup](https://api.copyleaks.com/?register=true) and make sure to confirm your account.
+## 📚 Documentation
+To learn more about how to use Copyleaks API please check out our [Documentation](https://docs.copyleaks.com/resources/sdks/php/). 
 
-As a signed user you can generate your personal API key. Do so on your [dashboard home](https://api.copyleaks.com/dashboard) under 'API Access Credentials'.
+## 💡 Usage Examples
+Here are some common usage examples for the Copyleaks SDK. You can also see a comprehensive code example in the `demo.php` file on our GitHub repository: [demo.php](https://github.com/Copyleaks/PHP-Plagiarism-Checker/blob/master/demo/demo.php).
 
-For more information check out our [API guide](https://api.copyleaks.com/documentation/v3).
+### Get Authentication Token
+This example demonstrates how to log in to the Copyleaks API and obtain an authentication token.
 
-## Usage
 ```php
-include_once('vendor/copyleaks/php-plagiarism-checker/autoload.php');
-use Copyleaks\Copyleaks;
+<?php
 
-$copyleaks = new Copyleaks();
-$loginResult = $copyleaks->login(<your email>,<your api key>);
-echo json_encode($loginResult);
+    require_once(__DIR__ . '/vendor/autoload.php');
+
+    use Copyleaks\Copyleaks;
+    use Copyleaks\CopyleaksFileSubmissionModel;
+    use Copyleaks\SubmissionProperties;
+    use Copyleaks\SubmissionWebhooks;
+
+    // --- Your Credentials ---
+    $EMAIL_ADDRESS = 'YOUR_EMAIL_ADDRESS';
+    $KEY = 'YOUR_API_KEY';
+    $WEBHOOK_URL = 'https://your-server.com/webhook/{STATUS}';
+    // --------------------
+
+    // Log in to the Copyleaks API
+    echo "Authenticating...\n";
+    $copyleaks = new Copyleaks();
+    $loginToken = $copyleaks->login($EMAIL_ADDRESS, $KEY);
+    echo "✅ Logged in successfully!\n";
+
 ```
-* (Option) To change the Identity server URI (default:"https://id.copyleaks.com"):
-```rb
-CopyleaksConfig::SET_IDENTITY_SERVER_URI("<your identity server URI>"); 
+For a detailed understanding of the authentication process, refer to the Copyleaks Login Endpoint [Documentation](https://docs.copyleaks.com/reference/actions/account/login).
+##
+### Submit Text for Plagiarism Scan
+This example shows how to prepare and submit raw text content for a plagiarism scan.
+
+```php
+<?php
+
+    require_once(__DIR__ . '/vendor/autoload.php');
+
+    use Copyleaks\Copyleaks;
+    use Copyleaks\CopyleaksFileSubmissionModel;
+    use Copyleaks\SubmissionProperties;
+    use Copyleaks\SubmissionWebhooks;
+
+    // --- Your Credentials ---
+    $EMAIL_ADDRESS = 'YOUR_EMAIL_ADDRESS';
+    $KEY = 'YOUR_API_KEY';
+    $WEBHOOK_URL = 'https://your-server.com/webhook/{STATUS}';
+    // --------------------
+
+    // Prepare your content for scanning
+    echo "Submitting text for scanning...\n";
+    $textToScan = "Hello world, this is a test.";
+    $base64Content = base64_encode($textToScan);
+    $scanId = time();
+
+    // Configure the scan
+    $webhooks = new SubmissionWebhooks($WEBHOOK_URL);
+    $properties = new SubmissionProperties($webhooks);
+    $properties->setSandbox(true); // Turn on sandbox mode for testing
+
+    $submission = new CopyleaksFileSubmissionModel($base64Content, 'test.txt', $properties);
+
+    // Submit the scan to Copyleaks
+    $copyleaks->submitFile($loginToken, $scanId, $submission);
+    echo "🚀 Scan submitted successfully! Scan ID: " . $scanId . "\n";
+    echo "You will be notified via your webhook when the scan is complete.\n";
+
 ```
-* (Option) To change the API server URI (default:"https://api.copyleaks.com"):
-```rb
-CopyleaksConfig::SET_API_SERVER_URI("<your API server URI>");
+For a full guide please refer to our step by step [Guide](https://docs.copyleaks.com/guides/authenticity/detect-plagiarism-text)
+
+For a detailed understanding of the plagiarism detection process, refer to the Copyleaks Submit Endpoint [Documentation](https://docs.copyleaks.com/reference/actions/scans/submit-file)
+##
+### AI-Generated Text Detection
+Use the AI detection client to determine if content was generated by artificial intelligence.
+
+```php
+<?php
+
+    require_once(__DIR__ . '/vendor/autoload.php');
+
+    use Copyleaks\Copyleaks;
+    use Copyleaks\CopyleaksNaturalLanguageSubmissionModel;
+
+    // --- Your Credentials ---
+    $EMAIL_ADDRESS = 'YOUR_EMAIL_ADDRESS';
+    $KEY = 'YOUR_API_KEY';
+    $WEBHOOK_URL = 'https://your-server.com/webhook/{STATUS}';
+    // --------------------
+
+    $sampleText = "Lions are social animals, living in groups called prides, typically consisting of several females, their offspring, and a few males. Female lions are the primary hunters, working together to catch prey. Lions are known for their strength, teamwork, and complex social structures.";
+
+    $submission = new CopyleaksNaturalLanguageSubmissionModel(
+      $sampleText,
+    );
+    $submission->sandbox = true;
+
+    $response = $this->copyleaks->aiDetectionClient->submitNaturalLanguage($authToken, time(), $submission);
+    $this->logInfo('AI Detection - submitNaturalLanguage', $response);
+
 ```
 
-## Demo
-See [demo.php](./demo/demo.php) under demo folder for an example.
-## Read More
-* [API Homepage](https://api.copyleaks.com/)
-* [API Documentation](https://api.copyleaks.com/documentation)
-* [Plagiarism Report](https://github.com/Copyleaks/plagiarism-report)
+### Writing Assistant
+Get intelligent suggestions for improving grammar, spelling, style, and overall writing quality.
+
+```php
+<?php
+
+    require_once(__DIR__ . '/vendor/autoload.php');
+
+    use Copyleaks\Copyleaks;
+    use Copyleaks\CopyleaksWritingAssistantSubmissionModel;
+
+    // --- Your Credentials ---
+    $EMAIL_ADDRESS = 'YOUR_EMAIL_ADDRESS';
+    $KEY = 'YOUR_API_KEY';
+    $WEBHOOK_URL = 'https://your-server.com/webhook/{STATUS}';
+    // --------------------
+
+    $sampleText = "Lions are the only cat that live in groups, called pride. A prides typically consists of a few adult males, several feales, and their offspring. This social structure is essential for hunting and raising young cubs. Female lions, or lionesses are the primary hunters of the prid. They work together in cordinated groups to take down prey usually targeting large herbiores like zbras, wildebeest and buffalo. Their teamwork and strategy during hunts highlight the intelligence and coperation that are key to their survival.";
+
+    $scoreWeights = new ScoreWeights(
+      0.1, 0.2, 0.3, 0.4
+    );
+
+    $submission = new CopyleaksWritingAssistantSubmissionModel(
+      $sampleText,
+    );
+
+    $submission->sandbox = true;
+    $submission->score = $scoreWeights;
+
+    $response = $this->copyleaks->writingAssistantClient->submitText($authToken, time(), $submission);
+    $this->logInfo('Writing Assistant - submitText', $response);
+
+```
+For a full guide please refer to our step by step [Guide](https://docs.copyleaks.com/guides/writing/check-grammar/)
+
+For a detailed understanding of the Writing assistant process, refer to the Copyleaks writing feedback Endpoint [Documentation](https://docs.copyleaks.com/reference/actions/writing-assistant/check/)
+##
+### Text Moderation
+Scan and moderate text content for unsafe, inappropriate, or policy-violating material across various categories.
+
+```php
+<?php
+
+    require_once(__DIR__ . '/vendor/autoload.php');
+
+    use Copyleaks\Copyleaks;
+    use Copyleaks\CopyleaksTextModerationRequestModel;
+
+    // --- Your Credentials ---
+    $EMAIL_ADDRESS = 'YOUR_EMAIL_ADDRESS';
+    $KEY = 'YOUR_API_KEY';
+    $WEBHOOK_URL = 'https://your-server.com/webhook/{STATUS}';
+    // --------------------
+
+    var labelsArray = new CopyleaksTextModerationLabel[]
+                    {
+                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.ADULT_V1),
+                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.TOXIC_V1),
+                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.VIOLENT_V1),
+                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.PROFANITY_V1),
+                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.SELF_HARM_V1),
+                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.HARASSMENT_V1),
+                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.HATE_SPEECH_V1),
+                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.DRUGS_V1),
+                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.FIREARMS_V1),
+                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.CYBERSECURITY_V1)
+                    };
+
+    var model = new CopyleaksTextModerationRequestModel(
+                    text: "This is some text to scan.",
+                    sandbox: true,
+                    language: CopyleaksTextModerationLanguages.ENGLISH,
+                    labels: labelsArray
+    );
+
+    $response = $this->copyleaks->textModerationClient->submitText($authToken, time(), $model);
+    $textModerationResponse= CopyleaksTextModerationResponseModel::fromArray(json_decode(json_encode($response), true));
+
+    $this->logInfo('Text Moderation - submitText', $textModerationResponse);
+
+```
+For a full guide please refer to our step by step [Guide](https://docs.copyleaks.com/guides/moderation/moderate-text/)
+
+For a detailed understanding of the Text moderation process, refer to the Copyleaks text moderation Endpoint [Documentation](https://docs.copyleaks.com/reference/actions/text-moderation/check/)
+##
+## Further Resources
+
+*   **Copyleaks API Dashboard:** Manage your API keys, monitor usage, and view analytics from your personalized dashboard. [Access Dashboard](https://api.copyleaks.com/dashboard)
+*   **Copyleaks SDK Documentation:** Explore comprehensive guides, API references, and code examples for seamless integration. [Read Documentation](https://docs.copyleaks.com/resources/sdks/overview/)
+
+
+## Support
+* If you need assistance, please contact Copyleaks Support via our support portal: Contact Copyleaks [Support](https://help.copyleaks.com/s/contactsupport).
+* To arrange a product demonstration, book a demo here: [Booking Link](https://copyleaks.com/book-a-demo).

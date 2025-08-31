@@ -25,18 +25,22 @@
 
 namespace Copyleaks;
 
-class CopyleaksSourceCodeSubmissionModel extends CopyleaksAiDetectionSubmissionModel
+/**
+ * Provides a collection of constants representing different text moderation categories
+ * supported by the Copyleaks Text Moderation API.
+ */
+class CopyleaksTextModerationConstants
 {
-    public string $filename;
-
-    /**
-     * @param string $text A text string.
-     * @param string $filename The name of the file. Make sure to include the right extension for your file type.
-     * @param bool $sandbox Use sandbox mode to test your integration with the Copyleaks API for free.
-     */
-    public function __construct(string $text, string $filename, bool $sandbox = false)
-    {
-        parent::__construct($text, $sandbox);
-        $this->filename = $filename;
-    }
+    public const ADULT_V1 = "adult-v1";
+    public const TOXIC_V1 = "toxic-v1";
+    public const VIOLENT_V1 = "violent-v1";
+    public const PROFANITY_V1 = "profanity-v1";
+    public const SELF_HARM_V1 = "self-harm-v1";
+    public const HARASSMENT_V1 = "harassment-v1";
+    public const HATE_SPEECH_V1 = "hate-speech-v1";
+    public const DRUGS_V1 = "drugs-v1";
+    public const FIREARMS_V1 = "firearms-v1";
+    public const CYBERSECURITY_V1 = "cybersecurity-v1";
 }
+
+?>
