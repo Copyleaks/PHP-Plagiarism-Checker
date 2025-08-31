@@ -24,11 +24,21 @@
 */
 namespace Copyleaks;
 
-include_once('requests/CopyleaksTextModerationRequestModel.php');
-include_once('requests/CopyleaksTextModerationLabel.php');
-include_once('responses/CopyleaksTextModerationResponseModel.php');
-include_once "responses/submodules/ModerationsModel.php";
-include_once "responses/submodules/Text.php";
-include_once "responses/submodules/TextModerationChars.php";
-include_once "responses/submodules/TextModerationScannedDocument.php";
-include_once "responses/submodules/TextModerationsLegend.php";
+class CopyleaksTextModerationLabel
+{
+    /**
+     * Id of the label.
+     * @var string
+     */
+    public string $id; 
+
+    /**
+     * Constructs a new CopyleaksTextModerationLabel instance.
+     * @param string $id The unique identifier of the label.
+     */
+    public function __construct(string $id)
+    {
+        $this->id = $id;
+    }
+
+}
