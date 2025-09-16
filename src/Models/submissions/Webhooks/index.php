@@ -24,31 +24,31 @@
 */
 
 namespace Copyleaks;
-include_once('baseModels\Metadata.php');
-include_once('baseModels\Webhook.php');
-include_once('baseModels\StatusWebhook.php');
+include_once('baseModels/Metadata.php');
+include_once('baseModels/Webhook.php');
+include_once('baseModels/StatusWebhook.php');
 
 
-include_once('ResultsModels\SharedResultsModel.php');
-include_once('NewResultsModel\NewResultScore.php');
-include_once('NewResultsModel\NewResultsInternet.php');
-include_once('NewResultsModel\NewResultsRepositories.php');
+include_once('ResultsModels/SharedResultsModel.php');
+include_once('NewResultsModel/NewResultScore.php');
+include_once('NewResultsModel/NewResultsInternet.php');
+include_once('NewResultsModel/NewResultsRepositories.php');
 
 
-include_once('ResultsModels\Batch.php');
-include_once('ResultsModels\Internet.php');
-include_once('ResultsModels\Database.php');
-include_once('ResultsModels\Repositories.php');
-include_once('ResultsModels\RepositoryMetadata.php');
-include_once('ResultsModels\Score.php');
-include_once('ResultsModels\Tags.php');
+include_once('ResultsModels/Batch.php');
+include_once('ResultsModels/Internet.php');
+include_once('ResultsModels/Database.php');
+include_once('ResultsModels/Repositories.php');
+include_once('ResultsModels/RepositoryMetadata.php');
+include_once('ResultsModels/Score.php');
+include_once('ResultsModels/Tags.php');
 
-include_once('CompletedModels\Notifications.php');
-include_once('CompletedModels\Results.php');
-include_once('CompletedModels\ScannedDocument.php');
+include_once('CompletedModels/Notifications.php');
+include_once('CompletedModels/Results.php');
+include_once('CompletedModels/ScannedDocument.php');
 
-include_once('ErrorModels\Error.php');
-include_once('NotificationsModel\Alerts.php');
+include_once('ErrorModels/Error.php');
+include_once('NotificationsModel/Alerts.php');
 include_once('ExportModels/Task.php');
 
 include_once('CompletedWebhook.php');

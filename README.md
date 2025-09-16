@@ -131,7 +131,7 @@ Get intelligent suggestions for improving grammar, spelling, style, and overall 
 
     use Copyleaks\Copyleaks;
     use Copyleaks\CopyleaksWritingAssistantSubmissionModel;
-
+    use Copyleaks\ScoreWeights;
     // --- Your Credentials ---
     $EMAIL_ADDRESS = 'YOUR_EMAIL_ADDRESS';
     $KEY = 'YOUR_API_KEY';
@@ -169,33 +169,34 @@ Scan and moderate text content for unsafe, inappropriate, or policy-violating ma
 
     use Copyleaks\Copyleaks;
     use Copyleaks\CopyleaksTextModerationRequestModel;
-
+    use Copyleaks\CopyleaksTextModerationConstants;
+    use Copyleaks\CopyleaksTextModerationLanguages;
+    use Copyleaks\CopyleaksTextModerationResponseModel;
     // --- Your Credentials ---
     $EMAIL_ADDRESS = 'YOUR_EMAIL_ADDRESS';
     $KEY = 'YOUR_API_KEY';
     $WEBHOOK_URL = 'https://your-server.com/webhook/{STATUS}';
     // --------------------
 
-    var labelsArray = new CopyleaksTextModerationLabel[]
-                    {
-                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.ADULT_V1),
-                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.TOXIC_V1),
-                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.VIOLENT_V1),
-                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.PROFANITY_V1),
-                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.SELF_HARM_V1),
-                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.HARASSMENT_V1),
-                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.HATE_SPEECH_V1),
-                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.DRUGS_V1),
-                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.FIREARMS_V1),
-                        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants.CYBERSECURITY_V1)
-                    };
+    $labelsArray=[
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::ADULT_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::TOXIC_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::VIOLENT_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::PROFANITY_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::SELF_HARM_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::HARASSMENT_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::HATE_SPEECH_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::DRUGS_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::FIREARMS_V1),
+        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::CYBERSECURITY_V1)
+    ]; // labels
 
-    var model = new CopyleaksTextModerationRequestModel(
-                    text: "This is some text to scan.",
-                    sandbox: true,
-                    language: CopyleaksTextModerationLanguages.ENGLISH,
-                    labels: labelsArray
-    );
+     $textModerationRequest = new CopyleaksTextModerationRequestModel(
+      "This is some text to scan.", // text
+      true,                        // sandbox mode
+      CopyleaksTextModerationLanguages::ENGLISH, // language
+      $labelsArray
+      );
 
     $response = $this->copyleaks->textModerationClient->submitText($authToken, time(), $model);
     $textModerationResponse= CopyleaksTextModerationResponseModel::fromArray(json_decode(json_encode($response), true));
