@@ -25,8 +25,12 @@
 
 namespace Copyleaks;
 
-include_once('AIDetectionClient.php');
-include_once('WritingAssistantClient.php');
-include_once('TextModerationClient.php');
-include_once('AiImagedetectionClient.php');
+/**
+ * Supported languages for text moderation.
+ */
+class CopyleaksAiImageDetectionModels
+{
+    public const AI_IMAGE_1_ULTRA = "ai-image-1-ultra";
+}
 
+?>

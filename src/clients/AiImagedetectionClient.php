@@ -25,8 +25,29 @@
 
 namespace Copyleaks;
 
-include_once('AIDetectionClient.php');
-include_once('WritingAssistantClient.php');
-include_once('TextModerationClient.php');
-include_once('AiImagedetectionClient.php');
+use Copyleaks\CopyleaksAiImageDetectionRequestModel;
+use InvalidArgumentException;
 
+class AiImagedetectionClient{
+
+    public function submit(CopyleaksAuthToken $authToken, string $scanId, CopyleaksAiImageDetectionRequestModel $submission)
+    {
+        if (!isset($scanId)) {
+            throw new InvalidArgumentException("Invalid scanId");
+        }
+        if (!isset($submission)) {
+            throw new InvalidArgumentException("Invalid submission");
+        }
+  
+        CopyleaksClientUtils::verifyAuthToken($authToken);
+  
+        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/ai-image-detector/$scanId/check";
+        $authorization = "Authorization: Bearer " . $authToken->accessToken;
+        $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
+  
+        ObjectFilter::filterNullProperties($submission);
+    
+        return HttpClientService::Execute('POST-JSON', $url, $headers, $submission);
+    }
+ 
+}
