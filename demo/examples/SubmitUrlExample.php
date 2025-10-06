@@ -23,29 +23,93 @@ use Copyleaks\SubmissionWebhooks;
  */
 function runSubmitUrlExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken, string $webhookUrl): void
 {
-    $base64pdfLogo = file_exists('base64logo.txt') ? file_get_contents('base64logo.txt') : '';
+    $base64pdfLogo = file_exists(/*filename*/'base64logo.txt') ? file_get_contents(/*filename*/'base64logo.txt') : '';
+    
+    // SubmissionWebhooks parameters
+    $webhookUrlWithStatus = "$webhookUrl/{STATUS}";
+    
+    // SubmissionAuthor parameters
+    $authorName = 'php-test';
+    
+    // SubmissionFilter parameters
+    $identicalEnabled = true;
+    $minorChangesEnabled = true;
+    $relatedMeaningEnabled = true;
+    
+    // SubmissionScanningExclude parameters
+    $excludeEntryIds = 'php-test-*';
+    
+    // SubmissionScanningCopyleaksDB parameters
+    $includeMySubmissions = true;
+    $includeOthersSubmissions = true;
+    
+    // SubmissionScanning parameters
+    $scanInternet = true;
+    $scanningExclude = new SubmissionScanningExclude(/*entryIds*/$excludeEntryIds);
+    $repositories = null;
+    $copyleaksDB = new SubmissionScanningCopyleaksDB(/*includeMySubmissions*/$includeMySubmissions, /*includeOthersSubmissions*/$includeOthersSubmissions);
+    
+    // SubmissionRepository parameters
+    $repositoryId = 'repoId';
+    
+    // SubmissionIndexing parameters
+    $repositories = (array)[new SubmissionRepository(/*id*/$repositoryId)];
+    
+    // SubmissionExclude parameters
+    $excludeQuotes = true;
+    $excludeReferences = true;
+    $excludeTablesOfContents = true;
+    $excludeTitles = true;
+    $excludeHtmlTemplate = true;
+    
+    // SubmissionPDF parameters
+    $createPdf = true;
+    $pdfTitle = 'title';
+    $pdfLogoImage = $base64pdfLogo;
+    $pdfRtl = false;
+    
+    // SubmissionProperties parameters
+    $webhooks = new SubmissionWebhooks(/*url*/$webhookUrlWithStatus);
+    $includeHtml = false;
+    $developerPayload = null;
+    $sandbox = true;
+    $expiration = 6;
+    $sensitiveDataProtection = 1;
+    $cheatDetection = true;
+    $action = SubmissionActions::Scan;
+    $author = new SubmissionAuthor(/*name*/$authorName);
+    $filters = new SubmissionFilter(/*identicalEnabled*/$identicalEnabled, /*minorChangesEnabled*/$minorChangesEnabled, /*relatedMeaningEnabled*/$relatedMeaningEnabled);
+    $scanning = new SubmissionScanning(/*internet*/$scanInternet, /*exclude*/$scanningExclude, /*repositories*/$repositories, /*copyleaksDB*/$copyleaksDB);
+    $indexing = new SubmissionIndexing(/*repositories*/$repositories);
+    $exclude = new SubmissionExclude(/*quotes*/$excludeQuotes, /*references*/$excludeReferences, /*tablesOfContents*/$excludeTablesOfContents, /*titles*/$excludeTitles, /*htmlTemplate*/$excludeHtmlTemplate);
+    $pdf = new SubmissionPDF(/*create*/$createPdf, /*title*/$pdfTitle, /*logoImage*/$pdfLogoImage, /*rtl*/$pdfRtl);
+    
+    // CopyleaksURLSubmissionModel parameters
+    $url = "https://copyleaks.com";
+    $properties = new SubmissionProperties(
+        /*webhooks*/$webhooks,
+        /*includeHtml*/$includeHtml,
+        /*developerPayload*/$developerPayload,
+        /*sandbox*/$sandbox,
+        /*expiration*/$expiration,
+        /*sensitiveDataProtection*/$sensitiveDataProtection,
+        /*cheatDetection*/$cheatDetection,
+        /*action*/$action,
+        /*author*/$author,
+        /*filters*/$filters,
+        /*scanning*/$scanning,
+        /*indexing*/$indexing,
+        /*exclude*/$exclude,
+        /*pdf*/$pdf
+    );
     
     $submission = new CopyleaksURLSubmissionModel(
-        "https://copyleaks.com",
-        new SubmissionProperties(
-            new SubmissionWebhooks("$webhookUrl/{STATUS}"),
-            false,
-            null,
-            true,
-            6,
-            1,
-            true,
-            SubmissionActions::Scan,
-            new SubmissionAuthor('php-test'),
-            new SubmissionFilter(true, true, true),
-            new SubmissionScanning(true, new SubmissionScanningExclude('php-test-*'), null, new SubmissionScanningCopyleaksDB(true, true)),
-            new SubmissionIndexing((array)[new SubmissionRepository('repoId')]),
-            new SubmissionExclude(true, true, true, true, true),
-            new SubmissionPDF(true, 'title', $base64pdfLogo, false)
-        )
+        /*url*/$url,
+        /*properties*/$properties
     );
 
-    $copyleaks->submitUrl($authToken, time(), $submission);
+    $scanId = time();
+    $copyleaks->submitUrl(/*authToken*/$authToken, /*scanId*/$scanId, /*submission*/$submission);
     
-    logInfo("-Submit URL Example-");
+    logInfo(/*message*/"-Submit URL Example-");
 }

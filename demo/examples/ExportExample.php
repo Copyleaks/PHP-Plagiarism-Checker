@@ -13,14 +13,30 @@ use Copyleaks\ExportResults;
  */
 function runExportExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken, string $webhookUrl): void
 {
+    // ExportResults parameters
+    $resultId = "2a1b402420";
+    $resultEndpoint = "$webhookUrl/export-webhook/result/2a1b402420";
+    $resultVerb = "POST";
+    $resultHeaders = array(array("key", "value"));
+    
+    // ExportCrawledVersion parameters
+    $crawledVersionEndpoint = "$webhookUrl/export-webhook/crawled-version";
+    $crawledVersionVerb = "POST";
+    $crawledVersionHeaders = array(array("key", "value"));
+    
+    // CopyleaksExportModel parameters
+    $completionWebhook = "$webhookUrl/export-webhook";
+    $exportResults = new ExportResults(/*id*/$resultId, /*endpoint*/$resultEndpoint, /*verb*/$resultVerb, /*headers*/$resultHeaders);
+    $crawledVersion = new ExportCrawledVersion(/*endpoint*/$crawledVersionEndpoint, /*verb*/$crawledVersionVerb, /*headers*/$crawledVersionHeaders);
+    
     $model = new CopyleaksExportModel(
-        "$webhookUrl/export-webhook",
-        array(new ExportResults("2a1b402420", "$webhookUrl/export-webhook/result/2a1b402420", "POST", array(array("key", "value")))),
-        new ExportCrawledVersion("$webhookUrl/export-webhook/crawled-version", "POST", array(array("key", "value")))
+        /*completionWebhook*/$completionWebhook,
+        /*results*/array($exportResults),
+        /*crawledVersion*/$crawledVersion
     );
     
     $exportedScanId = "1611042365";
-    $copyleaks->export($authToken, $exportedScanId, $exportedScanId, $model);
+    $copyleaks->export(/*authToken*/$authToken, /*scanId*/$exportedScanId, /*exportId*/$exportedScanId, /*model*/$model);
     
-    logInfo("-Export Example-");
+    logInfo(/*message*/"-Export Example-");
 }

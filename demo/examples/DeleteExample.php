@@ -12,10 +12,10 @@ use Copyleaks\IdObject;
  */
 function runDeleteExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken): void
 {
-    $idsToDelete = array(new IdObject("cqcps25xxh5cloxe"));
+    $idsToDelete = array(new IdObject(/*id*/"cqcps25xxh5cloxe"));
 
-    $model = new CopyleaksDeleteRequestModel($idsToDelete, true, "https://glacial-refuge-96501.herokuapp.com/18ml1by1/delete-hook");
-    $delete = $copyleaks->delete($authToken, $model);
+    $model = new CopyleaksDeleteRequestModel(/*scans*/$idsToDelete, /*purge*/true, /*webhook*/"https://glacial-refuge-96501.herokuapp.com/18ml1by1/delete-hook");
+    $delete = $copyleaks->delete(/*authToken*/$authToken, /*model*/$model);
 
-    logInfo("-Delete Example-", $delete);
+    logInfo(/*message*/"-Delete Example-", /*context*/$delete);
 }

@@ -10,7 +10,7 @@ use Copyleaks\CopyleaksAuthToken;
  */
 function runCreditsBalanceExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken): void
 {
-    $creditsBalance = $copyleaks->getCreditsBalance($authToken);
+    $creditsBalance = $copyleaks->getCreditsBalance(/*authToken*/$authToken);
     
-    logInfo("-Credits Balance Example-", $creditsBalance);
+    logInfo(/*message*/"-Credits Balance Example-", /*context*/$creditsBalance);
 }

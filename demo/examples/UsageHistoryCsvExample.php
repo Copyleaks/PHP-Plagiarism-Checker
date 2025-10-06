@@ -10,7 +10,7 @@ use Copyleaks\CopyleaksAuthToken;
  */
 function runUsageHistoryCsvExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken): void
 {
-    $usageHistoryCsv = $copyleaks->getUsagesHistoryCsv($authToken, '01-01-2021', '02-02-2021');
+    $usageHistoryCsv = $copyleaks->getUsagesHistoryCsv(/*authToken*/$authToken, /*startDate*/'01-01-2021', /*endDate*/'02-02-2021');
     
-    logInfo("-Usage History CSV Example-", $usageHistoryCsv);
+    logInfo(/*message*/"-Usage History CSV Example-", /*context*/$usageHistoryCsv);
 }

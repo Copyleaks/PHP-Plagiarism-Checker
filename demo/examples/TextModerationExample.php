@@ -16,27 +16,27 @@ use Copyleaks\CopyleaksTextModerationResponseModel;
 function runTextModerationExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken): void
 {
     $labelsArray = [
-        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::ADULT_V1),
-        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::TOXIC_V1),
-        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::VIOLENT_V1),
-        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::PROFANITY_V1),
-        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::SELF_HARM_V1),
-        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::HARASSMENT_V1),
-        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::HATE_SPEECH_V1),
-        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::DRUGS_V1),
-        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::FIREARMS_V1),
-        new CopyleaksTextModerationLabel(CopyleaksTextModerationConstants::CYBERSECURITY_V1)
+        new CopyleaksTextModerationLabel(/*label*/CopyleaksTextModerationConstants::ADULT_V1),
+        new CopyleaksTextModerationLabel(/*label*/CopyleaksTextModerationConstants::TOXIC_V1),
+        new CopyleaksTextModerationLabel(/*label*/CopyleaksTextModerationConstants::VIOLENT_V1),
+        new CopyleaksTextModerationLabel(/*label*/CopyleaksTextModerationConstants::PROFANITY_V1),
+        new CopyleaksTextModerationLabel(/*label*/CopyleaksTextModerationConstants::SELF_HARM_V1),
+        new CopyleaksTextModerationLabel(/*label*/CopyleaksTextModerationConstants::HARASSMENT_V1),
+        new CopyleaksTextModerationLabel(/*label*/CopyleaksTextModerationConstants::HATE_SPEECH_V1),
+        new CopyleaksTextModerationLabel(/*label*/CopyleaksTextModerationConstants::DRUGS_V1),
+        new CopyleaksTextModerationLabel(/*label*/CopyleaksTextModerationConstants::FIREARMS_V1),
+        new CopyleaksTextModerationLabel(/*label*/CopyleaksTextModerationConstants::CYBERSECURITY_V1)
     ];
 
     $textModerationRequest = new CopyleaksTextModerationRequestModel(
-        "This is some text to scan.", // text
-        true,                        // sandbox mode
-        CopyleaksTextModerationLanguages::ENGLISH, // language
-        $labelsArray
+        /*text*/"This is some text to scan.",
+        /*sandbox*/true,
+        /*language*/CopyleaksTextModerationLanguages::ENGLISH,
+        /*labels*/$labelsArray
     );
 
-    $response = $copyleaks->textModerationClient->submitText($authToken, time(), $textModerationRequest);
-    $textModerationResponse = CopyleaksTextModerationResponseModel::fromArray(json_decode(json_encode($response), true));
+    $response = $copyleaks->textModerationClient->submitText(/*authToken*/$authToken, /*scanId*/time(), /*request*/$textModerationRequest);
+    $textModerationResponse = CopyleaksTextModerationResponseModel::fromArray(/*data*/json_decode(/*json*/json_encode(/*value*/$response), /*associative*/true));
 
-    logInfo('Text Moderation Example', $textModerationResponse);
+    logInfo(/*message*/'Text Moderation Example', /*context*/$textModerationResponse);
 }
