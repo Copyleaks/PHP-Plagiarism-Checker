@@ -41,11 +41,13 @@ class Copyleaks
   public WritingAssistantClient $writingAssistantClient;
   public TextModerationClient $textModerationClient;
 
+  public AiImagedetectionClient $aiImageDetectionClient;
   public function __construct()
   {
       $this->aiDetectionClient = new AIDetectionClient();
       $this->writingAssistantClient = new WritingAssistantClient();
       $this->textModerationClient=new TextModerationClient();
+      $this->aiImageDetectionClient = new AiImagedetectionClient();
   }
 
   /**
