@@ -52,9 +52,9 @@ class SubmissionScanning
    */
   public function __construct(
     bool $internet = false,
-    SubmissionScanningExclude $exclude = null,
-    array $repositories = null,
-    SubmissionScanningCopyleaksDB $copyleaksDb = null
+    ?SubmissionScanningExclude $exclude = null,
+    ?array $repositories = null,
+    ?SubmissionScanningCopyleaksDB $copyleaksDb = null
   ) {
     $this->internet = $internet;
     $this->exclude = $exclude;
