@@ -121,6 +121,12 @@ class SubmissionProperties
    */
   public ?AIGeneratedText $aiGeneratedText;
 
+  /** The PDF report will be generated in this language: en, es, de, fr, it or pt. */
+  public ?string $displayLanguage;
+
+  /** Check inner properties for more details. */
+  public ?AISourceMatch $aiSourceMatch;
+
   /**
    *@param SubmissionWebhooks $webhooks - Check inner properties for more details.
    *@param bool $includeHtml - By default, Copyleaks will present the report in text format. If set to true, Copyleaks will also include html format.
@@ -140,6 +146,8 @@ class SubmissionProperties
    *@param ScanMethodAlgorithm $scanMethodAlgorithm - Choose the algorithm goal. You can set this value depending on your use-case.
    *@param CustomMetadata[] $customMetadata - Add custom properties that will be attached to your document in a Copyleaks repository.
    *@param AIGeneratedText $aiGeneratedText - Check inner properties for more details.
+   *@param string $displayLanguage - The PDF report will be generated in this language: en, es, de, fr, it or pt.
+   *@param AISourceMatch $aiSourceMatch - Check inner properties for more details.
    */
   public function __construct(
     SubmissionWebhooks $webhooks,
@@ -159,7 +167,9 @@ class SubmissionProperties
     ?SubmissionSensitiveData $sensitiveDataProtection = null,
     ?int $scanMethodAlgorithm = null,
     ?array $customMetadata = null,
-    ?AIGeneratedText $aiGeneratedText = null
+    ?AIGeneratedText $aiGeneratedText = null,
+    ?string $displayLanguage = null,
+    ?AISourceMatch $aiSourceMatch = null
   ) {
     $this->webhooks = $webhooks;
     $this->includeHtml = $includeHtml;
@@ -179,5 +189,7 @@ class SubmissionProperties
     $this->scanMethodAlgorithm = $scanMethodAlgorithm;
     $this->customMetadata = $customMetadata;
     $this->aiGeneratedText = $aiGeneratedText;
+    $this->displayLanguage = $displayLanguage;
+    $this->aiSourceMatch = $aiSourceMatch;
   }
 }
