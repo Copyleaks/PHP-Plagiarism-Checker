@@ -27,3 +27,14 @@ namespace Copyleaks;
 
 include_once('CopyleaksAIDetectionSubmissionModel.php');
 include_once('CopyleaksNaturalLanguageSubmissionModel.php');
+
+include_once('responses/CopyleaksAiTextDetectionExplainModel.php');
+include_once('responses/CopyleaksAiTextDetectionMatchModel.php');
+include_once('responses/CopyleaksAiTextDetectionMatchTextModel.php');
+include_once('responses/CopyleaksAiTextDetectionPatternMatchModel.php');
+include_once('responses/CopyleaksAiTextDetectionPatternStatisticsModel.php');
+include_once('responses/CopyleaksAiTextDetectionPatternsModel.php');
+include_once('responses/CopyleaksAiTextDetectionPositionsModel.php');
+include_once('responses/CopyleaksAiTextDetectionResponseModel.php');
+include_once('responses/CopyleaksAiTextDetectionResultModel.php');
+include_once('responses/CopyleaksAiTextDetectionSummaryModel.php');

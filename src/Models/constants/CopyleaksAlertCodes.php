@@ -22,9 +22,20 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
-include_once('CopyleaksTextModerationConstants.php');
-include_once('CopyleaksTextModerationLanguages.php');
-include_once('CopyleaksAiImageDetectionModels.php');
-include_once('CopyleaksAlertCodes.php');
 
+namespace Copyleaks;
 
+/**
+ * Codes of the scan alerts sent in the completed webhook (notifications.alerts[].code).
+ * Alert severity ranges from 0 (very low) to 4 (very high).
+ */
+class CopyleaksAlertCodes
+{
+    /**
+     * AI-generated text was detected in the scanned text (category 2, severity 4).
+     * The alert's additionalData holds the AI text detection result as a JSON string.
+     */
+    public const SUSPECTED_AI_TEXT = "suspected-ai-text";
+}
+
+?>
