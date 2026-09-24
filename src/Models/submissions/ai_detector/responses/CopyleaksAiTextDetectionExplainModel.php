@@ -49,7 +49,7 @@ class CopyleaksAiTextDetectionExplainModel
         }
 
         return new self(
-            isset($data['patterns']) ? CopyleaksAiTextDetectionPatternsModel::fromArray($data['patterns']) : null
+            is_array($data['patterns'] ?? null) ? CopyleaksAiTextDetectionPatternsModel::fromArray($data['patterns']) : null
         );
     }
 }

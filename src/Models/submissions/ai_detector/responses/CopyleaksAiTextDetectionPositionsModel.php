@@ -64,9 +64,22 @@ class CopyleaksAiTextDetectionPositionsModel
         }
 
         return new self(
-            $data['starts'] ?? $data['Starts'] ?? [],
-            $data['lengths'] ?? $data['Lengths'] ?? [],
-            $data['groupIds'] ?? null
+            self::listValue($data, 'starts', 'Starts') ?? [],
+            self::listValue($data, 'lengths', 'Lengths') ?? [],
+            is_array($data['groupIds'] ?? null) ? $data['groupIds'] : null
         );
+    }
+
+    /**
+     * Returns the camelCase value when it is an array, otherwise the PascalCase value when it is an array,
+     * otherwise null.
+     */
+    private static function listValue(array $data, string $camelKey, string $pascalKey): ?array
+    {
+        if (is_array($data[$camelKey] ?? null)) {
+            return $data[$camelKey];
+        }
+
+        return is_array($data[$pascalKey] ?? null) ? $data[$pascalKey] : null;
     }
 }

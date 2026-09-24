@@ -37,11 +37,13 @@ class CompletedWebhook extends StatusWebhook
 
     /**
      * Returns the first 'suspected-ai-text' alert (CopyleaksAlertCodes::SUSPECTED_AI_TEXT) of the scan.
+     * The alerts can be Alerts instances (as fromArray() builds them) or raw alert arrays;
+     * a matching raw array is converted with Alerts::fromArray().
      * A null alert means the scan produced no AI alert. It does not by itself prove that AI detection ran:
-     * check the scan's aiGeneratedText.detect setting and the category 2 failure alerts
+     * check the scan's aiGeneratedText.detect setting and the other AI alert codes in CopyleaksAlertCodes
      * (for example CopyleaksAlertCodes::AI_DETECTION_FAILED).
      *
-     * @return Alerts|null
+     * @return Alerts|null null when there are no notifications or alerts, or no 'suspected-ai-text' alert.
      */
     public function getAIDetectionAlert(): ?Alerts
     {
@@ -50,8 +52,12 @@ class CompletedWebhook extends StatusWebhook
         }
 
         foreach ($this->notifications->alerts as $alert) {
-            if ($alert instanceof Alerts && $alert->code === CopyleaksAlertCodes::SUSPECTED_AI_TEXT) {
-                return $alert;
+            if ($alert instanceof Alerts) {
+                if ($alert->code === CopyleaksAlertCodes::SUSPECTED_AI_TEXT) {
+                    return $alert;
+                }
+            } elseif (is_array($alert) && ($alert['code'] ?? null) === CopyleaksAlertCodes::SUSPECTED_AI_TEXT) {
+                return Alerts::fromArray($alert);
             }
         }
 
@@ -60,11 +66,17 @@ class CompletedWebhook extends StatusWebhook
 
     /**
      * Decodes the AI text detection result of the 'suspected-ai-text' alert.
-     * Same as getAIDetectionAlert()->getAIDetectionResult(), and null when there is no such alert.
-     * It is also null when the alert has no additionalData, so use getAIDetectionAlert() to check for the alert.
+     * Same as getAIDetectionAlert()->getAIDetectionResult().
      *
-     * @return CopyleaksAiTextDetectionResponseModel|null
-     * @throws \JsonException when the alert's additionalData is not valid JSON.
+     * Returns null when:
+     * - there is no 'suspected-ai-text' alert (see getAIDetectionAlert());
+     * - the alert's additionalData is null, empty, or only NUL and ASCII whitespace characters;
+     * - the alert's additionalData is valid JSON but not a JSON object.
+     * Use getAIDetectionAlert() to tell a missing alert from an alert without a result.
+     *
+     * @return CopyleaksAiTextDetectionResponseModel|null the decoded result, or null in the cases listed above.
+     * @throws \JsonException when the alert's trimmed additionalData is not valid JSON, or is nested deeper than
+     * 512 levels.
      */
     public function getAIDetectionResult(): ?CopyleaksAiTextDetectionResponseModel
     {

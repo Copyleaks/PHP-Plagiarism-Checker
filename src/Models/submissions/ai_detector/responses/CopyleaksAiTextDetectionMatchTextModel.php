@@ -57,8 +57,8 @@ class CopyleaksAiTextDetectionMatchTextModel
         }
 
         return new self(
-            isset($data['chars']) ? CopyleaksAiTextDetectionPositionsModel::fromArray($data['chars']) : null,
-            isset($data['words']) ? CopyleaksAiTextDetectionPositionsModel::fromArray($data['words']) : null
+            is_array($data['chars'] ?? null) ? CopyleaksAiTextDetectionPositionsModel::fromArray($data['chars']) : null,
+            is_array($data['words'] ?? null) ? CopyleaksAiTextDetectionPositionsModel::fromArray($data['words']) : null
         );
     }
 }

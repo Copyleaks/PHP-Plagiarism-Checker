@@ -34,12 +34,14 @@ class CopyleaksAiTextDetectionSummaryModel
     /**
      * Portion of the text classified as human.
      * Range: 0.0-1.0
+     * 0.0 when missing or not a number.
      */
     public float $human;
 
     /**
      * Portion of the text classified as AI.
      * Range: 0.0-1.0
+     * 0.0 when missing or not a number.
      */
     public float $ai;
 
@@ -56,8 +58,21 @@ class CopyleaksAiTextDetectionSummaryModel
         }
 
         return new self(
-            $data['human'] ?? $data['Human'] ?? 0.0,
-            $data['ai'] ?? $data['Ai'] ?? 0.0
+            self::numberValue($data, 'human', 'Human'),
+            self::numberValue($data, 'ai', 'Ai')
         );
+    }
+
+    /**
+     * Returns the camelCase value when it is numeric, otherwise the PascalCase value when it is numeric,
+     * otherwise 0.0.
+     */
+    private static function numberValue(array $data, string $camelKey, string $pascalKey): float
+    {
+        if (is_numeric($data[$camelKey] ?? null)) {
+            return (float) $data[$camelKey];
+        }
+
+        return is_numeric($data[$pascalKey] ?? null) ? (float) $data[$pascalKey] : 0.0;
     }
 }

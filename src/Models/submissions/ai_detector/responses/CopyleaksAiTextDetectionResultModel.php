@@ -34,17 +34,19 @@ class CopyleaksAiTextDetectionResultModel
 {
     /**
      * Classification of the segment: 1 = human, 2 = AI.
+     * 0 when missing or not a number.
      */
     public int $classification;
 
     /**
      * Probability of the classification.
-     * Deprecated by the server and may be removed; null when missing.
+     * Deprecated by the server and may be removed; null when missing or not a number.
      */
     public ?float $probability;
 
     /**
      * Positions of the segment in the scanned text.
+     * Items that are not JSON objects are skipped.
      * @var CopyleaksAiTextDetectionMatchModel[]
      */
     public array $matches;
@@ -62,13 +64,21 @@ class CopyleaksAiTextDetectionResultModel
             return null;
         }
 
-        $matches = isset($data['matches']) && is_array($data['matches'])
-            ? array_map(fn($item) => CopyleaksAiTextDetectionMatchModel::fromArray($item), $data['matches'])
-            : [];
+        $matches = [];
+        if (is_array($data['matches'] ?? null)) {
+            foreach ($data['matches'] as $item) {
+                if (is_array($item)) {
+                    $matches[] = CopyleaksAiTextDetectionMatchModel::fromArray($item);
+                }
+            }
+        }
+
+        $classification = $data['classification'] ?? null;
+        $probability = $data['probability'] ?? null;
 
         return new self(
-            $data['classification'] ?? 0,
-            $data['probability'] ?? null,
+            is_numeric($classification) ? (int) $classification : 0,
+            is_numeric($probability) ? (float) $probability : null,
             $matches
         );
     }

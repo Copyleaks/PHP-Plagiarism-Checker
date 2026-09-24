@@ -73,10 +73,10 @@ class CopyleaksAiTextDetectionPatternStatisticsModel
         }
 
         return new self(
-            $data['aiCount'] ?? [],
-            $data['humanCount'] ?? [],
-            $data['proportion'] ?? [],
-            $data['source'] ?? []
+            is_array($data['aiCount'] ?? null) ? $data['aiCount'] : [],
+            is_array($data['humanCount'] ?? null) ? $data['humanCount'] : [],
+            is_array($data['proportion'] ?? null) ? $data['proportion'] : [],
+            is_array($data['source'] ?? null) ? $data['source'] : []
         );
     }
 }

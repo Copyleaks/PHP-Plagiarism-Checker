@@ -78,12 +78,19 @@ class Alerts
      * Decodes the AI text detection result carried by this alert.
      * Only the 'suspected-ai-text' alert (CopyleaksAlertCodes::SUSPECTED_AI_TEXT, category 2, severity 4)
      * carries it: its additionalData is the result encoded as a JSON string.
-     * Trailing NUL characters and whitespace are removed before decoding.
+     * Trailing NUL (\0) and ASCII whitespace (\t \n \v \f \r and space) characters are removed before decoding.
      * The raw string stays available in $additionalData.
      *
-     * @return CopyleaksAiTextDetectionResponseModel|null null when this is not the 'suspected-ai-text' alert,
-     * or when additionalData is missing or empty.
-     * @throws \JsonException when additionalData is not valid JSON.
+     * Returns null when:
+     * - the alert code is not 'suspected-ai-text' (the match is exact and case-sensitive);
+     * - additionalData is null, empty, or only NUL and ASCII whitespace characters;
+     * - additionalData is valid JSON but not a JSON object (an array, a number, a string, true, false or null).
+     * Otherwise it returns the decoded model. Fields with an unexpected type are read like missing fields,
+     * so a valid JSON object never throws (see CopyleaksAiTextDetectionResponseModel::fromArray()).
+     *
+     * @return CopyleaksAiTextDetectionResponseModel|null the decoded result, or null in the cases listed above.
+     * @throws \JsonException when the trimmed additionalData is not valid JSON, or is nested deeper than 512 levels.
+     * This is the only exception it throws.
      */
     public function getAIDetectionResult(): ?CopyleaksAiTextDetectionResponseModel
     {
@@ -91,14 +98,20 @@ class Alerts
             return null;
         }
 
-        // rtrim removes the trailing characters in one linear pass (no regex).
-        $json = rtrim($this->additionalData, "\0 \t\n\r\x0B");
+        // rtrim with an explicit ASCII character list: one linear pass, no regex, not Unicode-aware.
+        $json = rtrim($this->additionalData, "\0\t\n\v\f\r ");
         if ($json === '') {
             return null;
         }
 
         $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
 
-        return is_array($data) ? CopyleaksAiTextDetectionResponseModel::fromArray($data) : null;
+        // json_decode turns both {} and [] into a PHP array, so check that the JSON text itself is an object.
+        // Valid JSON can only start with JSON whitespace (space, \t, \n, \r) before its first value.
+        if (!is_array($data) || $json[strspn($json, " \t\n\r")] !== '{') {
+            return null;
+        }
+
+        return CopyleaksAiTextDetectionResponseModel::fromArray($data);
     }
 }

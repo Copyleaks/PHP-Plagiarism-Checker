@@ -38,11 +38,13 @@ class CopyleaksAiTextDetectionResponseModel
 {
     /**
      * The version of the AI detection model used for analysis.
+     * null when missing.
      */
-    public string $modelVersion;
+    public ?string $modelVersion;
 
     /**
      * Segments of the text, each classified as human or AI.
+     * Items that are not JSON objects are skipped.
      * @var CopyleaksAiTextDetectionResultModel[]
      */
     public array $results;
@@ -71,7 +73,7 @@ class CopyleaksAiTextDetectionResponseModel
     public ?CopyleaksAiTextDetectionExplainModel $explain;
 
     public function __construct(
-        string $modelVersion,
+        ?string $modelVersion = null,
         array $results = [],
         ?CopyleaksAiTextDetectionSummaryModel $summary = null,
         ?int $translationProvider = null,
@@ -86,23 +88,46 @@ class CopyleaksAiTextDetectionResponseModel
         $this->explain = $explain;
     }
 
+    /**
+     * Builds the model from a decoded JSON object (an associative array).
+     * Unknown keys are ignored. A value with an unexpected type is read like a missing value
+     * (null, [] for lists), and numeric values are cast to the property type, so this never throws a TypeError.
+     *
+     * @param array|null $data the decoded JSON object
+     * @return CopyleaksAiTextDetectionResponseModel|null null when $data is null
+     */
     public static function fromArray(?array $data): ?self
     {
         if (is_null($data)) {
             return null;
         }
 
-        $results = isset($data['results']) && is_array($data['results'])
-            ? array_map(fn($item) => CopyleaksAiTextDetectionResultModel::fromArray($item), $data['results'])
-            : [];
+        $results = [];
+        if (is_array($data['results'] ?? null)) {
+            foreach ($data['results'] as $item) {
+                if (is_array($item)) {
+                    $results[] = CopyleaksAiTextDetectionResultModel::fromArray($item);
+                }
+            }
+        }
+
+        $translationProvider = $data['translationProvider'] ?? null;
 
         return new self(
-            $data['modelVersion'] ?? '',
+            self::stringValue($data['modelVersion'] ?? null),
             $results,
-            isset($data['summary']) ? CopyleaksAiTextDetectionSummaryModel::fromArray($data['summary']) : null,
-            $data['translationProvider'] ?? null,
-            $data['translation'] ?? null,
-            isset($data['explain']) ? CopyleaksAiTextDetectionExplainModel::fromArray($data['explain']) : null
+            is_array($data['summary'] ?? null) ? CopyleaksAiTextDetectionSummaryModel::fromArray($data['summary']) : null,
+            is_numeric($translationProvider) ? (int) $translationProvider : null,
+            self::stringValue($data['translation'] ?? null),
+            is_array($data['explain'] ?? null) ? CopyleaksAiTextDetectionExplainModel::fromArray($data['explain']) : null
         );
+    }
+
+    /**
+     * Returns a string or a number as a string, and null for any other value.
+     */
+    private static function stringValue($value): ?string
+    {
+        return is_string($value) || is_int($value) || is_float($value) ? (string) $value : null;
     }
 }

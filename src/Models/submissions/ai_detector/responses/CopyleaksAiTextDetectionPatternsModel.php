@@ -67,9 +67,9 @@ class CopyleaksAiTextDetectionPatternsModel
         }
 
         return new self(
-            isset($data['statistics']) ? CopyleaksAiTextDetectionPatternStatisticsModel::fromArray($data['statistics']) : null,
-            isset($data['text']) ? CopyleaksAiTextDetectionPatternMatchModel::fromArray($data['text']) : null,
-            isset($data['html']) ? CopyleaksAiTextDetectionPatternMatchModel::fromArray($data['html']) : null
+            is_array($data['statistics'] ?? null) ? CopyleaksAiTextDetectionPatternStatisticsModel::fromArray($data['statistics']) : null,
+            is_array($data['text'] ?? null) ? CopyleaksAiTextDetectionPatternMatchModel::fromArray($data['text']) : null,
+            is_array($data['html'] ?? null) ? CopyleaksAiTextDetectionPatternMatchModel::fromArray($data['html']) : null
         );
     }
 }
