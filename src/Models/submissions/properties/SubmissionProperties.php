@@ -121,10 +121,20 @@ class SubmissionProperties
    */
   public ?AIGeneratedText $aiGeneratedText;
 
-  /** The PDF report will be generated in this language: en, es, de, fr, it or pt. */
+  /**
+   * The language the PDF report is generated in: 'en', 'es', 'pt', 'fr', 'de' or 'it'.
+   * Values are lowercase and case-sensitive ('EN' or 'en-US' are rejected by the server).
+   * Only takes effect when pdf->create is true.
+   * Leave null to get the server default ('en').
+   */
   public ?string $displayLanguage;
 
-  /** Check inner properties for more details. */
+  /**
+   * AI Source Match: identifies online sources suspected of containing AI-generated text.
+   * Currently only applies to documents detected as English.
+   * Leave null to get the server default (disabled).
+   * Check inner properties for more details.
+   */
   public ?AISourceMatch $aiSourceMatch;
 
   /**
@@ -146,8 +156,8 @@ class SubmissionProperties
    *@param ScanMethodAlgorithm $scanMethodAlgorithm - Choose the algorithm goal. You can set this value depending on your use-case.
    *@param CustomMetadata[] $customMetadata - Add custom properties that will be attached to your document in a Copyleaks repository.
    *@param AIGeneratedText $aiGeneratedText - Check inner properties for more details.
-   *@param string $displayLanguage - The PDF report will be generated in this language: en, es, de, fr, it or pt.
-   *@param AISourceMatch $aiSourceMatch - Check inner properties for more details.
+   *@param string $displayLanguage - The language the PDF report is generated in: 'en', 'es', 'pt', 'fr', 'de' or 'it' (lowercase, case-sensitive). Only takes effect when pdf->create is true. Leave null to get the server default ('en').
+   *@param AISourceMatch $aiSourceMatch - AI Source Match settings. Currently only applies to documents detected as English. Leave null to get the server default (disabled). Check inner properties for more details.
    */
   public function __construct(
     SubmissionWebhooks $webhooks,

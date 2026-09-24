@@ -27,10 +27,16 @@ namespace Copyleaks;
 
 class AISourceMatch
 {
-  /** Activates identification of online sources suspected of containing AI-generated text. */
+  /**
+   * Activates identification of online sources suspected of containing AI-generated text.
+   * Currently only applies to documents detected as English.
+   * Leave null to get the server default (false).
+   */
   public ?bool $enable;
 
-  /** @param bool $enable Activates identification of online sources suspected of containing AI-generated text. */
+  /**
+   *@param bool $enable Activates identification of online sources suspected of containing AI-generated text. Currently only applies to documents detected as English. Leave null to get the server default (false).
+   */
   public function __construct(
     ?bool $enable = null)
   {
