@@ -25,22 +25,21 @@
 
 namespace Copyleaks;
 
-include_once('SubmissionProperties.php');
+class AISourceMatch
+{
+  /**
+   * Activates identification of online sources suspected of containing AI-generated text.
+   * Currently only applies to documents detected as English.
+   * Leave null to get the server default (false).
+   */
+  public ?bool $enable;
 
-include_once('Actions.php');
-include_once('AIGeneratedText.php');
-include_once('AISourceMatch.php');
-include_once('Author.php');
-include_once('CopyleaksDB.php');
-include_once('DomainsMode.php');
-include_once('Exclude.php');
-include_once('Filter.php');
-include_once('Indexing.php');
-include_once('PdfProperties.php');
-include_once('Repository.php');
-include_once('Scanning.php');
-include_once('ScanningExclude.php');
-include_once('ScanningRepository.php');
-include_once('SensitiveDataProtection.php');
-include_once('SubmissionProperties.php');
-include_once('Webhooks.php');
+  /**
+   *@param bool $enable Activates identification of online sources suspected of containing AI-generated text. Currently only applies to documents detected as English. Leave null to get the server default (false).
+   */
+  public function __construct(
+    ?bool $enable = null)
+  {
+    $this->enable = $enable;
+  }
+}
