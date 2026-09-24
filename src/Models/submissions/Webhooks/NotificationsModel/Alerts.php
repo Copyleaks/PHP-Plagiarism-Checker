@@ -73,4 +73,32 @@ class Alerts
             $data['additionalData'] ?? null
         );
     }
+
+    /**
+     * Decodes the AI text detection result carried by this alert.
+     * Only the 'suspected-ai-text' alert (CopyleaksAlertCodes::SUSPECTED_AI_TEXT, category 2, severity 4)
+     * carries it: its additionalData is the result encoded as a JSON string.
+     * Trailing NUL characters and whitespace are removed before decoding.
+     * The raw string stays available in $additionalData.
+     *
+     * @return CopyleaksAiTextDetectionResponseModel|null null when this is not the 'suspected-ai-text' alert,
+     * or when additionalData is missing or empty.
+     * @throws \JsonException when additionalData is not valid JSON.
+     */
+    public function getAIDetectionResult(): ?CopyleaksAiTextDetectionResponseModel
+    {
+        if ($this->code !== CopyleaksAlertCodes::SUSPECTED_AI_TEXT || $this->additionalData === null) {
+            return null;
+        }
+
+        // rtrim removes the trailing characters in one linear pass (no regex).
+        $json = rtrim($this->additionalData, "\0 \t\n\r\x0B");
+        if ($json === '') {
+            return null;
+        }
+
+        $data = json_decode($json, true, 512, JSON_THROW_ON_ERROR);
+
+        return is_array($data) ? CopyleaksAiTextDetectionResponseModel::fromArray($data) : null;
+    }
 }

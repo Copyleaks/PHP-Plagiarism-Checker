@@ -25,16 +25,38 @@
 
 namespace Copyleaks;
 
-include_once('CopyleaksAIDetectionSubmissionModel.php');
-include_once('CopyleaksNaturalLanguageSubmissionModel.php');
+/**
+ * Codes of the scan alerts sent in the completed webhook (notifications.alerts[].code).
+ * All codes below belong to alert category 2 (AI content detection).
+ * Alert severity ranges from 0 (very low) to 4 (very high).
+ */
+class CopyleaksAlertCodes
+{
+    /**
+     * AI-generated text was detected in the scanned text (category 2, severity 4).
+     * The alert's additionalData holds the AI text detection result as a JSON string.
+     */
+    public const SUSPECTED_AI_TEXT = "suspected-ai-text";
 
-include_once('responses/CopyleaksAiTextDetectionExplainModel.php');
-include_once('responses/CopyleaksAiTextDetectionMatchModel.php');
-include_once('responses/CopyleaksAiTextDetectionMatchTextModel.php');
-include_once('responses/CopyleaksAiTextDetectionPatternMatchModel.php');
-include_once('responses/CopyleaksAiTextDetectionPatternStatisticsModel.php');
-include_once('responses/CopyleaksAiTextDetectionPatternsModel.php');
-include_once('responses/CopyleaksAiTextDetectionPositionsModel.php');
-include_once('responses/CopyleaksAiTextDetectionResponseModel.php');
-include_once('responses/CopyleaksAiTextDetectionResultModel.php');
-include_once('responses/CopyleaksAiTextDetectionSummaryModel.php');
+    /**
+     * AI text detection failed.
+     */
+    public const AI_DETECTION_FAILED = "ai-detection-failed";
+
+    /**
+     * AI text detection did not run because the language of the text is not supported.
+     */
+    public const AI_DETECTION_LANG_NOT_SUPPORTED = "ai-detection-lang-not-supported";
+
+    /**
+     * AI text detection did not run because the text is too short.
+     */
+    public const AI_DETECTION_TEXT_TOO_SHORT = "ai-detection-text-too-short";
+
+    /**
+     * AI text detection did not run because the file type is not supported.
+     */
+    public const FILE_TYPE_NOT_SUPPORTED = "file-type-not-supported";
+}
+
+?>

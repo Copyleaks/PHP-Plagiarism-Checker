@@ -54,6 +54,14 @@ $app->post('/webhook/completed', function (Request $request, Response $response)
     $statusWebhook = CompletedWebhook::fromArray($data);
     #var_dump($statusWebhook);
     logWebhook('completed', $statusWebhook);
+    // read the AI text detection result from the 'suspected-ai-text' alert, if the scan produced one
+    if ($statusWebhook->getAIDetectionAlert() !== null) {
+        try {
+            logWebhook('completed-ai-detection', $statusWebhook->getAIDetectionResult());
+        } catch (\JsonException $e) {
+            logWebhook('completed-ai-detection', ['error' => $e->getMessage()]);
+        }
+    }
     // Create a response array
     $responseData = [
         'status' => 'success',
