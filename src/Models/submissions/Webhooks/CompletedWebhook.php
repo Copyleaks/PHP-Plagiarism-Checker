@@ -39,9 +39,7 @@ class CompletedWebhook extends StatusWebhook
      * Returns the first 'suspected-ai-text' alert (CopyleaksAlertCodes::SUSPECTED_AI_TEXT) of the scan.
      * The alerts can be Alerts instances (as fromArray() builds them) or raw alert arrays;
      * a matching raw array is converted with Alerts::fromArray().
-     * A null alert means the scan produced no AI alert. It does not by itself prove that AI detection ran:
-     * check the scan's aiGeneratedText.detect setting and the other AI alert codes in CopyleaksAlertCodes
-     * (for example CopyleaksAlertCodes::AI_DETECTION_FAILED).
+     * Returns null when the completed webhook contains no suspected-ai-text alert.
      *
      * @return Alerts|null null when there are no notifications or alerts, or no 'suspected-ai-text' alert.
      */

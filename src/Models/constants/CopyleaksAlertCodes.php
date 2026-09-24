@@ -27,7 +27,6 @@ namespace Copyleaks;
 
 /**
  * Codes of the scan alerts sent in the completed webhook (notifications.alerts[].code).
- * All codes below belong to alert category 2 (AI content detection).
  * Alert severity ranges from 0 (very low) to 4 (very high).
  */
 class CopyleaksAlertCodes
@@ -37,26 +36,6 @@ class CopyleaksAlertCodes
      * The alert's additionalData holds the AI text detection result as a JSON string.
      */
     public const SUSPECTED_AI_TEXT = "suspected-ai-text";
-
-    /**
-     * AI text detection failed.
-     */
-    public const AI_DETECTION_FAILED = "ai-detection-failed";
-
-    /**
-     * AI text detection did not run because the language of the text is not supported.
-     */
-    public const AI_DETECTION_LANG_NOT_SUPPORTED = "ai-detection-lang-not-supported";
-
-    /**
-     * AI text detection did not run because the text is too short.
-     */
-    public const AI_DETECTION_TEXT_TOO_SHORT = "ai-detection-text-too-short";
-
-    /**
-     * AI text detection did not run because the file type is not supported.
-     */
-    public const FILE_TYPE_NOT_SUPPORTED = "file-type-not-supported";
 }
 
 ?>
