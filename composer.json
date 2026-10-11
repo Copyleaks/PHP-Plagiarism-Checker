@@ -1,10 +1,13 @@
 {
-  "name": "copyleaks/php-plagiarism-checker",
-  "description": "Copyleaks detects online plagiarism and checks content distribution. Use Copyleaks to find out if textual content is original and where it has been used before. This package shows how to integrate with the Copyleaks cloud to search for copyright infringement.",
+  "name": "copyleaks/copyleaks",
+  "description": "The official Copyleaks PHP SDK. Copyleaks is the integrity layer for your tech stack that helps organizations and individuals understand what's human-made and original, AI-generated, or manipulated across text, image, audio and video. This SDK covers AI Text Detection, AI Image Detection, Plagiarism Checker, Grammar Checker and Text Moderation.",
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
     "php": ">=7.4.0"
+  },
+  "replace": {
+    "copyleaks/php-plagiarism-checker": "self.version"
   },
   "keywords": [
     "plagiarism",
