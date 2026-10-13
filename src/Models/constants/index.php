@@ -25,5 +25,6 @@
 include_once('CopyleaksTextModerationConstants.php');
 include_once('CopyleaksTextModerationLanguages.php');
 include_once('CopyleaksAiImageDetectionModels.php');
+include_once('CopyleaksAlertCodes.php');
 
 
