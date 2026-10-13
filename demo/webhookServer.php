@@ -54,6 +54,25 @@ $app->post('/webhook/completed', function (Request $request, Response $response)
     $statusWebhook = CompletedWebhook::fromArray($data);
     #var_dump($statusWebhook);
     logWebhook('completed', $statusWebhook);
+    // read the AI text detection result from the 'suspected-ai-text' alert, if the scan produced one
+    $aiAlert = $statusWebhook->getAIDetectionAlert(); // null when the scan produced no AI alert
+    if ($aiAlert !== null) {
+        try {
+            // null when the alert has no data; throws \JsonException when the data is not valid JSON
+            $aiResult = $aiAlert->getAIDetectionResult();
+            if ($aiResult !== null && $aiResult->summary !== null) {
+                logWebhook('completed-ai-detection', [
+                    'modelVersion' => $aiResult->modelVersion,
+                    'ai' => $aiResult->summary->ai,
+                    'human' => $aiResult->summary->human,
+                    'result' => $aiResult
+                ]);
+            }
+        } catch (\JsonException $e) {
+            // log it and still acknowledge the webhook with 200 below, so Copyleaks does not retry it
+            logWebhook('completed-ai-detection', ['error' => $e->getMessage()]);
+        }
+    }
     // Create a response array
     $responseData = [
         'status' => 'success',
