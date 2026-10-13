@@ -122,6 +122,22 @@ class SubmissionProperties
   public ?AIGeneratedText $aiGeneratedText;
 
   /**
+   * The language the PDF report is generated in: 'en', 'es', 'pt', 'fr', 'de' or 'it'.
+   * Values are lowercase and case-sensitive ('EN' or 'en-US' are rejected by the server).
+   * Only takes effect when pdf->create is true.
+   * Leave null to get the server default ('en').
+   */
+  public ?string $displayLanguage;
+
+  /**
+   * AI Source Match: identifies online sources suspected of containing AI-generated text.
+   * Currently only applies to documents detected as English.
+   * Leave null to get the server default (disabled).
+   * Check inner properties for more details.
+   */
+  public ?AISourceMatch $aiSourceMatch;
+
+  /**
    *@param SubmissionWebhooks $webhooks - Check inner properties for more details.
    *@param bool $includeHtml - By default, Copyleaks will present the report in text format. If set to true, Copyleaks will also include html format.
    *@param string $developerPayload - Add custom developer payload that will then be provided on the webhooks. https://api.copyleaks.com/documentation/v3/webhooks
@@ -140,6 +156,8 @@ class SubmissionProperties
    *@param ScanMethodAlgorithm $scanMethodAlgorithm - Choose the algorithm goal. You can set this value depending on your use-case.
    *@param CustomMetadata[] $customMetadata - Add custom properties that will be attached to your document in a Copyleaks repository.
    *@param AIGeneratedText $aiGeneratedText - Check inner properties for more details.
+   *@param string $displayLanguage - The language the PDF report is generated in: 'en', 'es', 'pt', 'fr', 'de' or 'it' (lowercase, case-sensitive). Only takes effect when pdf->create is true. Leave null to get the server default ('en').
+   *@param AISourceMatch $aiSourceMatch - AI Source Match settings. Currently only applies to documents detected as English. Leave null to get the server default (disabled). Check inner properties for more details.
    */
   public function __construct(
     SubmissionWebhooks $webhooks,
@@ -159,7 +177,9 @@ class SubmissionProperties
     ?SubmissionSensitiveData $sensitiveDataProtection = null,
     ?int $scanMethodAlgorithm = null,
     ?array $customMetadata = null,
-    ?AIGeneratedText $aiGeneratedText = null
+    ?AIGeneratedText $aiGeneratedText = null,
+    ?string $displayLanguage = null,
+    ?AISourceMatch $aiSourceMatch = null
   ) {
     $this->webhooks = $webhooks;
     $this->includeHtml = $includeHtml;
@@ -179,5 +199,7 @@ class SubmissionProperties
     $this->scanMethodAlgorithm = $scanMethodAlgorithm;
     $this->customMetadata = $customMetadata;
     $this->aiGeneratedText = $aiGeneratedText;
+    $this->displayLanguage = $displayLanguage;
+    $this->aiSourceMatch = $aiSourceMatch;
   }
 }

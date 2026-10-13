@@ -29,6 +29,7 @@ include_once('SubmissionProperties.php');
 
 include_once('Actions.php');
 include_once('AIGeneratedText.php');
+include_once('AISourceMatch.php');
 include_once('Author.php');
 include_once('CopyleaksDB.php');
 include_once('DomainsMode.php');
