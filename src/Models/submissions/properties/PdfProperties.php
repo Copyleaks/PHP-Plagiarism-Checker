@@ -49,6 +49,15 @@ class SubmissionPDF
    * PDF version to generate
    */
   public ?int $version;
+
+  /**
+   * Which version of the PDF report to generate: 'v1', 'v2', 'v3' or 'latest'.
+   * Values are lowercase and case-sensitive ('V3' or 'Latest' are rejected by the server).
+   * Overrides the legacy $version property.
+   * Only takes effect when $create is true.
+   * When null, the server falls back to $version if set, otherwise to its default.
+   */
+  public ?string $reportVersion;
   
   /**
    * Check inner properties for more details.
@@ -62,6 +71,7 @@ class SubmissionPDF
    *@param bool $rtl When set to true the text in the report will be aligned from right to left.
    *@param PdfReportVersion $version PDF version to generate
    *@param ReportCustomizationColors $colors heck inner properties for more details.
+   *@param string $reportVersion Which version of the PDF report to generate: 'v1', 'v2', 'v3' or 'latest' (lowercase, case-sensitive). Overrides the legacy version property. Only takes effect when $create is true. When null, the server falls back to $version if set, otherwise to its default.
 
    */
   public function __construct(
@@ -70,7 +80,8 @@ class SubmissionPDF
     string $largeLogo,
     bool $rtl,
     ?int $version = null,
-    ?ReportCustomizationColors $colors = null
+    ?ReportCustomizationColors $colors = null,
+    ?string $reportVersion = null
   ) {
     $this->create = $create;
     $this->title = $title;
@@ -78,5 +89,6 @@ class SubmissionPDF
     $this->rtl = $rtl; 
     $this->version = $version; 
     $this->colors = $colors; 
+    $this->reportVersion = $reportVersion;
   }
 }
