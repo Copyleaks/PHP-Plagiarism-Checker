@@ -57,6 +57,13 @@ class HttpClientTest extends SdkTestCase
 
         CopyleaksConfig::SET_TIMEOUT(0);
         $this->assertSame(0, HttpClientService::buildOptions('GET', 'https://example.com', [])[CURLOPT_TIMEOUT_MS]);
+
+        // A tiny positive value never turns into 0, which curl reads as "no limit".
+        CopyleaksConfig::SET_CONNECT_TIMEOUT(0.0001);
+        CopyleaksConfig::SET_TIMEOUT(0.0001);
+        $options = HttpClientService::buildOptions('GET', 'https://example.com', []);
+        $this->assertSame(1, $options[CURLOPT_CONNECTTIMEOUT_MS]);
+        $this->assertSame(1, $options[CURLOPT_TIMEOUT_MS]);
     }
 
     public function testInvalidTimeoutsAreRejected(): void

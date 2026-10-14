@@ -136,8 +136,8 @@ class HttpClientService {
     $options = [
       CURLOPT_URL => $url,
       CURLOPT_RETURNTRANSFER => true,
-      CURLOPT_CONNECTTIMEOUT_MS => (int) round(CopyleaksConfig::GET_CONNECT_TIMEOUT() * 1000),
-      CURLOPT_TIMEOUT_MS => (int) round(CopyleaksConfig::GET_TIMEOUT() * 1000),
+      CURLOPT_CONNECTTIMEOUT_MS => self::milliseconds(CopyleaksConfig::GET_CONNECT_TIMEOUT()),
+      CURLOPT_TIMEOUT_MS => self::milliseconds(CopyleaksConfig::GET_TIMEOUT()),
       // Accept every compression the local libcurl supports and decompress the response automatically.
       CURLOPT_ENCODING => '',
     ];
@@ -187,6 +187,15 @@ class HttpClientService {
     $options[CURLOPT_HTTPHEADER] = $headerLines;
 
     return $options;
+  }
+
+  /**
+   * Converts seconds to curl milliseconds. 0 stays 0 (no limit); any positive value is at least 1 ms,
+   * because 0 would mean "no limit" to curl.
+   */
+  private static function milliseconds($seconds): int
+  {
+    return $seconds > 0 ? max(1, (int) round($seconds * 1000)) : 0;
   }
 
   /**
