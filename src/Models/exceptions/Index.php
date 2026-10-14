@@ -22,7 +22,8 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
-include_once('AuthExipredException.php');
-include_once('CommandException.php');
-include_once('RateLimitException.php');
-include_once('UnderMaintenanceException.php');
+include_once(__DIR__ . '/HttpResponseDetails.php');
+include_once(__DIR__ . '/AuthExipredException.php');
+include_once(__DIR__ . '/CommandException.php');
+include_once(__DIR__ . '/RateLimitException.php');
+include_once(__DIR__ . '/UnderMaintenanceException.php');

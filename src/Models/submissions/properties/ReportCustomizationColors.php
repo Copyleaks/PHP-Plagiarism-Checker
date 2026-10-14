@@ -48,6 +48,14 @@ class ReportCustomizationColors
      * The highlight color for related meaning matches
      */
   public ?string $relatedMeaning;
+    /**
+     * The highlight color for AI content detection
+     */
+  public ?string $aiDetection;
+    /**
+     * The highlight color for writing feedback (Grammar Checker)
+     */
+  public ?string $writingFeedback;
 
 
     /**
@@ -56,13 +64,17 @@ class ReportCustomizationColors
    *@param string $identical - The highlight color for identical matches
    *@param string $minorChanges - The highlight color for minor changes matches
    *@param string $relatedMeaning - The highlight color for related meaning matches
+   *@param string $aiDetection - The highlight color for AI content detection
+   *@param string $writingFeedback - The highlight color for writing feedback (Grammar Checker)
    */
   public function __construct(
     ?string $mainStrip = null, 
     ?string $titles = null, 
     ?string $identical = null, 
     ?string $minorChanges = null, 
-    ?string $relatedMeaning = null
+    ?string $relatedMeaning = null,
+    ?string $aiDetection = null,
+    ?string $writingFeedback = null
     )
   {
     $this->mainStrip = $mainStrip;
@@ -70,5 +82,7 @@ class ReportCustomizationColors
     $this->identical = $identical;
     $this->minorChanges = $minorChanges;
     $this->relatedMeaning = $relatedMeaning;
+    $this->aiDetection = $aiDetection;
+    $this->writingFeedback = $writingFeedback;
   }
 }

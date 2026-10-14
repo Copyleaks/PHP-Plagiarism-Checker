@@ -61,18 +61,35 @@ class CopyleaksAiImageDetectionResponseModel
      */
     public ?CopyleaksAiImageDetectionScannedDocumentModel $scannedDocument;
 
+    /**
+     * Whether the image was determined to contain AI-generated content. null when missing.
+     */
+    public ?bool $isAiDetected;
+
+    /**
+     * The objects found in the image, one entry per object.
+     * Only present when the request used objectDetection; null otherwise.
+     * Objects that were requested but not found are left out, so look entries up by $object.
+     * @var CopyleaksAiImageDetectedObjectModel[]|null
+     */
+    public ?array $detectedObjects;
+
     public function __construct(
         string $model,
         ?CopyleaksAiImageDetectionResultModel $result = null,
         ?CopyleaksAiImageDetectionSummaryModel $summary = null,
         ?CopyleaksAiImageDetectionImageInfoModel $imageInfo = null,
-        ?CopyleaksAiImageDetectionScannedDocumentModel $scannedDocument = null
+        ?CopyleaksAiImageDetectionScannedDocumentModel $scannedDocument = null,
+        ?bool $isAiDetected = null,
+        ?array $detectedObjects = null
     ) {
         $this->model = $model;
         $this->result = $result;
         $this->summary = $summary;
         $this->imageInfo = $imageInfo;
         $this->scannedDocument = $scannedDocument;
+        $this->isAiDetected = $isAiDetected;
+        $this->detectedObjects = $detectedObjects;
     }
 
     public static function fromArray(?array $data): ?self
@@ -81,12 +98,24 @@ class CopyleaksAiImageDetectionResponseModel
             return null;
         }
 
+        $detectedObjects = null;
+        if (is_array($data['detectedObjects'] ?? null)) {
+            $detectedObjects = [];
+            foreach ($data['detectedObjects'] as $item) {
+                if (is_array($item)) {
+                    $detectedObjects[] = CopyleaksAiImageDetectedObjectModel::fromArray($item);
+                }
+            }
+        }
+
         return new self(
             $data['model'] ?? '',
             isset($data['result']) ? CopyleaksAiImageDetectionResultModel::fromArray($data['result']) : null,
             isset($data['summary']) ? CopyleaksAiImageDetectionSummaryModel::fromArray($data['summary']) : null,
             isset($data['imageInfo']) ? CopyleaksAiImageDetectionImageInfoModel::fromArray($data['imageInfo']) : null,
-            isset($data['scannedDocument']) ? CopyleaksAiImageDetectionScannedDocumentModel::fromArray($data['scannedDocument']) : null
+            isset($data['scannedDocument']) ? CopyleaksAiImageDetectionScannedDocumentModel::fromArray($data['scannedDocument']) : null,
+            is_bool($data['isAiDetected'] ?? null) ? $data['isAiDetected'] : null,
+            $detectedObjects
         );
     }
 }

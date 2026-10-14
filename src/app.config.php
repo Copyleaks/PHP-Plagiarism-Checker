@@ -27,9 +27,26 @@ namespace Copyleaks;
 
 class CopyleaksConfig
 {
+  /**
+   * The version of this SDK, sent in the User-Agent header.
+   */
+  const SDK_VERSION = '5.3.0';
+
+  /**
+   * Default time limit, in seconds, for opening the connection to a Copyleaks server.
+   */
+  const DEFAULT_CONNECT_TIMEOUT = 10;
+
+  /**
+   * Default time limit, in seconds, for a whole request: connecting, sending the body and reading the response.
+   */
+  const DEFAULT_TIMEOUT = 120;
+
   private static $_API_SERVER_URI = 'https://api.copyleaks.com';
   private static $_IDENTITY_SERVER_URI = 'https://id.copyleaks.com';
-  private static $_USER_AGENT = 'php-sdk/3.0';
+  private static $_USER_AGENT = 'php-sdk/' . self::SDK_VERSION;
+  private static $_CONNECT_TIMEOUT = self::DEFAULT_CONNECT_TIMEOUT;
+  private static $_TIMEOUT = self::DEFAULT_TIMEOUT;
 
 
   public static function SET_API_SERVER_URI($url)
@@ -53,5 +70,49 @@ class CopyleaksConfig
   public static function GET_USER_AGENT()
   {
     return self::$_USER_AGENT;
+  }
+
+  /**
+   * Sets the time limit for opening the connection to a Copyleaks server.
+   * Applies to every request sent by this SDK in the current PHP process.
+   * @param int|float $seconds Seconds, greater than 0. Default: 10.
+   */
+  public static function SET_CONNECT_TIMEOUT($seconds)
+  {
+    if (!is_numeric($seconds) || $seconds <= 0) {
+      throw new \InvalidArgumentException('The connect timeout must be a number of seconds greater than 0.');
+    }
+    self::$_CONNECT_TIMEOUT = $seconds + 0;
+  }
+
+  /**
+   * @return int|float The time limit, in seconds, for opening the connection to a Copyleaks server.
+   */
+  public static function GET_CONNECT_TIMEOUT()
+  {
+    return self::$_CONNECT_TIMEOUT;
+  }
+
+  /**
+   * Sets the time limit for a whole request: connecting, sending the body and reading the response.
+   * A request that takes longer fails with a CommandException.
+   * Applies to every request sent by this SDK in the current PHP process.
+   * Raise it if you upload very large files over a slow connection.
+   * @param int|float $seconds Seconds, greater than 0, or 0 for no limit. Default: 120.
+   */
+  public static function SET_TIMEOUT($seconds)
+  {
+    if (!is_numeric($seconds) || $seconds < 0) {
+      throw new \InvalidArgumentException('The timeout must be a number of seconds, or 0 for no limit.');
+    }
+    self::$_TIMEOUT = $seconds + 0;
+  }
+
+  /**
+   * @return int|float The time limit, in seconds, for a whole request. 0 means no limit.
+   */
+  public static function GET_TIMEOUT()
+  {
+    return self::$_TIMEOUT;
   }
 }

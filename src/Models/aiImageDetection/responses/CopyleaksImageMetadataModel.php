@@ -45,14 +45,21 @@ class CopyleaksImageMetadataModel
      */
     public ?string $appOrDeviceUsed;
 
+    /**
+     * A summary of how the image was generated (if available).
+     */
+    public ?string $contentSummary;
+
     public function __construct(
         ?string $issuedTime = null,
         ?string $issuedBy = null,
-        ?string $appOrDeviceUsed = null
+        ?string $appOrDeviceUsed = null,
+        ?string $contentSummary = null
     ) {
         $this->issuedTime = $issuedTime;
         $this->issuedBy = $issuedBy;
         $this->appOrDeviceUsed = $appOrDeviceUsed;
+        $this->contentSummary = $contentSummary;
     }
 
     public static function fromArray(?array $data): ?self
@@ -64,7 +71,8 @@ class CopyleaksImageMetadataModel
         return new self(
             $data['issuedTime'] ?? null,
             $data['issuedBy'] ?? null,
-            $data['appOrDeviceUsed'] ?? null
+            $data['appOrDeviceUsed'] ?? null,
+            $data['contentSummary'] ?? null
         );
     }
 }

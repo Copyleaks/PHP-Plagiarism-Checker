@@ -25,8 +25,42 @@
 
 namespace Copyleaks;
 
+use InvalidArgumentException;
+
 class CopyleaksClientUtils
 {
+  /**
+   * Percent-encodes a value for use as one segment of a URL path, such as a scan ID.
+   */
+  public static function encodePathSegment(string $value): string
+  {
+    return rawurlencode($value);
+  }
+
+  /**
+   * The headers of a request authenticated with the given token.
+   * @return string[]
+   */
+  public static function authHeaders(CopyleaksAuthToken $authToken, bool $json = true): array
+  {
+    $headers = [];
+    if ($json) {
+      $headers[] = 'Content-Type: application/json';
+    }
+    $headers[] = 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT();
+    $headers[] = 'Authorization: Bearer ' . $authToken->accessToken;
+    return $headers;
+  }
+
+  /**
+   * The headers of a public request (no login needed).
+   * @return string[]
+   */
+  public static function publicHeaders(): array
+  {
+    return ['User-Agent: ' . CopyleaksConfig::GET_USER_AGENT()];
+  }
+
   public static function verifyAuthToken(CopyleaksAuthToken $authToken)
   {
     if (!isset($authToken)) {

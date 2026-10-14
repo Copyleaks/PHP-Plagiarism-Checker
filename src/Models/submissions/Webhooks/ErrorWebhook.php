@@ -17,8 +17,10 @@ class ErrorWebhook extends StatusWebhook
 
     public static function fromArray(array $data): self
     {
-        return new self(
+        $webhook = new self(
             isset($data['error']) ? Error::fromArray($data['error']) : null
         );
+        self::withBaseFields($webhook, $data);
+        return $webhook;
     }
 }

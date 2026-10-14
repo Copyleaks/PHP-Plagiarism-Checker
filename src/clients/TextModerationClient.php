@@ -31,13 +31,9 @@ class TextModerationClient{
 
     /**
      * Use Copyleaks Text Moderation to identify potentially harmful content across multiple categories.
-     * 
-     * * Exceptions:
-     * * CommandExceptions: Server reject the request. See response status code,
-     * headers and content for more info.
-     * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-     * We recommend to implement exponential backoff algorithm as described here:
-     * https://api.copyleaks.com/documentation/v3/exponential-backoff
+     * For more info: https://docs.copyleaks.com/reference/actions/text-moderation/check
+     *
+     * Exceptions: see the Copyleaks class.
      *
      * @param authToken  Copyleaks authentication token
      * @param scanId     Attach your own scan Id
@@ -54,13 +50,9 @@ class TextModerationClient{
   
         CopyleaksClientUtils::verifyAuthToken($authToken);
   
-        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/text-moderation/$scanId/check";
-        $authorization = "Authorization: Bearer " . $authToken->accessToken;
-        $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-  
-        ObjectFilter::filterNullProperties($submission);
-    
-        return HttpClientService::Execute('POST-JSON', $url, $headers, $submission);
+        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/text-moderation/" . CopyleaksClientUtils::encodePathSegment($scanId) . "/check";
+
+        return HttpClientService::Execute('POST-JSON', $url, CopyleaksClientUtils::authHeaders($authToken), $submission);
     }
  
 }

@@ -39,7 +39,7 @@ class SubmissionProperties
   public ?bool $includeHtml;
   /**
    * Add custom developer payload that will then be provided on the webhooks.
-   * https://api.copyleaks.com/documentation/v3/webhooks
+   * https://docs.copyleaks.com/reference/data-types/authenticity/webhooks/overview
    */
   public ?string $developerPayload;
   /**
@@ -138,9 +138,50 @@ class SubmissionProperties
   public ?AISourceMatch $aiSourceMatch;
 
   /**
+   * The IANA time zone of the scan time shown in the PDF report, for example 'America/New_York' (case-sensitive).
+   * Leave null to get the server default (the user's country time zone, or UTC).
+   */
+  public ?string $scanTimeZone;
+
+  /**
+   * The course of the submitted content, for analytics. Check inner properties for more details.
+   */
+  public ?SubmissionCourse $course;
+
+  /**
+   * The assignment of the submitted content, for analytics. Check inner properties for more details.
+   */
+  public ?SubmissionAssignment $assignment;
+
+  /**
+   * The institution of the submitted content, for analytics. Check inner properties for more details.
+   */
+  public ?SubmissionInstitution $institution;
+
+  /**
+   * Grammar Checker settings. Check inner properties for more details.
+   */
+  public ?SubmissionWritingFeedback $writingFeedback;
+
+  /**
+   * Gen-AI Overview settings. Check inner properties for more details.
+   */
+  public ?SubmissionOverview $overview;
+
+  /**
+   * Internal AI Source Match settings. Check inner properties for more details.
+   */
+  public ?InternalAISourceMatch $internalAiSourceMatch;
+
+  /**
+   * Citation Checker settings. Check inner properties for more details.
+   */
+  public ?SubmissionReferences $references;
+
+  /**
    *@param SubmissionWebhooks $webhooks - Check inner properties for more details.
    *@param bool $includeHtml - By default, Copyleaks will present the report in text format. If set to true, Copyleaks will also include html format.
-   *@param string $developerPayload - Add custom developer payload that will then be provided on the webhooks. https://api.copyleaks.com/documentation/v3/webhooks
+   *@param string $developerPayload - Add custom developer payload that will then be provided on the webhooks. https://docs.copyleaks.com/reference/data-types/authenticity/webhooks/overview
    *@param bool $sandbox - You can test the integration with the Copyleaks API for free using the sandbox mode. You will be able to submit content for a scan and get back mock results, simulating the way Copyleaks will work to make sure that you successfully integrated with the API. Turn off this feature on production environment.
    *@param int $expiration - Specify the maximum life span of a scan in hours on the Copyleaks servers. When expired, the scan will be deleted and will no longer be accessible.
    *@param int $sensitivityLevel - You can control the level of plagiarism sensitivity that will be identified according to the speed of the scan. If you prefer a faster scan with the results that contains the highest amount of plagiarism choose 1, and if a slower, more comprehensive scan, that will also detect the smallest instances choose 5.
@@ -158,6 +199,14 @@ class SubmissionProperties
    *@param AIGeneratedText $aiGeneratedText - Check inner properties for more details.
    *@param string $displayLanguage - The language the PDF report is generated in: 'en', 'es', 'pt', 'fr', 'de' or 'it' (lowercase, case-sensitive). Only takes effect when pdf->create is true. Leave null to get the server default ('en').
    *@param AISourceMatch $aiSourceMatch - AI Source Match settings. Currently only applies to documents detected as English. Leave null to get the server default (disabled). Check inner properties for more details.
+   *@param string $scanTimeZone - The IANA time zone of the scan time shown in the PDF report, for example 'America/New_York'. Leave null to get the server default.
+   *@param SubmissionCourse $course - The course of the submitted content, for analytics.
+   *@param SubmissionAssignment $assignment - The assignment of the submitted content, for analytics.
+   *@param SubmissionInstitution $institution - The institution of the submitted content, for analytics.
+   *@param SubmissionWritingFeedback $writingFeedback - Grammar Checker settings.
+   *@param SubmissionOverview $overview - Gen-AI Overview settings.
+   *@param InternalAISourceMatch $internalAiSourceMatch - Internal AI Source Match settings.
+   *@param SubmissionReferences $references - Citation Checker settings.
    */
   public function __construct(
     SubmissionWebhooks $webhooks,
@@ -179,7 +228,15 @@ class SubmissionProperties
     ?array $customMetadata = null,
     ?AIGeneratedText $aiGeneratedText = null,
     ?string $displayLanguage = null,
-    ?AISourceMatch $aiSourceMatch = null
+    ?AISourceMatch $aiSourceMatch = null,
+    ?string $scanTimeZone = null,
+    ?SubmissionCourse $course = null,
+    ?SubmissionAssignment $assignment = null,
+    ?SubmissionInstitution $institution = null,
+    ?SubmissionWritingFeedback $writingFeedback = null,
+    ?SubmissionOverview $overview = null,
+    ?InternalAISourceMatch $internalAiSourceMatch = null,
+    ?SubmissionReferences $references = null
   ) {
     $this->webhooks = $webhooks;
     $this->includeHtml = $includeHtml;
@@ -201,5 +258,13 @@ class SubmissionProperties
     $this->aiGeneratedText = $aiGeneratedText;
     $this->displayLanguage = $displayLanguage;
     $this->aiSourceMatch = $aiSourceMatch;
+    $this->scanTimeZone = $scanTimeZone;
+    $this->course = $course;
+    $this->assignment = $assignment;
+    $this->institution = $institution;
+    $this->writingFeedback = $writingFeedback;
+    $this->overview = $overview;
+    $this->internalAiSourceMatch = $internalAiSourceMatch;
+    $this->references = $references;
   }
 }

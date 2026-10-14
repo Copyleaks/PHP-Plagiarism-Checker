@@ -31,7 +31,7 @@ class SubmissionWebhooks
    * This webhook event is triggered once the scan status changes.
    * Use the special token {STATUS} to track the current scan status.
    * This special token will automatically be replaced by the Copyleaks servers with the optional values: completed, error, creditsChecked and indexed.
-   * Read more about webhooks: https://api.copyleaks.com/documentation/v3/webhooks
+   * Read more about webhooks: https://docs.copyleaks.com/reference/data-types/authenticity/webhooks/overview
    */
   public string $status;
   /**
@@ -41,12 +41,26 @@ class SubmissionWebhooks
   public ?string $newResult;
 
   /**
-   * @param string status This webhook event is triggered once the scan status changes. Use the special token {STATUS} to track the current scan status. This special token will automatically be replaced by the Copyleaks servers with the optional values: completed, error, creditsChecked and indexed. Read more about webhooks: https://api.copyleaks.com/documentation/v3/webhooks
-   * @param string newResult Http endpoint to be triggered while the scan is still running and a new result is found. This is useful when the report is being viewed by the user in real time so the results will load gradually as they are found.
+   * Headers to add to the newResult webhook, as [["header-key", "header-value"], ...].
    */
-  public function __construct(string $status, string $newResult = null)
+  public ?array $newResultHeaders;
+
+  /**
+   * Headers to add to the status webhook, as [["header-key", "header-value"], ...].
+   */
+  public ?array $statusHeaders;
+
+  /**
+   * @param string status This webhook event is triggered once the scan status changes. Use the special token {STATUS} to track the current scan status. This special token will automatically be replaced by the Copyleaks servers with the optional values: completed, error, creditsChecked and indexed. Read more about webhooks: https://docs.copyleaks.com/reference/data-types/authenticity/webhooks/overview
+   * @param string newResult Http endpoint to be triggered while the scan is still running and a new result is found. This is useful when the report is being viewed by the user in real time so the results will load gradually as they are found.
+   * @param array newResultHeaders Headers to add to the newResult webhook, as [["header-key", "header-value"], ...].
+   * @param array statusHeaders Headers to add to the status webhook, as [["header-key", "header-value"], ...].
+   */
+  public function __construct(string $status, ?string $newResult = null, ?array $newResultHeaders = null, ?array $statusHeaders = null)
   {
     $this->newResult = $newResult;
     $this->status = $status;  
+    $this->newResultHeaders = $newResultHeaders;
+    $this->statusHeaders = $statusHeaders;
   }
 }

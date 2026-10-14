@@ -49,14 +49,14 @@ class TextModerationScannedDocument
      */
     public static function fromArray(?array $data)
     {
-        $creationTime = new DateTime($data['creationTime']);
+        $creationTime = is_string($data['creationTime'] ?? null) ? new DateTime($data['creationTime']) : null;
 
         return new self(
-            $data['scanId'],
-            $data['totalWords'],
-            $data['totalExcluded'],
-            $data['actualCredits'],
-            $data['expectedCredits'],
+            $data['scanId'] ?? null,
+            $data['totalWords'] ?? null,
+            $data['totalExcluded'] ?? null,
+            $data['actualCredits'] ?? null,
+            $data['expectedCredits'] ?? null,
             $creationTime
         );
     }

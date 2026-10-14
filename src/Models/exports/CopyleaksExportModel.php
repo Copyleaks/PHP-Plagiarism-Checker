@@ -32,19 +32,19 @@ class CopyleaksExportModel
    */
   public string $completionWebhook;
   /**
-   * An array of results to be exported. The equivalent of downloading results manually.
+   * ExportResults[] - The results to be exported. The equivalent of downloading results manually. null exports none.
    */
-  public array $results;
+  public ?array $results;
   /**
-   * $crawledVersion Download the crawled version of the submitted text. The equivalent of downloading crawled version manually.
+   * $crawledVersion Download the crawled version of the submitted text. The equivalent of downloading crawled version manually. null exports none.
    */
-  public ExportCrawledVersion $crawledVersion;
+  public ?ExportCrawledVersion $crawledVersion;
   /**
    * How many retries to send before giving up. Using high value (12) may lead to a longer time until the completionWebhook being executed. A low value (1) may lead to errors while your service is temporary having problems.
    */
   public ?int $maxRetries;
   /**
-   * Add a custom developer payload that will then be provided on the Export-Completed webhook. https://api.copyleaks.com/documentation/v3/webhooks/export-completed
+   * Add a custom developer payload that will then be provided on the Export-Completed webhook. https://docs.copyleaks.com/reference/data-types/authenticity/webhooks/export-completed
    */
   public ?string $developerPayload;
   /**
@@ -52,20 +52,44 @@ class CopyleaksExportModel
    */
   public ?ExportPdfReport $pdfReport;
   /**
+   * Headers to add to the completion webhook, as [["header-key", "header-value"], ...].
+   */
+  public ?array $completionWebhookHeaders;
+  /**
+   * Export the AI content detection report. Allowed only when `properties.aiGeneratedText.detect` was set to true on the scan submission.
+   */
+  public ?ExportAiDetection $aiDetection;
+  /**
+   * Export the Grammar Checker report. Allowed only when `properties.writingFeedback.enable` was set to true on the scan submission.
+   */
+  public ?ExportWritingFeedback $writingFeedback;
+  /**
+   * Export the Gen-AI Overview report. Allowed only when `properties.overview.enable` was set to true on the scan submission.
+   */
+  public ?ExportOverview $overview;
+  /**
    * @param string $completionWebhook This webhook event is triggered once the export is completed.
-   * @param ExportResults $results An array of results to be exported. The equivalent of downloading results manually.
-   * @param ExportCrawledVersion[] $crawledVersion Download the crawled version of the submitted text. The equivalent of downloading crawled version manually.
+   * @param ExportResults[]|null $results The results to be exported. null exports none.
+   * @param ExportCrawledVersion|null $crawledVersion Download the crawled version of the submitted text. null exports none.
    * @param ExportPdfReport $pdfReport Download the PDF report. Allowed only when `properties.pdf.create` was set to true on the scan submittion.
    * @param int $maxRetries How many retries to send before giving up. Using high value (12) may lead to a longer time until the completionWebhook being executed. A low value (1) may lead to errors while your service is temporary having problems.
-   * @param string $developerPayload Add a custom developer payload that will then be provided on the Export-Completed webhook. https://api.copyleaks.com/documentation/v3/webhooks/export-completed
+   * @param string $developerPayload Add a custom developer payload that will then be provided on the Export-Completed webhook.
+   * @param array|null $completionWebhookHeaders Headers to add to the completion webhook, as [["header-key", "header-value"], ...].
+   * @param ExportAiDetection|null $aiDetection Export the AI content detection report.
+   * @param ExportWritingFeedback|null $writingFeedback Export the Grammar Checker report.
+   * @param ExportOverview|null $overview Export the Gen-AI Overview report.
    */
   public function __construct(
     string $completionWebhook,
-    array $results,
-    ExportCrawledVersion $crawledVersion,
+    ?array $results = null,
+    ?ExportCrawledVersion $crawledVersion = null,
     ?ExportPdfReport $pdfReport = null,
     ?int $maxRetries = null,
-    ?string $developerPayload = null
+    ?string $developerPayload = null,
+    ?array $completionWebhookHeaders = null,
+    ?ExportAiDetection $aiDetection = null,
+    ?ExportWritingFeedback $writingFeedback = null,
+    ?ExportOverview $overview = null
   ) {
     $this->completionWebhook = $completionWebhook;
     $this->results = $results;
@@ -73,5 +97,9 @@ class CopyleaksExportModel
     $this->pdfReport = $pdfReport;
     $this->maxRetries = $maxRetries;
     $this->developerPayload = $developerPayload;
+    $this->completionWebhookHeaders = $completionWebhookHeaders;
+    $this->aiDetection = $aiDetection;
+    $this->writingFeedback = $writingFeedback;
+    $this->overview = $overview;
   }
 }

@@ -14,6 +14,8 @@ class IndexedWebhook extends StatusWebhook
     public static function fromArray(array $data): self
     {
         // No specific fields to deserialize currently
-        return new self();
+        $webhook = new self();
+        self::withBaseFields($webhook, $data);
+        return $webhook;
     }
 }

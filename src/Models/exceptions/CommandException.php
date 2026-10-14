@@ -27,10 +27,24 @@ namespace Copyleaks;
 
 use Exception;
 
+/**
+ * The server rejected the request, or no response was received (for example a timeout).
+ * getCode() and getStatusCode() return the HTTP status code, or 0 when no response was received.
+ */
 class CommandException extends Exception
 {
-  public function __construct($error, $code = 0, Exception $previous = null)
+  use HttpResponseDetails;
+
+  /**
+   * @param string $error The error message.
+   * @param int $code The HTTP status code, or 0 when no response was received.
+   * @param Exception|null $previous The previous exception.
+   * @param string|null $responseBody The raw response body.
+   * @param array<string, string> $responseHeaders The response headers.
+   */
+  public function __construct($error, $code = 0, ?Exception $previous = null, ?string $responseBody = null, array $responseHeaders = [])
   {
     parent::__construct($error, $code, $previous);
+    $this->setResponseDetails($responseBody, $responseHeaders);
   }
 }

@@ -32,12 +32,28 @@ class AIGeneratedText
      */
   public bool $detect;
 
+  /**
+   * Control the behavior of the AI detection, from 1 to 3. Leave null to get the server default (2).
+   */
+  public ?int $sensitivity;
+
+  /**
+   * AI Logic: explain why the text was detected as AI. Check inner properties for more details.
+   */
+  public ?AIGeneratedTextExplain $explain;
+
     /**
    * @param bool $detect Detects whether the text was written by an AI.
+   * @param int|null $sensitivity Control the behavior of the AI detection, from 1 to 3. null = server default (2).
+   * @param AIGeneratedTextExplain|null $explain AI Logic settings. null = server default (disabled).
    */
   public function __construct(
-    bool $detect = false)
+    bool $detect = false,
+    ?int $sensitivity = null,
+    ?AIGeneratedTextExplain $explain = null)
   {
     $this->detect = $detect;
+    $this->sensitivity = $sensitivity;
+    $this->explain = $explain;
   }
 }

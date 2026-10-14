@@ -42,10 +42,18 @@ class CopyleaksAiImageDetectionResultModel
      */
     public array $lengths;
 
-    public function __construct(array $starts, array $lengths)
+    /**
+     * Confidence band (0-4) of each run, matching $starts and $lengths.
+     * Only present when the request used maskType 'heatmap'; null otherwise.
+     * @var int[]|null
+     */
+    public ?array $labels;
+
+    public function __construct(array $starts, array $lengths, ?array $labels = null)
     {
         $this->starts = $starts;
         $this->lengths = $lengths;
+        $this->labels = $labels;
     }
 
     public static function fromArray(?array $data): ?self
@@ -56,7 +64,8 @@ class CopyleaksAiImageDetectionResultModel
 
         return new self(
             $data['starts'] ?? [],
-            $data['lengths'] ?? []
+            $data['lengths'] ?? [],
+            is_array($data['labels'] ?? null) ? $data['labels'] : null
         );
     }
 }

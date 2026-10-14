@@ -24,11 +24,11 @@
 */
 namespace Copyleaks;
 
-include_once('requests/CopyleaksTextModerationRequestModel.php');
-include_once('requests/CopyleaksTextModerationLabel.php');
-include_once('responses/CopyleaksTextModerationResponseModel.php');
-include_once "responses/submodules/ModerationsModel.php";
-include_once "responses/submodules/Text.php";
-include_once "responses/submodules/TextModerationChars.php";
-include_once "responses/submodules/TextModerationScannedDocument.php";
-include_once "responses/submodules/TextModerationsLegend.php";
+include_once(__DIR__ . '/requests/CopyleaksTextModerationRequestModel.php');
+include_once(__DIR__ . '/requests/CopyleaksTextModerationLabel.php');
+include_once(__DIR__ . '/responses/CopyleaksTextModerationResponseModel.php');
+include_once(__DIR__ . '/responses/submodules/ModerationsModel.php');
+include_once(__DIR__ . '/responses/submodules/Text.php');
+include_once(__DIR__ . '/responses/submodules/TextModerationChars.php');
+include_once(__DIR__ . '/responses/submodules/TextModerationScannedDocument.php');
+include_once(__DIR__ . '/responses/submodules/TextModerationsLegend.php');

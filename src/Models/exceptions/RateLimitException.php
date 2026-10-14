@@ -27,10 +27,23 @@ namespace Copyleaks;
 
 use Exception;
 
+/**
+ * Too many requests (HTTP 429). getCode() and getStatusCode() return 429.
+ * getRetryAfterSeconds() tells how long to wait when the server sent a Retry-After header.
+ */
 class RateLimitException extends Exception
 {
-  public function __construct($code = 0, Exception $previous = null)
+  use HttpResponseDetails;
+
+  /**
+   * @param int $code The HTTP status code.
+   * @param Exception|null $previous The previous exception.
+   * @param string|null $responseBody The raw response body.
+   * @param array<string, string> $responseHeaders The response headers.
+   */
+  public function __construct($code = 0, ?Exception $previous = null, ?string $responseBody = null, array $responseHeaders = [])
   {
     parent::__construct("Too many requests. Please wait before calling again.", $code, $previous);
+    $this->setResponseDetails($responseBody, $responseHeaders);
   }
 }

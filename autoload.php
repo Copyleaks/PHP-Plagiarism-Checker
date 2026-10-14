@@ -25,4 +25,4 @@
 
 namespace Copyleaks;
 
-include_once('src/index.php');
+include_once(__DIR__ . '/src/index.php');

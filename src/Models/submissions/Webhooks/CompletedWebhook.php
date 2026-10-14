@@ -16,23 +16,33 @@ class CompletedWebhook extends StatusWebhook
     public ?Notifications $notifications;
     public ?ScannedDocument $scannedDocument;
 
+    /**
+     * Summary of the Citation Checker results. Only present when properties.references.validate was enabled.
+     */
+    public ?ReferencesValidation $referencesValidation;
+
     public function __construct(
         ?Results $results = null,
         ?Notifications $notifications = null,
-        ?ScannedDocument $scannedDocument = null
+        ?ScannedDocument $scannedDocument = null,
+        ?ReferencesValidation $referencesValidation = null
     ) {
         $this->results = $results;
         $this->notifications = $notifications;
         $this->scannedDocument = $scannedDocument;
+        $this->referencesValidation = $referencesValidation;
     }
 
     public static function fromArray(array $data): self
     {
-        return new self(
+        $webhook = new self(
             isset($data['results']) ? Results::fromArray($data['results']) : null,
             isset($data['notifications']) ? Notifications::fromArray($data['notifications']) : null,
-            isset($data['scannedDocument']) ? ScannedDocument::fromArray($data['scannedDocument']) : null
+            isset($data['scannedDocument']) ? ScannedDocument::fromArray($data['scannedDocument']) : null,
+            is_array($data['referencesValidation'] ?? null) ? ReferencesValidation::fromArray($data['referencesValidation']) : null
         );
+        self::withBaseFields($webhook, $data);
+        return $webhook;
     }
 
     /**

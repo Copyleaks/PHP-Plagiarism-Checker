@@ -30,12 +30,20 @@ class SubmissionIndexing
   /**
    * SubmissionRepository[] - Check inner properties for more details.
    */
-  public array $repositories;
+  public ?array $repositories;
+
   /**
-   * @param SubmissionRepository[] $repositories - Check inner properties of SubmissionRepository for more details.
+   * Add the submitted document to the Copyleaks Shared Data Hub. Leave null to get the server default (false).
    */
-  public function __construct(array $repositories)
+  public ?bool $copyleaksDb;
+
+  /**
+   * @param SubmissionRepository[]|null $repositories - Check inner properties of SubmissionRepository for more details.
+   * @param bool|null $copyleaksDb - Add the submitted document to the Copyleaks Shared Data Hub. null = server default (false).
+   */
+  public function __construct(?array $repositories = null, ?bool $copyleaksDb = null)
   {
     $this->repositories = $repositories;
+    $this->copyleaksDb = $copyleaksDb;
   }
 }

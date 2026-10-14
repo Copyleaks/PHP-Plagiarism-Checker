@@ -25,5 +25,5 @@
 
 namespace Copyleaks;
 
-include_once('CopyleaksWritingAssistantSubmissionModel.php');
-include_once('ScoreWeights.php');
+include_once(__DIR__ . '/CopyleaksWritingAssistantSubmissionModel.php');
+include_once(__DIR__ . '/ScoreWeights.php');

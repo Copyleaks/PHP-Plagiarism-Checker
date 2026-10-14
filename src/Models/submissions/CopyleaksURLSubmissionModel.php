@@ -36,13 +36,26 @@ class CopyleaksURLSubmissionModel extends CopyleaksSubmissionModel
    */
   public SubmissionProperties $properties;
   /**
+   * The HTTP method Copyleaks uses to fetch the url: 'GET', 'POST' or 'PUT'. Leave null to get the server default ('GET').
+   */
+  public ?string $verb;
+  /**
+   * Headers Copyleaks sends when fetching the url, as [["header-key", "header-value"], ...].
+   * When set, no Copyleaks headers are added. Use Set-Cookie for cookies.
+   */
+  public ?array $headers;
+  /**
    * @param string $url The url to be scanned
    * @param SubmissionProperties $properties Check inner properties for more details.
+   * @param string|null $verb The HTTP method Copyleaks uses to fetch the url: 'GET', 'POST' or 'PUT'.
+   * @param array|null $headers Headers Copyleaks sends when fetching the url, as [["header-key", "header-value"], ...].
    */
-  public function __construct(string $url, SubmissionProperties $properties)
+  public function __construct(string $url, SubmissionProperties $properties, ?string $verb = null, ?array $headers = null)
   {
     $this->url = $url;
     $this->properties = $properties;
+    $this->verb = $verb;
+    $this->headers = $headers;
     parent::__construct($properties);
   }
 }

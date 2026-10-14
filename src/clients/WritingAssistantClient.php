@@ -29,15 +29,11 @@ use InvalidArgumentException;
 
 class WritingAssistantClient{
 
-      /**
+    /**
      * Use Copyleaks Writing Assistant to generate grammar, spelling and sentence corrections for a given text.
-     * 
-     * * Exceptions:
-     * * CommandExceptions: Server reject the request. See response status code,
-     * headers and content for more info.
-     * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-     * We recommend to implement exponential backoff algorithm as described here:
-     * https://api.copyleaks.com/documentation/v3/exponential-backoff
+     * For more info: https://docs.copyleaks.com/reference/actions/writing-assistant/check
+     *
+     * Exceptions: see the Copyleaks class.
      *
      * @param authToken  Copyleaks authentication token
      * @param scanId     Attach your own scan Id
@@ -54,38 +50,26 @@ class WritingAssistantClient{
   
         CopyleaksClientUtils::verifyAuthToken($authToken);
   
-        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/writing-feedback/$scanId/check";
-        $authorization = "Authorization: Bearer " . $authToken->accessToken;
-        $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-  
-        ObjectFilter::filterNullProperties($submission);
-    
-        return HttpClientService::Execute('POST-JSON', $url, $headers, $submission);
+        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/writing-feedback/" . CopyleaksClientUtils::encodePathSegment($scanId) . "/check";
+
+        return HttpClientService::Execute('POST-JSON', $url, CopyleaksClientUtils::authHeaders($authToken), $submission);
     }
   
 
     /**
      * Get a list of correction types supported within the Writing Assistant API. Correction types apply to all supported languages. 
      * The supplied language code for this request is used to determine the language of the texts returned.
-
-     * * Exceptions:
-     * * CommandExceptions: Server reject the request. See response status code,
-     * headers and content for more info.
-     * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-     * We recommend to implement exponential backoff algorithm as described here:
-     * https://api.copyleaks.com/documentation/v3/exponential-backoff
-     * * RateLimitException: Too many requests. Please wait before calling again.
+     * No login needed.
+     * For more info: https://docs.copyleaks.com/reference/actions/writing-assistant/correction-types
+     *
+     * Exceptions: see the Copyleaks class.
      *
      * @param languageCode The language for the returned texts to be in. Language codes are in ISO 639-1 standard. Supported Values: en - English
      */
     public function getCorrectionTypes(string $languageCode)
     {
-      $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/writing-feedback/correction-types/$languageCode";
-      $headers = (array)[
-        'Content-Type' => 'application/json',
-        'User-Agent' => CopyleaksConfig::GET_USER_AGENT()
-      ];
-  
-      return HttpClientService::Execute('GET', $url, $headers);
+      $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/writing-feedback/correction-types/" . CopyleaksClientUtils::encodePathSegment($languageCode);
+
+      return HttpClientService::Execute('GET', $url, CopyleaksClientUtils::publicHeaders());
     }
 }

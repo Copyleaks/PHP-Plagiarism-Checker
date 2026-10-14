@@ -17,11 +17,15 @@ class CopyleaksTextModerationResponseModel
     /** General information about the scanned document. */
     public $scannedDocument;
 
-    public function __construct(ModerationsModel $moderations, array $legend, TextModerationScannedDocument $scannedDocument)
+    /** The version of the moderation model used, or null when the response does not include it. */
+    public ?string $modelVersion;
+
+    public function __construct(ModerationsModel $moderations, array $legend, TextModerationScannedDocument $scannedDocument, ?string $modelVersion = null)
     {
         $this->moderations = $moderations;
         $this->legend = $legend;
         $this->scannedDocument = $scannedDocument;
+        $this->modelVersion = $modelVersion;
     }
 
     public static function fromArray(?array $data)
@@ -34,10 +38,12 @@ class CopyleaksTextModerationResponseModel
         // Create array of TextModerationsLegend objects
         $legend = array_map(function($legendData) {
             return TextModerationsLegend::fromArray($legendData);
-        }, $data['legend']);
+        }, is_array($data['legend'] ?? null) ? $data['legend'] : []);
 
         $scannedDocument = TextModerationScannedDocument::fromArray($data['scannedDocument']);
 
-        return new self($moderations, $legend, $scannedDocument);
+        $modelVersion = is_scalar($data['modelVersion'] ?? null) ? (string) $data['modelVersion'] : null;
+
+        return new self($moderations, $legend, $scannedDocument, $modelVersion);
     }
 }

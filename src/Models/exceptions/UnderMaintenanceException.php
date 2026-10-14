@@ -27,10 +27,23 @@ namespace Copyleaks;
 
 use Exception;
 
+/**
+ * Copyleaks servers are unavailable (HTTP 503). getCode() and getStatusCode() return 503.
+ * getRetryAfterSeconds() tells how long to wait when the server sent a Retry-After header.
+ */
 class UnderMaintenanceException extends Exception
 {
-  public function __construct($code = 0, Exception $previous = null)
+  use HttpResponseDetails;
+
+  /**
+   * @param int $code The HTTP status code.
+   * @param Exception|null $previous The previous exception.
+   * @param string|null $responseBody The raw response body.
+   * @param array<string, string> $responseHeaders The response headers.
+   */
+  public function __construct($code = 0, ?Exception $previous = null, ?string $responseBody = null, array $responseHeaders = [])
   {
     parent::__construct("Copyleaks is Under Maintenance, please visit https://status.copyleaks.com", $code, $previous);
+    $this->setResponseDetails($responseBody, $responseHeaders);
   }
 }

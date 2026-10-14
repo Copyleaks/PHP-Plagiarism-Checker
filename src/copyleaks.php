@@ -30,10 +30,19 @@ use Copyleaks\HttpClientService;
 use Copyleaks\AIDetectionClient;
 use Copyleaks\WritingAssistantClient;
 use Copyleaks\TextModerationClient;
-use Copyleaks\SupportedFilesTypes;
-use Copyleaks\DeprecationService;
 use InvalidArgumentException;
 
+/**
+ * The Copyleaks API client.
+ *
+ * Every method that calls the API can throw:
+ * - CommandException: the server rejected the request (getStatusCode() returns the HTTP status), or no
+ *   response was received, for example after a timeout (getStatusCode() returns 0).
+ * - UnderMaintenanceException: Copyleaks servers are unavailable (503). Retry later with exponential backoff,
+ *   see https://docs.copyleaks.com/concepts/performance/handling-failures
+ * - RateLimitException: too many requests (429). Wait before calling again (see getRetryAfterSeconds()).
+ * Methods that need a login token also throw AuthExipredException when the token has expired.
+ */
 class Copyleaks
 {
   
@@ -42,23 +51,30 @@ class Copyleaks
   public TextModerationClient $textModerationClient;
 
   public AiImagedetectionClient $aiImageDetectionClient;
+
+  /**
+   * Image Plagiarism Detector: searches the web for copies of an image.
+   */
+  public ImagePlagiarismClient $imagePlagiarismClient;
+
+  /**
+   * AI Video Detector: detects AI-generated video. Results are delivered to your webhook.
+   */
+  public AiVideoDetectionClient $aiVideoDetectionClient;
+
   public function __construct()
   {
       $this->aiDetectionClient = new AIDetectionClient();
       $this->writingAssistantClient = new WritingAssistantClient();
       $this->textModerationClient=new TextModerationClient();
       $this->aiImageDetectionClient = new AiImagedetectionClient();
+      $this->imagePlagiarismClient = new ImagePlagiarismClient();
+      $this->aiVideoDetectionClient = new AiVideoDetectionClient();
   }
 
   /**
    * Login to Copyleaks authentication server.
-   * For more info: https://api.copyleaks.com/documentation/v3/account/login.
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *    headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
+   * For more info: https://docs.copyleaks.com/reference/actions/account/login
    * @param String $email Copyleaks account email address.
    * @param String $key Copyleaks account secret key.
    * @return CopyleaksAuthToken A authentication token that being expired after certain amount of time.
@@ -79,12 +95,13 @@ class Copyleaks
       'key' => $key
     ];
 
-    $headers = (array)[
-      'Content-Type' => 'application/json',
-      'User-Agent' => CopyleaksConfig::GET_USER_AGENT()
-    ];
+    $headers = array(
+      'Content-Type: application/json',
+      'Accept: application/json',
+      'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT()
+    );
 
-    $result = HttpClientService::Execute('POST', $url, $headers, $payload);
+    $result = HttpClientService::Execute('POST-JSON', $url, $headers, $payload);
 
     return new CopyleaksAuthToken($result->{'.expires'}, $result->{'access_token'}, $result->{'.issued'});
   }
@@ -110,14 +127,7 @@ class Copyleaks
 
   /**
    * Starting a new process by providing a file to scan.
-   * For more info:
-   * https://api.copyleaks.com/documentation/v3/scans/submit/file
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
+   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/submit-file
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    * @param string $scanId Attach your own scan Id
    * @param CopyleaksFileSubmissionModel $submission Submission properties
@@ -134,27 +144,14 @@ class Copyleaks
 
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/submit/file/$scanId";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/submit/file/" . CopyleaksClientUtils::encodePathSegment($scanId);
 
-    $authorization = "Authorization: Bearer $authToken->accessToken";
-
-    $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-
-    ObjectFilter::filterNullProperties($submission);
-
-    HttpClientService::Execute('PUT', $url, $headers, $submission);
+    HttpClientService::Execute('PUT', $url, CopyleaksClientUtils::authHeaders($authToken), $submission);
   }
   
   /**
    * Starting a new process by providing a OCR image file to scan.
-   * For more info:
-   * https://api.copyleaks.com/documentation/v3/scans/submit/ocr
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
+   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/submit-ocr
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    * @param string $scanId Attach your own scan Id
    * @param CopyleaksFileOcrSubmissionModel $submission Submission properties
@@ -170,27 +167,14 @@ class Copyleaks
 
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/submit/ocr/$scanId";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/submit/ocr/" . CopyleaksClientUtils::encodePathSegment($scanId);
 
-    $authorization = "Authorization: Bearer $authToken->accessToken";
-
-    $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-
-    ObjectFilter::filterNullProperties($submission);
-
-    HttpClientService::Execute('PUT', $url, $headers, $submission);
+    HttpClientService::Execute('PUT', $url, CopyleaksClientUtils::authHeaders($authToken), $submission);
   }
 
   /**
    * Starting a new process by providing a URL to scan.
-   * For more info:
-   * https://api.copyleaks.com/documentation/v3/scans/submit/url
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
+   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/submit-url
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    * @param string $scanId Attach your own scan Id
    * @param CopyleaksURLSubmissionModel $submission Submission properties
@@ -206,27 +190,14 @@ class Copyleaks
 
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/submit/url/$scanId";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/submit/url/" . CopyleaksClientUtils::encodePathSegment($scanId);
 
-    $authorization = "Authorization: Bearer $authToken->accessToken";
-
-    $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-
-    ObjectFilter::filterNullProperties($submission);
-
-    HttpClientService::Execute('PUT', $url, $headers, $submission);
+    HttpClientService::Execute('PUT', $url, CopyleaksClientUtils::authHeaders($authToken), $submission);
   }
 
   /**
    * Exporting scans artifact into your server.
-   * For more info:
-   * https://api.copyleaks.com/documentation/v3/downloads/export
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
+   * For more info: https://docs.copyleaks.com/reference/actions/downloads/export
    * @param CopyleaksAuthToken $authToken Your login token to Copyleaks server
    * @param string $scanId The scan ID of the specific scan to export.
    * @param string $exportId A new Id for the export process.
@@ -249,25 +220,15 @@ class Copyleaks
 
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/downloads/{$scanId}/export/{$exportId}";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/downloads/" . CopyleaksClientUtils::encodePathSegment($scanId)
+      . "/export/" . CopyleaksClientUtils::encodePathSegment($exportId);
 
-    $authorization = "Authorization: Bearer $authToken->accessToken";
-
-    $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-
-    HttpClientService::Execute('POST-JSON', $url, $headers, $model);
+    HttpClientService::Execute('POST-JSON', $url, CopyleaksClientUtils::authHeaders($authToken), $model);
   }
 
   /**
    * Start scanning all the files you submitted for a price-check.
-   * For more info:
-   * https://api.copyleaks.com/documentation/v3/scans/start
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
+   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/start
    * @param CopyleaksAuthToken $authToken Your login token to Copyleaks server.
    * @param CopyleaksStartRequestModel $data Include information about which scans should be started.
    */
@@ -281,23 +242,12 @@ class Copyleaks
 
     $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/start";
 
-    $authorization = "Authorization: Bearer $authToken->accessToken";
-
-    $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-
-    HttpClientService::Execute('PATCH', $url, $headers, $data);
+    return HttpClientService::Execute('PATCH', $url, CopyleaksClientUtils::authHeaders($authToken), $data);
   }
 
   /**
    * Delete the specific process from the server.
-   * For more info:
-   * https://api.copyleaks.com/documentation/v3/scans/delete
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
+   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/delete
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    * @param CopyleaksDeleteRequestModel $data
    */
@@ -311,23 +261,18 @@ class Copyleaks
 
     $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3.1/scans/delete";
 
-    $authorization = "Authorization: Bearer $authToken->accessToken";
+    $payload = RequestPayload::toPayload($data);
+    // An empty completionWebhook means "no webhook": leave it out instead of sending an invalid URL.
+    if (isset($payload->completionWebhook) && $payload->completionWebhook === '') {
+      unset($payload->completionWebhook);
+    }
 
-    $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-
-    HttpClientService::Execute('PATCH', $url, $headers, $data);
+    HttpClientService::Execute('PATCH', $url, CopyleaksClientUtils::authHeaders($authToken), $payload);
   }
 
   /**
    * Resend status webhooks for existing scans.
-   * For more info:
-   * https://api.copyleaks.com/documentation/v3/scans/webhook-resend
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
+   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/resend-webhook
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    * @param string $scanId Copyleaks scan Id
    */
@@ -339,26 +284,14 @@ class Copyleaks
 
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/$scanId/webhooks/resend";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/" . CopyleaksClientUtils::encodePathSegment($scanId) . "/webhooks/resend";
 
-    $authorization = "Authorization: Bearer $authToken->accessToken";
-
-    $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-
-    HttpClientService::Execute('POST', $url, $headers);
+    HttpClientService::Execute('POST', $url, CopyleaksClientUtils::authHeaders($authToken));
   }
 
   /**
    * Get current credits balance for the Copyleaks account.
-   * For more info:
-   * https://api.copyleaks.com/documentation/v3/scans/credits
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * * * RateLimitException: Too many requests. Please wait before calling again.
+   * For more info: https://docs.copyleaks.com/reference/actions/admin/check-credits
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token
    */
   public function getCreditsBalance(CopyleaksAuthToken $authToken)
@@ -367,25 +300,13 @@ class Copyleaks
 
     $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/credits";
 
-    $authorization = "Authorization: Bearer $authToken->accessToken";
-
-    $headers = array('Content-Type: application/json', 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-
-    return HttpClientService::Execute('GET', $url, $headers);
+    return HttpClientService::Execute('GET', $url, CopyleaksClientUtils::authHeaders($authToken));
   }
 
   /**
    * This endpoint allows you to export your usage history between two dates.
    * The output results will be exported to a csv file and it will be attached to the response.
-   * For more info:
-   * https://api.copyleaks.com/documentation/v3/scans/usages/history
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * * * RateLimitException: Too many requests. Please wait before calling again.
+   * For more info: https://docs.copyleaks.com/reference/actions/admin/usage-history
    * @param CopyleaksAuthToken $authToken Copyleaks authentication token.
    * @param string $startDate The start date to collect usage history from. Date Format: `dd-MM-yyyy`.
    * @param string $endDate The end date to collect usage history from. Date Format: `dd-MM-yyyy`.
@@ -402,82 +323,98 @@ class Copyleaks
 
     $this->verifyAuthToken($authToken);
 
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/usages/history?start=$startDate&end=$endDate";
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v3/scans/usages/history?"
+      . http_build_query(['start' => $startDate, 'end' => $endDate], '', '&', PHP_QUERY_RFC3986);
 
-    $authorization = "Authorization: Bearer $authToken->accessToken";
-
-    $headers = array('User-Agent: ' . CopyleaksConfig::GET_USER_AGENT(), $authorization);
-
-    return HttpClientService::Execute('GET', $url, $headers);
+    return HttpClientService::Execute('GET', $url, CopyleaksClientUtils::authHeaders($authToken, false));
   }
 
   /**
    * Get a list of the supported languages for OCR (this is not a list of supported languages for the api, but only for the OCR files scan).
-   * For more info: https://api.copyleaks.com/documentation/v3/specifications/ocr-languages/list
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * * * RateLimitException: Too many requests. Please wait before calling again.
+   * No login needed.
+   * For more info: https://docs.copyleaks.com/reference/actions/miscellaneous/ocr-supported-languages
    * @return array List of supported OCR languages.
    */
   public function getOCRSupportedLanguages()
   {
     $url = CopyleaksConfig::GET_API_SERVER_URI() . '/v3/miscellaneous/ocr-languages-list';
 
-    $headers = (array)[
-      'Content-Type' => 'application/json',
-      'User-Agent' => CopyleaksConfig::GET_USER_AGENT()
-    ];
-
-    return (array)HttpClientService::Execute('GET', $url, $headers);
+    return (array)HttpClientService::Execute('GET', $url, CopyleaksClientUtils::publicHeaders());
   }
 
   /**
-   * Get a list of the supported file types.
-   * For more info: https://api.copyleaks.com/documentation/v3/specifications/supported-file-types
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * * * RateLimitException: Too many requests. Please wait before calling again.
+   * Get a list of the file types supported by the Plagiarism Checker.
+   * No login needed.
+   * For more info: https://docs.copyleaks.com/reference/actions/miscellaneous/supported-plagiarism-file-types
    * @return mixed List of supported file types.
    */
   public function getSupportedFileTypes()
   {
-    $url = CopyleaksConfig::GET_API_SERVER_URI() . '/v3/miscellaneous/supported-file-types';
-    $headers = (array)[
-      'Content-Type' => 'application/json',
-      'User-Agent' => CopyleaksConfig::GET_USER_AGENT()
-    ];
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . '/v3/miscellaneous/supported-plagiarism-file-types';
 
-    return HttpClientService::Execute('GET', $url, $headers);
+    return HttpClientService::Execute('GET', $url, CopyleaksClientUtils::publicHeaders());
+  }
+
+  /**
+   * Get the file types supported by AI Text Detection, as {"supportedAiFileTypes": ["pdf", "docx", ...]}.
+   * No login needed.
+   * For more info: https://docs.copyleaks.com/reference/actions/miscellaneous/supported-ai-text-detection-file-types
+   * @return mixed The decoded JSON response.
+   */
+  public function getSupportedAiTextDetectionFileTypes()
+  {
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . '/v3/miscellaneous/supported-ai-text-detection-file-types';
+
+    return HttpClientService::Execute('GET', $url, CopyleaksClientUtils::publicHeaders());
+  }
+
+  /**
+   * Get the languages supported by cross-language plagiarism detection, as
+   * {"documentLanguages": [...], "resultLanguages": [...]} (ISO-639-1 codes).
+   * Use a resultLanguages code in SubmissionScanning's crossLanguages.
+   * No login needed.
+   * For more info: https://docs.copyleaks.com/reference/actions/miscellaneous/supported-cross-languages
+   * @return mixed The decoded JSON response.
+   */
+  public function getAllowedCrossLanguages()
+  {
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . '/v3/miscellaneous/allowed-cross-languages';
+
+    return HttpClientService::Execute('GET', $url, CopyleaksClientUtils::publicHeaders());
+  }
+
+  /**
+   * Get the information of a Private Cloud Hub repository: name, status, credits, masking policy and more.
+   * Requires the "Super Admin" or "Admin" role.
+   * For more info: https://docs.copyleaks.com/reference/actions/private-cloud-hub/info
+   * @param CopyleaksAuthToken $authToken Copyleaks authentication token.
+   * @param string $repositoryId The repository ID, from the Copyleaks Admin Dashboard.
+   * @return mixed The decoded JSON response.
+   */
+  public function getRepositoryInfo(CopyleaksAuthToken $authToken, string $repositoryId)
+  {
+    if ($repositoryId === '') {
+      throw new InvalidArgumentException("Invalid repositoryId");
+    }
+
+    $this->verifyAuthToken($authToken);
+
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . '/v3/repositories/repository/'
+      . CopyleaksClientUtils::encodePathSegment($repositoryId) . '/info';
+
+    return HttpClientService::Execute('GET', $url, CopyleaksClientUtils::authHeaders($authToken, false));
   }
 
   /**
    * Get updates about copyleaks api release notes.
-   * For more info: https://api.copyleaks.com/documentation/v3/release-notes
-   * * Exceptions:
-   * * * CommandExceptions: Server reject the request. See response status code,
-   *     headers and content for more info.
-   * * * UnderMaintenanceException: Copyleaks servers are unavailable for maintenance.
-   *     We recommend to implement exponential backoff algorithm as described here:
-   *     https://api.copyleaks.com/documentation/v3/exponential-backoff
-   * * * RateLimitException: Too many requests. Please wait before calling again.
+   * No login needed.
+   * For more info: https://docs.copyleaks.com/resources/updates/release-notes
    * @return mixed List of release notes.
    */
   public function getReleaseNotes()
   {
     $url = CopyleaksConfig::GET_API_SERVER_URI() . '/v3/release-logs.json';
 
-    $headers = (array)[
-      'Content-Type' => 'application/json',
-      'User-Agent' => CopyleaksConfig::GET_USER_AGENT()
-    ];
-    return HttpClientService::Execute('GET', $url, $headers);
+    return HttpClientService::Execute('GET', $url, CopyleaksClientUtils::publicHeaders());
   }
 }

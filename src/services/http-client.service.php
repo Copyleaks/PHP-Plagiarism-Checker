@@ -27,81 +27,75 @@ namespace Copyleaks;
 
 use InvalidArgumentException;
 
+/**
+ * Sends the HTTP requests of the SDK with curl.
+ *
+ * One curl handle is kept for the whole PHP process and reused by every request, so connections to the
+ * Copyleaks servers stay open between calls (keep-alive) instead of paying a new TCP and TLS handshake each time.
+ * Every request has a connect timeout and a total timeout, see CopyleaksConfig::SET_CONNECT_TIMEOUT() and
+ * CopyleaksConfig::SET_TIMEOUT().
+ */
 class HttpClientService {
+  /** @var resource|\CurlHandle|null */
+  private static $handle = null;
+
+  /** @var int|null The process that created the handle. A forked child gets its own handle. */
+  private static $handlePid = null;
+
+  /**
+   * Sends a request and returns the response.
+   *
+   * @param string $verb 'GET', 'POST' (form body), 'POST-JSON', 'PUT', 'PATCH' (JSON body)
+   * or 'MULTIPART' (multipart/form-data POST of an array of fields; files are \CURLFile values).
+   * @param string $url The full URL.
+   * @param array $headers Header lines ('Name: value') or a 'Name' => 'value' map.
+   * @param mixed $data The request body, or null for none.
+   * @return mixed The decoded JSON response, the raw response text when it is not JSON, or null.
+   * @throws CommandException The server rejected the request, or no response was received.
+   * @throws RateLimitException Too many requests (429).
+   * @throws UnderMaintenanceException Copyleaks servers are unavailable (503).
+   * @throws \JsonException The request body cannot be encoded as JSON.
+   */
   public static function Execute(string $verb, string $url, array $headers, $data = null) {
-    //open connection
-    $ch = curl_init();
+    $options = self::buildOptions($verb, $url, $headers, $data);
 
-    //set the url
-    curl_setopt($ch, CURLOPT_URL, $url);
-
-    switch ($verb) {
-      case 'POST':
-      case 'POST-JSON':
-        curl_setopt($ch, CURLOPT_POST, true);
-        break;
-      case 'PATCH':
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-        break;
-      case 'PUT':
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-        break;
-      case 'GET':
-        break;
-      default:
-        throw new InvalidArgumentException('Invalid $verp');
-    }
-
-
-    if (isset($data)) {
-      //url-ify the data.
-      if ($verb == "PATCH" || $verb == "PUT" || $verb == "POST-JSON") {
-        $fields_string = json_encode($data);
-        //remove null properties
-        $fields_string = preg_replace('/,\s*"[^"]+":null|"[^"]+":null,?/', '', $fields_string);
-      } else {
-        $fields_string = http_build_query($data);
+    $responseHeaders = [];
+    $options[CURLOPT_HEADERFUNCTION] = static function ($ch, string $line) use (&$responseHeaders): int {
+      $trimmed = trim($line);
+      if (stripos($trimmed, 'HTTP/') === 0) {
+        // A new status line (for example after "100 Continue"): keep only the final response's headers.
+        $responseHeaders = [];
+      } elseif ($trimmed !== '' && strpos($trimmed, ':') !== false) {
+        [$name, $value] = explode(':', $trimmed, 2);
+        $responseHeaders[strtolower(trim($name))] = trim($value);
       }
-      // echo $fields_string . "\n";
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_string);
-    }
+      return strlen($line);
+    };
 
-    if (isset($headers)) {
-      // setup headers
-      curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    }
+    $ch = self::handle();
+    curl_reset($ch); // clears the previous request's options; open connections are kept
+    curl_setopt_array($ch, $options);
 
-    // setup response at curl_exec
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-    //execute post
     $result = curl_exec($ch);
 
-    // get status code
-    $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $statusCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $body = is_string($result) ? $result : null;
 
     if (isSuccessStatusCode($statusCode)) {
       if (isset($result)) {
-        $contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+        $contentType = (string) curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
         if (strpos($contentType, 'application/json') !== false) {
-          curl_close($ch);
           return json_decode($result);
         } else {
-          curl_close($ch);
           return $result;
         }
       } else {
-        curl_close($ch);
         return;
       }
     } elseif (isUnderMaintenanceResponse($statusCode)) {
-      //close connection
-      curl_close($ch);
-      throw new UnderMaintenanceException();
+      throw new UnderMaintenanceException($statusCode, null, $body, $responseHeaders);
     } elseif (isRateLimitResponse($statusCode)) {
-      //close connection
-      curl_close($ch);
-      throw new RateLimitException();
+      throw new RateLimitException($statusCode, null, $body, $responseHeaders);
     } else {
       $err_message = "\n" . "----Copyleaks SDK Error-----" . "\n\n";
       $curl_info = curl_getinfo($ch);
@@ -116,7 +110,109 @@ class HttpClientService {
         $err_message = $err_message . "error:" . "\n" . json_encode($curl_err) . "\n\n";
       }
       $err_message = $err_message . "----------------------------\n";
-      throw new CommandException($err_message);
+      throw new CommandException($err_message, $statusCode, null, $body, $responseHeaders);
     }
+  }
+
+  /**
+   * Closes the open connections. The next request opens a new connection.
+   * Call it in long-running workers that want to release idle connections.
+   */
+  public static function closeConnections(): void
+  {
+    self::$handle = null;
+    self::$handlePid = null;
+  }
+
+  /**
+   * Builds the curl options of a request (without the response header callback).
+   * Exposed for tests; not part of the supported API.
+   * @internal
+   */
+  public static function buildOptions(string $verb, string $url, array $headers, $data = null): array
+  {
+    $headerLines = self::headerLines($headers);
+
+    $options = [
+      CURLOPT_URL => $url,
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_CONNECTTIMEOUT_MS => (int) round(CopyleaksConfig::GET_CONNECT_TIMEOUT() * 1000),
+      CURLOPT_TIMEOUT_MS => (int) round(CopyleaksConfig::GET_TIMEOUT() * 1000),
+      // Accept every compression the local libcurl supports and decompress the response automatically.
+      CURLOPT_ENCODING => '',
+    ];
+
+    switch ($verb) {
+      case 'GET':
+        $options[CURLOPT_HTTPGET] = true;
+        break;
+      case 'POST':
+        $options[CURLOPT_POST] = true;
+        $options[CURLOPT_POSTFIELDS] = $data === null ? '' : (is_string($data) ? $data : http_build_query($data));
+        break;
+      case 'POST-JSON':
+        $options[CURLOPT_POST] = true;
+        $options[CURLOPT_POSTFIELDS] = $data === null ? '' : RequestPayload::encode($data);
+        break;
+      case 'PATCH':
+      case 'PUT':
+        $options[CURLOPT_CUSTOMREQUEST] = $verb;
+        $options[CURLOPT_POSTFIELDS] = $data === null ? '' : RequestPayload::encode($data);
+        break;
+      case 'MULTIPART':
+        if (!is_array($data)) {
+          throw new InvalidArgumentException('A multipart request needs an array of form fields.');
+        }
+        $options[CURLOPT_POST] = true;
+        $options[CURLOPT_POSTFIELDS] = $data;
+        // curl sets the multipart Content-Type with its boundary.
+        $headerLines = array_values(array_filter($headerLines, static function (string $line): bool {
+          return stripos($line, 'content-type:') !== 0;
+        }));
+        break;
+      default:
+        throw new InvalidArgumentException('Invalid $verb');
+    }
+
+    // An empty Expect header stops curl from sending "Expect: 100-continue" and waiting for the server's answer.
+    $hasExpect = false;
+    foreach ($headerLines as $line) {
+      if (stripos($line, 'expect:') === 0) {
+        $hasExpect = true;
+      }
+    }
+    if (!$hasExpect) {
+      $headerLines[] = 'Expect:';
+    }
+    $options[CURLOPT_HTTPHEADER] = $headerLines;
+
+    return $options;
+  }
+
+  /**
+   * Accepts header lines ('Name: value') and 'Name' => 'value' pairs, and returns header lines.
+   */
+  private static function headerLines(array $headers): array
+  {
+    $lines = [];
+    foreach ($headers as $name => $value) {
+      $lines[] = is_int($name) ? (string) $value : $name . ': ' . $value;
+    }
+    return $lines;
+  }
+
+  /** @return resource|\CurlHandle */
+  private static function handle()
+  {
+    $pid = function_exists('getmypid') ? getmypid() : null;
+    if (self::$handle === null || self::$handlePid !== $pid) {
+      $handle = curl_init();
+      if ($handle === false) {
+        throw new \RuntimeException('Could not initialize curl.');
+      }
+      self::$handle = $handle;
+      self::$handlePid = $pid;
+    }
+    return self::$handle;
   }
 }

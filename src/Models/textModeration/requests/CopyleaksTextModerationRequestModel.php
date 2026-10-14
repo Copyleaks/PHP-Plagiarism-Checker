@@ -40,23 +40,35 @@ class CopyleaksTextModerationRequestModel
 
   /**
    * The language code of your content. The selected language should be on the Supported Languages list above.
-   * If the 'language' field is not specified, our system will automatically detect the language of the content.
+   * If the 'language' field is not specified (null), our system will automatically detect the language of the content.
    */
-  public string $language;
+  public ?string $language;
 
   /**
-   * A list of label configurations to be used for the moderation process.
+   * A list of label configurations to be used for the moderation process (CopyleaksTextModerationLabel[]).
+   * Required: 1 to 16 labels.
    */
   public $labels;
 
-  public function __construct(string $text, bool $sandbox=true, string $language=null,array $labels)
+  /**
+   * The most labels a request can have.
+   */
+  const MAX_LABELS = 16;
+
+  /**
+   * @param string $text Text to produce Text Moderation report for.
+   * @param bool|null $sandbox Use sandbox mode (free, mock results). null is read as false.
+   * @param string|null $language The language code of your content, or null to detect it automatically.
+   * @param CopyleaksTextModerationLabel[] $labels The labels to moderate: 1 to 16 labels. Required.
+   */
+  public function __construct(string $text, ?bool $sandbox = false, ?string $language = null, array $labels = [])
   {
     if (is_null($text)) {
       throw new \InvalidArgumentException('Text cannot be null.');
     }
 
-    if (!is_array($labels) || count($labels) < 1 || count($labels) > 32) {
-        throw new \InvalidArgumentException('Labels must be an array with at least 1 and no more than 32 elements.');
+    if (!is_array($labels) || count($labels) < 1 || count($labels) > self::MAX_LABELS) {
+        throw new \InvalidArgumentException('Labels must be an array with at least 1 and no more than ' . self::MAX_LABELS . ' elements.');
     }
     
     if (is_null($sandbox)) {

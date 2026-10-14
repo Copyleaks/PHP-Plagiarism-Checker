@@ -33,13 +33,13 @@ class SubmissionPDF
    */
   public bool $create;
   /**
-   * Customize the title for the PDF report.
+   * Customize the title for the PDF report. null leaves it out.
    */
-  public string $title;
+  public ?string $title;
   /**
-   * Customize the logo image in the PDF report.
+   * Customize the logo image in the PDF report (a base64 encoded PNG). null leaves it out.
    */
-  public string $largeLogo;
+  public ?string $largeLogo;
   /**
    * When set to true the text in the report will be aligned from right to left.
    */
@@ -76,8 +76,8 @@ class SubmissionPDF
    */
   public function __construct(
     bool $create,
-    string $title,
-    string $largeLogo,
+    ?string $title,
+    ?string $largeLogo,
     bool $rtl,
     ?int $version = null,
     ?ReportCustomizationColors $colors = null,

@@ -30,13 +30,28 @@ class CopyleaksNaturalLanguageSubmissionModel extends CopyleaksAiDetectionSubmis
     public ?string $language;
 
     /**
+     * Enable AI Logic, which explains why the text was detected as AI (the response's explain object).
+     * Leave null to get the server default (false).
+     */
+    public ?bool $explain;
+
+    /**
+     * Control the behavior of the AI detection, from 1 to 3. Leave null to get the server default (2).
+     */
+    public ?int $sensitivity;
+
+    /**
      * @param string $text A text string.
      * @param bool $sandbox Use sandbox mode to test your integration with the Copyleaks API for free.
      * @param string|null $language The language code of your content. The selected language should be on the Supported Languages list above. If the 'language' field is not supplied , our system will automatically detect the language of the content
+     * @param bool|null $explain Enable AI Logic. null = server default (false).
+     * @param int|null $sensitivity Control the behavior of the AI detection, from 1 to 3. null = server default (2).
      */
-    public function __construct(string $text, bool $sandbox = false, ?string $language = null)
+    public function __construct(string $text, bool $sandbox = false, ?string $language = null, ?bool $explain = null, ?int $sensitivity = null)
     {
         parent::__construct($text, $sandbox);
         $this->language = $language;
+        $this->explain = $explain;
+        $this->sensitivity = $sensitivity;
     }
 }

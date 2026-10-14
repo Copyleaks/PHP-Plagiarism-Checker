@@ -25,16 +25,17 @@
 
 namespace Copyleaks;
 
-include_once('CopyleaksAIDetectionSubmissionModel.php');
-include_once('CopyleaksNaturalLanguageSubmissionModel.php');
+include_once(__DIR__ . '/CopyleaksAIDetectionSubmissionModel.php');
+include_once(__DIR__ . '/CopyleaksNaturalLanguageSubmissionModel.php');
 
-include_once('responses/CopyleaksAiTextDetectionExplainModel.php');
-include_once('responses/CopyleaksAiTextDetectionMatchModel.php');
-include_once('responses/CopyleaksAiTextDetectionMatchTextModel.php');
-include_once('responses/CopyleaksAiTextDetectionPatternMatchModel.php');
-include_once('responses/CopyleaksAiTextDetectionPatternStatisticsModel.php');
-include_once('responses/CopyleaksAiTextDetectionPatternsModel.php');
-include_once('responses/CopyleaksAiTextDetectionPositionsModel.php');
-include_once('responses/CopyleaksAiTextDetectionResponseModel.php');
-include_once('responses/CopyleaksAiTextDetectionResultModel.php');
-include_once('responses/CopyleaksAiTextDetectionSummaryModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionExplainModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionMatchModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionMatchTextModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionPatternMatchModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionPatternStatisticsModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionPatternsModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionPositionsModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionResponseModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionResultModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionScannedDocumentModel.php');
+include_once(__DIR__ . '/responses/CopyleaksAiTextDetectionSummaryModel.php');

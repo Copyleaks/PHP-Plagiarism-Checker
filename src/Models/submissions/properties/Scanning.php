@@ -45,19 +45,37 @@ class SubmissionScanning
   public ?SubmissionScanningCopyleaksDB $copyleaksDb;
 
   /**
-   *@param bool $internet Compare your content with online sources.
+   * Only include results whose scan ID matches a pattern. Check inner properties for more details.
+   */
+  public ?SubmissionScanningInclude $include;
+
+  /**
+   * Cross-language plagiarism detection: the languages to scan your content against.
+   * Get the allowed language codes with Copyleaks::getAllowedCrossLanguages().
+   */
+  public ?CrossLanguages $crossLanguages;
+
+  /**
+   *@param bool|null $internet Compare your content with online sources. Leave null to get the server default (true).
    *@param SubmissionScanningExclude $exclude Check inner properties of SubmissionScanningExclude for more details.
    *@param array $repositories SubmissionScanningRepository[] - Check inner properties of SubmissionScanningRepository for more details.
    *@param SubmissionScanningCopyleaksDB $copyleaksDb Check inner properties for more details.
+   *@param SubmissionScanningInclude $include Only include results whose scan ID matches a pattern.
+   *@param CrossLanguages $crossLanguages The languages to scan your content against (cross-language plagiarism detection).
    */
   public function __construct(
-    bool $internet = false,
-    SubmissionScanningExclude $exclude = null,
-    array $repositories = null,
-    SubmissionScanningCopyleaksDB $copyleaksDb = null
+    ?bool $internet = null,
+    ?SubmissionScanningExclude $exclude = null,
+    ?array $repositories = null,
+    ?SubmissionScanningCopyleaksDB $copyleaksDb = null,
+    ?SubmissionScanningInclude $include = null,
+    ?CrossLanguages $crossLanguages = null
   ) {
     $this->internet = $internet;
     $this->exclude = $exclude;
     $this->repositories = $repositories;
-    $this->copyleaksDb = $copyleaksDb;  }
+    $this->copyleaksDb = $copyleaksDb;
+    $this->include = $include;
+    $this->crossLanguages = $crossLanguages;
+  }
 }

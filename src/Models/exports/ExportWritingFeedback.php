@@ -22,22 +22,12 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
 */
+
 namespace Copyleaks;
 
-class DeprecationService
+/**
+ * Export the Grammar Checker report. Allowed only when properties.writingFeedback.enable was true on the scan.
+ */
+class ExportWritingFeedback extends ExportTarget
 {
-    public static function showDeprecationMessage()
-    {
-        // Trace equivalent - using error_log for logging
-        error_log("DEPRECATION NOTICE: AI Code Detection will be discontinued on August 29, 2025. Please remove AI code detection integrations before the sunset date.");
-
-        // Red colored console output using ANSI escape codes
-        echo "\033[31m"; // Red color
-        echo "════════════════════════════════════════════════════════════════════\n";
-        echo "DEPRECATION NOTICE !!!\n";
-        echo "AI Code Detection will be discontinued on August 29, 2025.\n";
-        echo "Please remove AI code detection integrations before the sunset date.\n";
-        echo "════════════════════════════════════════════════════════════════════\n";
-        echo "\033[0m"; // Reset color
-    }
 }

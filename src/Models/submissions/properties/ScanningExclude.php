@@ -33,12 +33,27 @@ class SubmissionScanningExclude
    *  * '*' Matches any, zero or more, characters.
    *  * '.' Matches a single (non whitespace) character
    */
-  public string $idPattern;
+  public ?string $idPattern;
+
   /**
-   * @param string $idPattern - Exclude your submissions from results if their id matches the supplied pattern. Matched submissions will be excluded from batch, internal database and repositories results. Supported pattern wildcards: '*' Matches any, zero or more, characters.  '.' Matches a single (non whitespace) character
+   * string[] - Exclude results that contain backlinks to these domains. At most 10 domains, each 1-256 characters.
    */
-  public function __construct(string $idPattern)
+  public ?array $backlinksDomains;
+
+  /**
+   * string[] - Exclude results that contain any of these phrases. At most 5 phrases, each 1-30 characters.
+   */
+  public ?array $text;
+
+  /**
+   * @param string|null $idPattern - Exclude your submissions from results if their id matches the supplied pattern. Matched submissions will be excluded from batch, internal database and repositories results. Supported pattern wildcards: '*' Matches any, zero or more, characters.  '.' Matches a single (non whitespace) character
+   * @param string[]|null $backlinksDomains - Exclude results that contain backlinks to these domains (at most 10).
+   * @param string[]|null $text - Exclude results that contain any of these phrases (at most 5, each 1-30 characters).
+   */
+  public function __construct(?string $idPattern = null, ?array $backlinksDomains = null, ?array $text = null)
   {
     $this->idPattern = $idPattern;
+    $this->backlinksDomains = $backlinksDomains;
+    $this->text = $text;
   }
 }

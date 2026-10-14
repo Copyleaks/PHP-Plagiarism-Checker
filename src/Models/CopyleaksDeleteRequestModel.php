@@ -39,15 +39,21 @@ class CopyleaksDeleteRequestModel
    * Allows you to register to a webhook that will be fired once the removal has been completed. Make sure that your endpoint is listening to a POST method (no body parameters were supplied).
    */
   public string $completionWebhook;
+  /**
+   * Headers to add to the completion webhook, as [["header-key", "header-value"], ...].
+   */
+  public ?array $headers;
   /**   
    * @param {id:string}[] $scans The list of scans to delete
    * @param Boolean $purge Delete all trace of the scan from Copyleaks server, including from internal database. A purged process will not be available as a result for previous scans.
-   * @param string $completionWebhook Allows you to register to a webhook that will be fired once the removal has been completed. Make sure that your endpoint is listening to a POST method (no body parameters were supplied).
+   * @param string $completionWebhook Allows you to register to a webhook that will be fired once the removal has been completed. Make sure that your endpoint is listening to a POST method (no body parameters were supplied). An empty string means no webhook.
+   * @param array|null $headers Headers to add to the completion webhook, as [["header-key", "header-value"], ...].
    */
-  public function __construct(array $scans, bool $purge = false, string $completionWebhook = "")
+  public function __construct(array $scans, bool $purge = false, string $completionWebhook = "", ?array $headers = null)
   {
     $this->scans = $scans;
     $this->purge = $purge;
     $this->completionWebhook = $completionWebhook;
+    $this->headers = $headers;
   }
 }

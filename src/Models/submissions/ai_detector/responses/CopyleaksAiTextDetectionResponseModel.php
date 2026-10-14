@@ -72,13 +72,20 @@ class CopyleaksAiTextDetectionResponseModel
      */
     public ?CopyleaksAiTextDetectionExplainModel $explain;
 
+    /**
+     * Details of the scan: scan ID, word counts, credits and creation time.
+     * null when missing (the completed webhook's AI alert does not include it).
+     */
+    public ?CopyleaksAiTextDetectionScannedDocumentModel $scannedDocument;
+
     public function __construct(
         ?string $modelVersion = null,
         array $results = [],
         ?CopyleaksAiTextDetectionSummaryModel $summary = null,
         ?int $translationProvider = null,
         ?string $translation = null,
-        ?CopyleaksAiTextDetectionExplainModel $explain = null
+        ?CopyleaksAiTextDetectionExplainModel $explain = null,
+        ?CopyleaksAiTextDetectionScannedDocumentModel $scannedDocument = null
     ) {
         $this->modelVersion = $modelVersion;
         $this->results = $results;
@@ -86,6 +93,7 @@ class CopyleaksAiTextDetectionResponseModel
         $this->translationProvider = $translationProvider;
         $this->translation = $translation;
         $this->explain = $explain;
+        $this->scannedDocument = $scannedDocument;
     }
 
     /**
@@ -119,7 +127,8 @@ class CopyleaksAiTextDetectionResponseModel
             is_array($data['summary'] ?? null) ? CopyleaksAiTextDetectionSummaryModel::fromArray($data['summary']) : null,
             is_numeric($translationProvider) ? (int) $translationProvider : null,
             self::stringValue($data['translation'] ?? null),
-            is_array($data['explain'] ?? null) ? CopyleaksAiTextDetectionExplainModel::fromArray($data['explain']) : null
+            is_array($data['explain'] ?? null) ? CopyleaksAiTextDetectionExplainModel::fromArray($data['explain']) : null,
+            is_array($data['scannedDocument'] ?? null) ? CopyleaksAiTextDetectionScannedDocumentModel::fromArray($data['scannedDocument']) : null
         );
     }
 

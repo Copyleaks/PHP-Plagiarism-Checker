@@ -33,12 +33,14 @@ class SubmissionFilter
   public bool $identicalEnabled;
   /**
    * Enable matching of nearly identical words with small differences like slow becomes slowly.
+   * null leaves it to the server default (true).
    */
-  public bool $minorChangesEnabled;
+  public ?bool $minorChangesEnabled;
   /**
    * Enable matching of paraphrased content stating similar ideas with different words.
+   * null leaves it to the server default (true).
    */
-  public bool $relatedMeaningEnabled;
+  public ?bool $relatedMeaningEnabled;
   /**
    * Select results with at least minCopiedWords copied words.
    */
@@ -64,12 +66,12 @@ class SubmissionFilter
   /**
    * when set to true it will allow results from the same domain as the submitted url.
    */
-  private bool $allowSameDomain;
+  public bool $allowSameDomain;
 
   /**
    *@param bool $identicalEnabled Enable matching of exact words in the text.
-   *@param bool $minorChangesEnabled Enable matching of nearly identical words with small differences like slow becomes slowly.
-   *@param bool $relatedMeaningEnabled Enable matching of paraphrased content stating similar ideas with different words.
+   *@param bool|null $minorChangesEnabled Enable matching of nearly identical words with small differences like slow becomes slowly. null = server default (true).
+   *@param bool|null $relatedMeaningEnabled Enable matching of paraphrased content stating similar ideas with different words. null = server default (true).
    *@param int $minCopiedWords Select results with at least minCopiedWords copied words.
    *@param bool $safeSearch Block explicit adult content from the scan results such as web pages containing inappropriate images and videos. SafeSearch is not 100% effective with all websites.
    *@param array $domains list of domains to either include or exclude from the scan - depending on the value of domainsMode.
@@ -78,8 +80,8 @@ class SubmissionFilter
    */
   public function __construct(
     bool $identicalEnabled = true,
-    bool $minorChangesEnabled = false,
-    bool $relatedMeaningEnabled = false,
+    ?bool $minorChangesEnabled = null,
+    ?bool $relatedMeaningEnabled = null,
     ?int $minCopiedWords = null,
     bool $safeSearch = false,
     array $domains = array(),

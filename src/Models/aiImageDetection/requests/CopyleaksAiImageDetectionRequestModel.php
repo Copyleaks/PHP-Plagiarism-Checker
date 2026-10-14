@@ -81,19 +81,44 @@ class CopyleaksAiImageDetectionRequestModel
     public $sandbox;
 
     /**
+     * The type of detection mask to return: 'binary' (default), 'heatmap' or 'none'.
+     * See CopyleaksAiImageMaskTypes. Leave null to get the server default ('binary').
+     * - 'binary': RLE mask of the regions flagged as AI-generated (result.starts and result.lengths).
+     * - 'heatmap': adds a confidence band (0-4) per RLE run in result.labels.
+     * - 'none': no mask; the response has no result object.
+     *
+     * @var string|null
+     */
+    public $maskType;
+
+    /**
+     * Objects to locate and segment within the image, at most 3.
+     * The response then has a detectedObjects array, one entry per object found.
+     * Each item is a CopyleaksAiImageObjectDetectionItem, for example new CopyleaksAiImageObjectDetectionItem('face').
+     * Leave null to skip object detection.
+     *
+     * @var CopyleaksAiImageObjectDetectionItem[]|null
+     */
+    public $objectDetection;
+
+    /**
      * Constructor for CopyleaksAiImageDetectionRequestModel
      * 
      * @param string $base64 The base64-encoded image data
      * @param string $fileName The name of the image file including its extension
      * @param string $model The AI detection model to use for analysis
      * @param bool $sandbox Use sandbox mode (default: false)
+     * @param string|null $maskType 'binary', 'heatmap' or 'none' (see CopyleaksAiImageMaskTypes). null = server default ('binary').
+     * @param CopyleaksAiImageObjectDetectionItem[]|null $objectDetection Objects to locate in the image (at most 3). null = none.
      */
-    public function __construct($base64, $fileName, $model, $sandbox = false)
+    public function __construct($base64, $fileName, $model, $sandbox = false, ?string $maskType = null, ?array $objectDetection = null)
     {
         $this->base64 = $base64;
         $this->fileName = $fileName;
         $this->model = $model;
         $this->sandbox = $sandbox;
+        $this->maskType = $maskType;
+        $this->objectDetection = $objectDetection;
     }
 
     /**
@@ -103,12 +128,19 @@ class CopyleaksAiImageDetectionRequestModel
      */
     public function toArray()
     {
-        return [
+        $array = [
             'base64' => $this->base64,
             'fileName' => $this->fileName,
             'model' => $this->model,
             'sandbox' => $this->sandbox
         ];
+        if ($this->maskType !== null) {
+            $array['maskType'] = $this->maskType;
+        }
+        if ($this->objectDetection !== null) {
+            $array['objectDetection'] = RequestPayload::toPayload($this->objectDetection);
+        }
+        return $array;
     }
 
     /**
