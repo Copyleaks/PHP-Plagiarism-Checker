@@ -71,7 +71,7 @@ final class StubServer
 
     /**
      * Queues responses, answered in order. Each is ['status' => int, 'headers' => [], 'body' => string,
-     * 'delay' => seconds, 'close' => bool, 'gzip' => bool].
+     * 'delay' => seconds, 'close' => bool, 'gzip' => bool, 'truncate' => bool].
      */
     public static function enqueue(array ...$responses): void
     {

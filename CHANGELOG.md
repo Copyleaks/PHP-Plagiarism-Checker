@@ -59,7 +59,7 @@ The package is now published on Packagist as `copyleaks/copyleaks`. Versions up 
 ### Changed
 
 - **Timeouts.** Requests now time out: 10 seconds to connect and 120 seconds in total. Before, a stalled connection could wait forever. Both limits can be changed (see Upgrade notes).
-- **Connection reuse.** The SDK keeps one connection open per PHP process and reuses it, so consecutive calls skip the connection and TLS setup.
+- **Connection reuse.** The SDK keeps its connection open and reuses it, so consecutive calls skip the connection and TLS setup. In CLI scripts and long-running workers the connection is reused across the whole process; under PHP-FPM or mod_php it is reused within one web request.
 - **Compressed responses.** The SDK asks for compressed responses and decompresses them.
 - **Server defaults are kept.** `SubmissionFilter`'s `$minorChangesEnabled` and `$relatedMeaningEnabled`, and `SubmissionScanning`'s `$internet`, now default to null, so they are not sent and the server applies its default (true). Before, building one of these objects sent `false` and silently turned off these matches.
 - **Text Moderation labels.** A request takes 1 to 16 labels, the server's limit. Before, up to 32 were accepted and then rejected by the server.
@@ -74,6 +74,7 @@ The package is now published on Packagist as `copyleaks/copyleaks`. Versions up 
 - `CopyleaksTextModerationRequestModel` accepts a null `$language` to detect the language automatically. Before, null threw a `TypeError`.
 - `CopyleaksExportModel` no longer requires `$results` and `$crawledVersion`, so you can export only the PDF report or the new reports.
 - `SubmissionPDF` accepts a null `$title` and `$largeLogo`, which are then not sent.
+- A successful response whose body is cut off (for example by a timeout or a dropped connection) or is not valid JSON now throws a `CommandException`. Before, the call returned null.
 - Login sends a JSON body with the `Content-Type`, `Accept` and `User-Agent` headers. The public lookups (OCR languages, supported file types, release notes, correction types) now send the `User-Agent` header too.
 - Requests no longer send `Expect: 100-continue`, which could add up to a second to uploads and to resending webhooks.
 - Scan IDs and other path values are URL-encoded, so IDs with characters such as spaces, `/` or `%` reach the right endpoint.
@@ -97,4 +98,5 @@ The package is now published on Packagist as `copyleaks/copyleaks`. Versions up 
 - **Filter and scanning defaults:** if you relied on `new SubmissionFilter()` turning off minor-changes and related-meaning matches, or on `new SubmissionScanning()` turning off internet scanning, pass `false` explicitly.
 - **Error codes:** `CommandException::getCode()` is now the HTTP status instead of 0. Messages keep their format.
 - **Text Moderation:** pass at most 16 labels. `$sandbox` and `$language` now have defaults (`false` and null), so you can leave them out with named arguments. `$labels` is still required.
+- **Scan ids in URLs:** the SDK now URL-encodes scan ids, export ids and other path values. If you encoded them yourself (for example with `rawurlencode`), pass the plain value instead, or it is encoded twice and the call targets a different id.
 - All new constructor arguments come after the existing ones and are optional, so existing calls keep working.

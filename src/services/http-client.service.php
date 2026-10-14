@@ -73,45 +73,59 @@ class HttpClientService {
     };
 
     $ch = self::handle();
-    curl_reset($ch); // clears the previous request's options; open connections are kept
-    curl_setopt_array($ch, $options);
+    try {
+      curl_setopt_array($ch, $options);
+      $result = curl_exec($ch);
+      $statusCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      $contentType = (string) curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+      $curlErrno = curl_errno($ch);
+      $curlError = curl_error($ch);
+      $curlInfo = curl_getinfo($ch);
+    } finally {
+      // Clears this request's options and its copy of the request body; open connections are kept.
+      curl_reset($ch);
+    }
 
-    $result = curl_exec($ch);
-
-    $statusCode = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $body = is_string($result) ? $result : null;
 
     if (isSuccessStatusCode($statusCode)) {
-      if (isset($result)) {
-        $contentType = (string) curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
-        if (strpos($contentType, 'application/json') !== false) {
-          return json_decode($result);
-        } else {
-          return $result;
-        }
-      } else {
-        return;
+      if ($result === false || $curlErrno !== 0) {
+        // The status line arrived but the body did not (timeout, dropped connection or a corrupt body).
+        throw new CommandException(self::errorMessage($body, $curlInfo, $curlError), 0, null, $body, $responseHeaders);
+      }
+      if (strpos($contentType, 'application/json') === false) {
+        return $result;
+      }
+      if ($result === '') {
+        return null;
+      }
+      try {
+        return json_decode($result, false, 512, JSON_THROW_ON_ERROR);
+      } catch (\JsonException $e) {
+        throw new CommandException(self::errorMessage($body, $curlInfo, 'Invalid JSON in the response: ' . $e->getMessage()), $statusCode, $e, $body, $responseHeaders);
       }
     } elseif (isUnderMaintenanceResponse($statusCode)) {
       throw new UnderMaintenanceException($statusCode, null, $body, $responseHeaders);
     } elseif (isRateLimitResponse($statusCode)) {
       throw new RateLimitException($statusCode, null, $body, $responseHeaders);
     } else {
-      $err_message = "\n" . "----Copyleaks SDK Error-----" . "\n\n";
-      $curl_info = curl_getinfo($ch);
-      $curl_err = curl_error($ch);
-      if (isset($result) && $result != "") {
-        $err_message = $err_message . "result:" . "\n" . json_encode($result) . "\n\n";
-      }
-      if (isset($curl_info)) {
-        $err_message = $err_message . "info:" . "\n" .  json_encode($curl_info) . "\n\n";
-      }
-      if (isset($curl_err) && $curl_err != "") {
-        $err_message = $err_message . "error:" . "\n" . json_encode($curl_err) . "\n\n";
-      }
-      $err_message = $err_message . "----------------------------\n";
-      throw new CommandException($err_message, $statusCode, null, $body, $responseHeaders);
+      throw new CommandException(self::errorMessage($body, $curlInfo, $curlError), $statusCode, null, $body, $responseHeaders);
     }
+  }
+
+  private static function errorMessage(?string $result, $curlInfo, string $curlError): string
+  {
+    $err_message = "\n" . "----Copyleaks SDK Error-----" . "\n\n";
+    if (isset($result) && $result != "") {
+      $err_message = $err_message . "result:" . "\n" . json_encode($result) . "\n\n";
+    }
+    if (isset($curlInfo)) {
+      $err_message = $err_message . "info:" . "\n" .  json_encode($curlInfo) . "\n\n";
+    }
+    if ($curlError != "") {
+      $err_message = $err_message . "error:" . "\n" . json_encode($curlError) . "\n\n";
+    }
+    return $err_message . "----------------------------\n";
   }
 
   /**

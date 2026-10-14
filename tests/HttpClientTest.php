@@ -101,6 +101,34 @@ class HttpClientTest extends SdkTestCase
         $this->assertTrue($this->copyleaks->getReleaseNotes()->ok);
     }
 
+    public function testCutOffSuccessBodyThrows(): void
+    {
+        StubServer::enqueue(['body' => json_encode(['notes' => str_repeat('a', 2000)]), 'truncate' => true]);
+        try {
+            $this->copyleaks->getReleaseNotes();
+            $this->fail('expected a CommandException');
+        } catch (CommandException $e) {
+            $this->assertSame(0, $e->getStatusCode());
+        }
+
+        // The SDK recovers on the next call.
+        StubServer::enqueueJson(['ok' => true]);
+        $this->assertTrue($this->copyleaks->getReleaseNotes()->ok);
+    }
+
+    public function testInvalidJsonSuccessBodyThrows(): void
+    {
+        StubServer::enqueueJson('{"notes": [');
+        try {
+            HttpClientService::Execute('GET', StubServer::baseUrl() . '/bad-json', []);
+            $this->fail('expected a CommandException');
+        } catch (CommandException $e) {
+            $this->assertSame(200, $e->getStatusCode());
+            $this->assertInstanceOf(\JsonException::class, $e->getPrevious());
+            $this->assertSame('{"notes": [', $e->getResponseBody());
+        }
+    }
+
     public function testLargeBodyIsSentWithoutExpectContinue(): void
     {
         $content = base64_encode(random_bytes(1500000));

@@ -370,7 +370,8 @@ class Copyleaks
 
   /**
    * Get the languages supported by cross-language plagiarism detection, as
-   * {"documentLanguages": [...], "resultLanguages": [...]} (ISO-639-1 codes).
+   * {"documentLanguages": {"danish": "da", ...}, "resultLanguages": {"french": "fr", ...}}: objects that map each
+   * language name to its ISO-639-1 code. Get the codes with array_values((array) $result->resultLanguages).
    * Use a resultLanguages code in SubmissionScanning's crossLanguages.
    * No login needed.
    * For more info: https://docs.copyleaks.com/reference/actions/miscellaneous/supported-cross-languages

@@ -440,7 +440,8 @@ The export request can also send the AI detection, Grammar Checker and overview 
 
 ```php
 <?php
-    $languages = $copyleaks->getAllowedCrossLanguages();              // documentLanguages, resultLanguages (no login needed)
+    $languages = $copyleaks->getAllowedCrossLanguages();              // documentLanguages, resultLanguages: name => code (no login needed)
+    $codes = array_values((array) $languages->resultLanguages);       // ['fr', 'de', ...]
     $aiFileTypes = $copyleaks->getSupportedAiTextDetectionFileTypes(); // supportedAiFileTypes (no login needed)
     $repository = $copyleaks->getRepositoryInfo($authToken, 'my-repository-id'); // Private Cloud Hub, Admin role
 ```
@@ -455,7 +456,7 @@ Every request has a connect timeout (10 seconds) and a total timeout (120 second
     CopyleaksConfig::SET_CONNECT_TIMEOUT(5);
     CopyleaksConfig::SET_TIMEOUT(300); // 0 means no limit
 ```
-The SDK keeps the connection to Copyleaks open between calls in the same PHP process, so consecutive calls skip the connection setup. Call `Copyleaks\HttpClientService::closeConnections()` to close it.
+The SDK keeps the connection to Copyleaks open between calls, so consecutive calls skip the connection setup. In CLI scripts and workers it is reused across the whole process; under PHP-FPM or mod_php, within one web request. Call `Copyleaks\HttpClientService::closeConnections()` to close it.
 
 Errors are thrown as exceptions that carry the HTTP status code:
 

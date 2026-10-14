@@ -6,7 +6,8 @@
  * - Records every request as one JSON line in <state-dir>/requests.jsonl: connection number, method,
  *   target, path, query, headers (lowercase names), raw header lines and the body (base64).
  * - Answers with the first response queued in <state-dir>/responses.json (a JSON list of
- *   {status, headers, body, delay, close, gzip}), or 200 {} when the queue is empty.
+ *   {status, headers, body, delay, close, gzip, truncate}), or 200 {} when the queue is empty.
+ *   truncate sends the full Content-Length but only half of the body, then closes the connection.
  * - Keeps connections open between requests (keep-alive), serves several connections at once,
  *   answers "Expect: 100-continue" and decodes chunked request bodies.
  */
@@ -193,7 +194,7 @@ function respond(array &$clients, int $id, array $response): void
         $body = gzencode($body);
         $headers['Content-Encoding'] = 'gzip';
     }
-    $close = !empty($response['close']);
+    $close = !empty($response['close']) || !empty($response['truncate']);
     $reasons = [200 => 'OK', 201 => 'Created', 202 => 'Accepted', 204 => 'No Content', 400 => 'Bad Request',
         401 => 'Unauthorized', 404 => 'Not Found', 409 => 'Conflict', 429 => 'Too Many Requests',
         500 => 'Internal Server Error', 503 => 'Service Unavailable'];
@@ -203,7 +204,7 @@ function respond(array &$clients, int $id, array $response): void
     }
     $out .= 'Content-Length: ' . strlen($body) . "\r\n";
     $out .= $close ? "Connection: close\r\n" : "Connection: keep-alive\r\n";
-    $out .= "\r\n" . $body;
+    $out .= "\r\n" . (empty($response['truncate']) ? $body : substr($body, 0, intdiv(strlen($body), 2)));
 
     $sock = $clients[$id]['sock'];
     stream_set_blocking($sock, true);

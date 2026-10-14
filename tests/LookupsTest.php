@@ -11,11 +11,12 @@ class LookupsTest extends SdkTestCase
 {
     public function testAllowedCrossLanguagesIsPublic(): void
     {
-        StubServer::enqueueJson(['documentLanguages' => ['en', 'fr'], 'resultLanguages' => ['es', 'de']]);
+        StubServer::enqueueJson(['documentLanguages' => ['english' => 'en', 'french' => 'fr'],
+            'resultLanguages' => ['spanish' => 'es', 'german' => 'de']]);
         $result = $this->copyleaks->getAllowedCrossLanguages();
         $this->assertPublicGet($this->lastRequest(), '/v3/miscellaneous/allowed-cross-languages');
-        $this->assertSame(['en', 'fr'], $result->documentLanguages);
-        $this->assertSame(['es', 'de'], $result->resultLanguages);
+        $this->assertSame('fr', $result->documentLanguages->french);
+        $this->assertSame(['es', 'de'], array_values((array) $result->resultLanguages));
     }
 
     public function testSupportedAiTextDetectionFileTypesIsPublic(): void
