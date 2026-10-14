@@ -30,7 +30,7 @@ class SubmissionWebhooks
   /**
    * This webhook event is triggered once the scan status changes.
    * Use the special token {STATUS} to track the current scan status.
-   * This special token will automatically be replaced by the Copyleaks servers with the optional values: completed, error, creditsChecked and indexed.
+   * This special token will automatically be replaced by the Copyleaks servers with the optional values: completed, error, creditschecked and indexed.
    * Read more about webhooks: https://docs.copyleaks.com/reference/data-types/authenticity/webhooks/overview
    */
   public string $status;
@@ -51,7 +51,7 @@ class SubmissionWebhooks
   public ?array $statusHeaders;
 
   /**
-   * @param string status This webhook event is triggered once the scan status changes. Use the special token {STATUS} to track the current scan status. This special token will automatically be replaced by the Copyleaks servers with the optional values: completed, error, creditsChecked and indexed. Read more about webhooks: https://docs.copyleaks.com/reference/data-types/authenticity/webhooks/overview
+   * @param string status This webhook event is triggered once the scan status changes. Use the special token {STATUS} to track the current scan status. This special token will automatically be replaced by the Copyleaks servers with the optional values: completed, error, creditschecked and indexed. Read more about webhooks: https://docs.copyleaks.com/reference/data-types/authenticity/webhooks/overview
    * @param string newResult Http endpoint to be triggered while the scan is still running and a new result is found. This is useful when the report is being viewed by the user in real time so the results will load gradually as they are found.
    * @param array newResultHeaders Headers to add to the newResult webhook, as [["header-key", "header-value"], ...].
    * @param array statusHeaders Headers to add to the status webhook, as [["header-key", "header-value"], ...].

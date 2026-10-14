@@ -106,7 +106,7 @@ $app->post('/webhook/error', function (Request $request, Response $response) {
 });
 
 
-$app->post('/webhook/creditsChecked', function (Request $request, Response $response) {
+$app->post('/webhook/creditschecked', function (Request $request, Response $response) {
     $data = parseJsonBody($request);
     if ($data === null) {
         $response->getBody()->write("Invalid JSON");
