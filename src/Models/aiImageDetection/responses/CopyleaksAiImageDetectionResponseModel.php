@@ -33,6 +33,7 @@ use Copyleaks\CopyleaksAiImageDetectionScannedDocumentModel;
 /**
  * Response model for Copyleaks AI image detection analysis.
  * Contains the AI detection results, image information, and scan metadata.
+ * For an asynchronous scan, check $error first: when the scan failed, it is set and the result properties are null.
  */
 class CopyleaksAiImageDetectionResponseModel
 {
@@ -74,6 +75,16 @@ class CopyleaksAiImageDetectionResponseModel
      */
     public ?array $detectedObjects;
 
+    /**
+     * Why the scan failed. Set only in the webhook of an asynchronous scan that failed.
+     */
+    public ?Error $error;
+
+    /**
+     * The developer payload sent with the asynchronous submit request.
+     */
+    public ?string $developerPayload;
+
     public function __construct(
         string $model,
         ?CopyleaksAiImageDetectionResultModel $result = null,
@@ -81,7 +92,9 @@ class CopyleaksAiImageDetectionResponseModel
         ?CopyleaksAiImageDetectionImageInfoModel $imageInfo = null,
         ?CopyleaksAiImageDetectionScannedDocumentModel $scannedDocument = null,
         ?bool $isAiDetected = null,
-        ?array $detectedObjects = null
+        ?array $detectedObjects = null,
+        ?Error $error = null,
+        ?string $developerPayload = null
     ) {
         $this->model = $model;
         $this->result = $result;
@@ -90,6 +103,8 @@ class CopyleaksAiImageDetectionResponseModel
         $this->scannedDocument = $scannedDocument;
         $this->isAiDetected = $isAiDetected;
         $this->detectedObjects = $detectedObjects;
+        $this->error = $error;
+        $this->developerPayload = $developerPayload;
     }
 
     public static function fromArray(?array $data): ?self
@@ -115,7 +130,9 @@ class CopyleaksAiImageDetectionResponseModel
             isset($data['imageInfo']) ? CopyleaksAiImageDetectionImageInfoModel::fromArray($data['imageInfo']) : null,
             isset($data['scannedDocument']) ? CopyleaksAiImageDetectionScannedDocumentModel::fromArray($data['scannedDocument']) : null,
             is_bool($data['isAiDetected'] ?? null) ? $data['isAiDetected'] : null,
-            $detectedObjects
+            $detectedObjects,
+            is_array($data['error'] ?? null) ? Error::fromArray($data['error']) : null,
+            is_string($data['developerPayload'] ?? null) ? $data['developerPayload'] : null
         );
     }
 }

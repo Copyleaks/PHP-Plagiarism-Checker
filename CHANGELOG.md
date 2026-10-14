@@ -27,6 +27,7 @@ The package is now published on Packagist as `copyleaks/copyleaks`. Versions up 
   - `$copyleaks->getSupportedAiTextDetectionFileTypes()`: the file types AI Text Detection accepts. No login needed.
   - `$copyleaks->getRepositoryInfo($token, $repositoryId)`: information about a Private Cloud Hub repository.
   - `Copyleaks\CopyleaksAsyncWebhooks` holds the webhook URL and headers of the two asynchronous detections.
+  - Failed asynchronous AI Image and AI Video Detection scans: `CopyleaksAiImageDetectionResponseModel` and `CopyleaksAiVideoDetectionResponseModel` have `$error` (a `Copyleaks\Error`) and `$developerPayload`, and `fromArray()` reads both. When a scan fails, the webhook has an `error` instead of a result, so check `$error` first. The new constructor arguments come last and default to null.
 - **New scan options** (`Copyleaks\SubmissionProperties` and its inner objects). All are optional and come after the existing constructor arguments. Options left null are not sent.
   - `$writingFeedback` (`SubmissionWritingFeedback`): run the Grammar Checker inside the scan, with optional `ScoreWeights`.
   - `$overview` (`SubmissionOverview`): the Gen-AI Overview and its ignore options.

@@ -14,6 +14,7 @@ use Copyleaks\CopyleaksAiVideoDetectionRequestModel;
 use Copyleaks\CopyleaksAiVideoDetectionResponseModel;
 use Copyleaks\CopyleaksAsyncWebhooks;
 use Copyleaks\CopyleaksNaturalLanguageSubmissionModel;
+use Copyleaks\Error;
 use Copyleaks\Tests\Support\StubServer;
 
 /**
@@ -231,5 +232,65 @@ class AiDetectionTest extends SdkTestCase
         $this->assertNull($empty->summary);
         $this->assertNull($empty->audioResult);
         $this->assertNull(CopyleaksAiVideoDetectionResponseModel::fromArray(null));
+        $this->assertNull($model->error);
+        $this->assertNull($model->developerPayload);
+    }
+
+    private const ASYNC_ERROR = '{
+      "error": {"type": "invalid_request_error", "id": "unsupported_file", "code": 67, "message": "The file could not be processed.",
+        "url": "https://docs.copyleaks.com/using-the-apis/api-errors", "details": [{"param": "url", "message": "Unsupported format"}]},
+      "developerPayload": "order-1"
+    }';
+
+    private function assertAsyncError(?Error $error): void
+    {
+        $this->assertInstanceOf(Error::class, $error);
+        $this->assertSame('invalid_request_error', $error->type);
+        $this->assertSame('unsupported_file', $error->id);
+        $this->assertSame(67, $error->code);
+        $this->assertSame('The file could not be processed.', $error->message);
+        $this->assertSame('https://docs.copyleaks.com/using-the-apis/api-errors', $error->url);
+        $this->assertSame('url', $error->details[0]->param);
+        $this->assertSame('Unsupported format', $error->details[0]->message);
+    }
+
+    public function testAiVideoWebhookDeveloperPayloadAndError(): void
+    {
+        $ok = CopyleaksAiVideoDetectionResponseModel::fromArray(
+            ['model' => 'ai-video-1-pro', 'isAiDetected' => false, 'summary' => ['overallAIRatio' => 0.1], 'developerPayload' => 'order-1']
+        );
+        $this->assertNull($ok->error);
+        $this->assertSame('order-1', $ok->developerPayload);
+
+        $failed = CopyleaksAiVideoDetectionResponseModel::fromArray(json_decode(self::ASYNC_ERROR, true));
+        $this->assertAsyncError($failed->error);
+        $this->assertSame('order-1', $failed->developerPayload);
+        $this->assertNull($failed->summary);
+        $this->assertNull($failed->isAiDetected);
+    }
+
+    public function testAiImageAsyncWebhookDeveloperPayloadAndError(): void
+    {
+        $ok = CopyleaksAiImageDetectionResponseModel::fromArray(
+            ['model' => 'ai-image-1-ultra', 'summary' => ['human' => 1, 'ai' => 0], 'isAiDetected' => false, 'developerPayload' => 'order-1']
+        );
+        $this->assertNull($ok->error);
+        $this->assertSame('order-1', $ok->developerPayload);
+
+        $failed = CopyleaksAiImageDetectionResponseModel::fromArray(json_decode(self::ASYNC_ERROR, true));
+        $this->assertAsyncError($failed->error);
+        $this->assertSame('order-1', $failed->developerPayload);
+        $this->assertNull($failed->summary);
+        $this->assertNull($failed->isAiDetected);
+
+        $minimal = CopyleaksAiImageDetectionResponseModel::fromArray(['error' => ['code' => 67, 'message' => 'm']]);
+        $this->assertSame(67, $minimal->error->code);
+        $this->assertNull($minimal->error->url);
+        $this->assertNull($minimal->error->details);
+        $this->assertNull($minimal->developerPayload);
+
+        $earlier = new CopyleaksAiImageDetectionResponseModel('m');
+        $this->assertNull($earlier->error);
+        $this->assertNull($earlier->developerPayload);
     }
 }

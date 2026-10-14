@@ -331,7 +331,10 @@ Submit the URL of an image. The call returns right away, and the result is sent 
 
     // In your webhook handler:
     // $result = CopyleaksAiImageDetectionResponseModel::fromArray(json_decode(file_get_contents('php://input'), true));
+    // if ($result->error !== null) { echo "Scan failed: {$result->error->code} {$result->error->message}\n"; }
 ```
+When the scan fails, the webhook body has an `error` (a `Copyleaks\Error` with `code`, `message`, and optionally `type`, `id`, `url` and `details`) instead of a result, so check `$result->error` first. `$result->developerPayload` is the developer payload you sent.
+
 Reference: [AI Image Detector Async](https://docs.copyleaks.com/reference/actions/ai-image-detector/submit)
 
 ### AI Video Detection
@@ -355,8 +358,13 @@ Submit the URL of a video. The call returns right away, and the result is sent t
 
     // In your webhook handler:
     $result = CopyleaksAiVideoDetectionResponseModel::fromArray(json_decode(file_get_contents('php://input'), true));
-    // $result->isAiDetected, $result->summary->overallAIRatio, $result->audioResult, $result->visualResult
+    if ($result->error !== null) {
+        echo "Scan failed: {$result->error->code} {$result->error->message}\n";
+    }
+    // Otherwise: $result->isAiDetected, $result->summary->overallAIRatio, $result->audioResult, $result->visualResult
 ```
+When the scan fails, the webhook body has an `error` (a `Copyleaks\Error`) instead of a result, so check `$result->error` first. `$result->developerPayload` is the developer payload you sent.
+
 Reference: [AI Video Detection](https://docs.copyleaks.com/reference/actions/ai-video-detector/submit)
 
 ### Image Plagiarism Detection

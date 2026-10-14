@@ -28,6 +28,7 @@ namespace Copyleaks;
 /**
  * The AI Video Detection result that Copyleaks sends to your webhook.
  * Build it from the decoded webhook body: CopyleaksAiVideoDetectionResponseModel::fromArray(json_decode($body, true)).
+ * Check $error first: when the scan failed, it is set and the result properties are null.
  * See https://docs.copyleaks.com/reference/data-types/ai-detector/ai-video-detection-response
  */
 class CopyleaksAiVideoDetectionResponseModel
@@ -67,6 +68,16 @@ class CopyleaksAiVideoDetectionResponseModel
      */
     public ?CopyleaksAiVideoDetectionScannedVideoModel $scannedVideo;
 
+    /**
+     * Why the scan failed. Set only when the scan failed.
+     */
+    public ?Error $error;
+
+    /**
+     * The developer payload sent with the submit request.
+     */
+    public ?string $developerPayload;
+
     public function __construct(
         ?string $model = null,
         ?CopyleaksAiVideoDetectionTrackResultModel $audioResult = null,
@@ -74,7 +85,9 @@ class CopyleaksAiVideoDetectionResponseModel
         ?CopyleaksAiVideoDetectionSummaryModel $summary = null,
         ?bool $isAiDetected = null,
         ?CopyleaksAiVideoDetectionVideoInfoModel $videoInfo = null,
-        ?CopyleaksAiVideoDetectionScannedVideoModel $scannedVideo = null
+        ?CopyleaksAiVideoDetectionScannedVideoModel $scannedVideo = null,
+        ?Error $error = null,
+        ?string $developerPayload = null
     ) {
         $this->model = $model;
         $this->audioResult = $audioResult;
@@ -83,6 +96,8 @@ class CopyleaksAiVideoDetectionResponseModel
         $this->isAiDetected = $isAiDetected;
         $this->videoInfo = $videoInfo;
         $this->scannedVideo = $scannedVideo;
+        $this->error = $error;
+        $this->developerPayload = $developerPayload;
     }
 
     /**
@@ -102,7 +117,9 @@ class CopyleaksAiVideoDetectionResponseModel
             is_array($data['summary'] ?? null) ? CopyleaksAiVideoDetectionSummaryModel::fromArray($data['summary']) : null,
             is_bool($data['isAiDetected'] ?? null) ? $data['isAiDetected'] : null,
             is_array($data['videoInfo'] ?? null) ? CopyleaksAiVideoDetectionVideoInfoModel::fromArray($data['videoInfo']) : null,
-            is_array($data['scannedVideo'] ?? null) ? CopyleaksAiVideoDetectionScannedVideoModel::fromArray($data['scannedVideo']) : null
+            is_array($data['scannedVideo'] ?? null) ? CopyleaksAiVideoDetectionScannedVideoModel::fromArray($data['scannedVideo']) : null,
+            is_array($data['error'] ?? null) ? Error::fromArray($data['error']) : null,
+            is_string($data['developerPayload'] ?? null) ? $data['developerPayload'] : null
         );
     }
 }
