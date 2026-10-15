@@ -67,7 +67,7 @@ class SubmissionPDF
    *@param string $title Customize the title for the PDF report.
    *@param string $largeLogo Customize the logo image in the PDF report.
    *@param bool $rtl When set to true the text in the report will be aligned from right to left.
-   *@param PdfReportVersion $version Deprecated: PDF report versions 1 and 2 are deprecated; use $reportVersion = 'v3' instead.
+   *@param ?int $version Deprecated: PDF report versions 1 and 2 are deprecated; use $reportVersion = 'v3' instead.
    *@param ReportCustomizationColors $colors heck inner properties for more details.
    *@param string $reportVersion Which version of the PDF report to generate: 'v1' (deprecated), 'v2' (deprecated), 'v3' or 'latest' (lowercase, case-sensitive). Overrides the legacy version property. Only takes effect when $create is true. When null, the server falls back to $version if set, otherwise to its default.
 
