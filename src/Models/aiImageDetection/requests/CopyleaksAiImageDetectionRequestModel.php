@@ -5,7 +5,8 @@ namespace Copyleaks;
 class CopyleaksAiImageDetectionRequestModel
 {
     /**
-     * The image, base64-encoded. 512×512 px to 16 megapixels, under 32 MB; PNG, JPEG, BMP, WebP or HEIC/HEIF.
+     * The image, base64-encoded. 512x512 to 6000x4500 px (27 megapixels), under 32 MB;
+     * PNG, JPEG, BMP, WebP or HEIC/HEIF.
      * @var string
      */
     public $base64;

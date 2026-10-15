@@ -32,5 +32,5 @@ function runExportExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken, s
     $exportedScanId = "1611042365";
     $copyleaks->export(/*authToken*/$authToken, /*scanId*/$exportedScanId, /*exportId*/$exportedScanId, /*model*/$model);
     
-    logInfo(/*message*/"-Export Example-");
+    logInfo(/*title*/"-Export Example-");
 }

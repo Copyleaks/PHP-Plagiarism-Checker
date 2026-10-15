@@ -11,8 +11,8 @@ class CopyleaksExportModel
   /** The crawled version of the submitted content. null exports none. */
   public ?ExportCrawledVersion $crawledVersion;
   /**
-   * Webhook retries before giving up. A high value (12) can delay the completionWebhook; a low value (1) can
-   * fail while your service has a temporary problem.
+   * Webhook retries before giving up, 1 to 12, default 3. A high value can delay the completionWebhook; a low
+   * value can fail while your service has a temporary problem.
    */
   public ?int $maxRetries;
   /**

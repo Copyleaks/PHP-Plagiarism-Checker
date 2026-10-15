@@ -9,5 +9,5 @@ function runUsageHistoryCsvExample(Copyleaks $copyleaks, CopyleaksAuthToken $aut
 {
     $usageHistoryCsv = $copyleaks->getUsagesHistoryCsv(/*authToken*/$authToken, /*startDate*/'01-01-2021', /*endDate*/'02-02-2021');
     
-    logInfo(/*message*/"-Usage History CSV Example-", /*context*/$usageHistoryCsv);
+    logInfo(/*title*/"-Usage History CSV Example-", /*info*/$usageHistoryCsv);
 }

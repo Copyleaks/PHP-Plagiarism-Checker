@@ -9,5 +9,5 @@ function runCreditsBalanceExample(Copyleaks $copyleaks, CopyleaksAuthToken $auth
 {
     $creditsBalance = $copyleaks->getCreditsBalance(/*authToken*/$authToken);
     
-    logInfo(/*message*/"-Credits Balance Example-", /*context*/$creditsBalance);
+    logInfo(/*title*/"-Credits Balance Example-", /*info*/$creditsBalance);
 }

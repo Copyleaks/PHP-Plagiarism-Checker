@@ -17,7 +17,7 @@ function runImageDetectionExample(Copyleaks $copyleaks, CopyleaksAuthToken $auth
     
     $submission = new CopyleaksAiImageDetectionRequestModel(
         /*base64*/$base64Image,
-        /*filename*/$fileName,
+        /*fileName*/$fileName,
         /*model*/CopyleaksAiImageDetectionModels::AI_IMAGE_1_ULTRA,
         /*sandbox*/true
     );
@@ -25,5 +25,5 @@ function runImageDetectionExample(Copyleaks $copyleaks, CopyleaksAuthToken $auth
     $response = $copyleaks->aiImageDetectionClient->submit(/*authToken*/$authToken, /*scanId*/time(), /*submission*/$submission);
     $imageDetectionResponse = CopyleaksAiImageDetectionResponseModel::fromArray(/*data*/json_decode(/*json*/json_encode(/*value*/$response), /*associative*/true));
 
-    logInfo(/*message*/'AI Image Detection Example', /*context*/$imageDetectionResponse);
+    logInfo(/*title*/'AI Image Detection Example', /*info*/$imageDetectionResponse);
 }

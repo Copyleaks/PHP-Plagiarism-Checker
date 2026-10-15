@@ -16,7 +16,7 @@ class ImagePlagiarismClient
      * @param string $scanId Your own scan ID, 3 to 36 characters.
      * @param CopyleaksImagePlagiarismRequestModel $submission
      * @return mixed Decoded JSON, see CopyleaksImagePlagiarismResponseModel::fromArray().
-     * @throws InvalidArgumentException When the image cannot be read.
+     * @throws InvalidArgumentException When scanId is empty or the image cannot be read.
      */
     public function submit(CopyleaksAuthToken $authToken, string $scanId, CopyleaksImagePlagiarismRequestModel $submission)
     {

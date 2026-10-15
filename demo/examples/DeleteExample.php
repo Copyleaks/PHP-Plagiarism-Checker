@@ -7,12 +7,12 @@ use Copyleaks\CopyleaksAuthToken;
 use Copyleaks\CopyleaksDeleteRequestModel;
 use Copyleaks\IdObject;
 
-function runDeleteExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken): void
+function runDeleteExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken, string $webhookUrl): void
 {
     $idsToDelete = array(new IdObject(/*id*/"cqcps25xxh5cloxe"));
 
-    $model = new CopyleaksDeleteRequestModel(/*scans*/$idsToDelete, /*purge*/true, /*webhook*/"https://glacial-refuge-96501.herokuapp.com/18ml1by1/delete-hook");
-    $delete = $copyleaks->delete(/*authToken*/$authToken, /*model*/$model);
+    $model = new CopyleaksDeleteRequestModel(/*scans*/$idsToDelete, /*purge*/true, /*completionWebhook*/"$webhookUrl/delete-hook");
+    $delete = $copyleaks->delete(/*authToken*/$authToken, /*data*/$model);
 
-    logInfo(/*message*/"-Delete Example-", /*context*/$delete);
+    logInfo(/*title*/"-Delete Example-", /*info*/$delete);
 }

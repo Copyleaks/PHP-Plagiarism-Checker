@@ -15,5 +15,5 @@ function runAiDetectionNaturalLanguageExample(Copyleaks $copyleaks, CopyleaksAut
 
     $response = $copyleaks->aiDetectionClient->submitNaturalLanguage(/*authToken*/$authToken, /*scanId*/time(), /*submission*/$submission);
     
-    logInfo(/*message*/'AI Detection - Natural Language Example', /*context*/$response);
+    logInfo(/*title*/'AI Detection - Natural Language Example', /*info*/$response);
 }

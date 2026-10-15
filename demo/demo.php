@@ -63,7 +63,7 @@ class Test {
             
             // runCreditsBalanceExample($this->copyleaks, $loginResult);
             
-            // runDeleteExample($this->copyleaks, $loginResult);
+            // runDeleteExample($this->copyleaks, $loginResult, $this->webhookUrl);
             
             // runStartExample($this->copyleaks, $loginResult);
             

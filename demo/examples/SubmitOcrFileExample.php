@@ -22,17 +22,17 @@ function runSubmitOcrFileExample(Copyleaks $copyleaks, CopyleaksAuthToken $authT
 {
     $base64pdfLogo = file_exists(/*filename*/'base64logo.txt') ? file_get_contents(/*filename*/'base64logo.txt') : '';
     
-    $webhooks = new SubmissionWebhooks(/*url*/"$webhookUrl/{STATUS}");
+    $webhooks = new SubmissionWebhooks(/*status*/"$webhookUrl/{STATUS}");
     $author = new SubmissionAuthor(/*id*/'php-test');
     $filters = new SubmissionFilter(/*identicalEnabled*/true, /*minorChangesEnabled*/true, /*relatedMeaningEnabled*/true);
     
-    $scanningExclude = new SubmissionScanningExclude(/*entryIds*/'php-test-*');
+    $scanningExclude = new SubmissionScanningExclude(/*idPattern*/'php-test-*');
     $copyleaksDB = new SubmissionScanningCopyleaksDB(/*includeMySubmissions*/true, /*includeOthersSubmissions*/true);
-    $scanning = new SubmissionScanning(/*internet*/true, /*exclude*/$scanningExclude, /*repostiories*/null, /*copyleaksDB*/$copyleaksDB);
+    $scanning = new SubmissionScanning(/*internet*/true, /*exclude*/$scanningExclude, /*repositories*/null, /*copyleaksDb*/$copyleaksDB);
     
     $indexing = new SubmissionIndexing(/*repositories*/(array)[new SubmissionRepository(/*id*/'repoId')]);
-    $exclude = new SubmissionExclude(/*quotes*/true, /*references*/true, /*tablesOfContents*/true, /*titles*/true, /*htmlTemplate*/true);
-    $pdf = new SubmissionPDF(/*create*/true, /*title*/'title', /*logoImage*/$base64pdfLogo, /*rtl*/false);
+    $exclude = new SubmissionExclude(/*quotes*/true, /*references*/true, /*tableOfContents*/true, /*titles*/true, /*htmlTemplate*/true);
+    $pdf = new SubmissionPDF(/*create*/true, /*title*/'title', /*largeLogo*/$base64pdfLogo, /*rtl*/false);
     
     $properties = new SubmissionProperties(
         /*webhooks*/$webhooks,
@@ -52,7 +52,7 @@ function runSubmitOcrFileExample(Copyleaks $copyleaks, CopyleaksAuthToken $authT
     );
     
     $submission = new CopyleaksFileOcrSubmissionModel(
-        /*language*/"en",
+        /*langCode*/"en",
         /*base64*/"aGVsbG8gd29ybGQ=",
         /*filename*/"php.txt",
         /*properties*/$properties
@@ -60,5 +60,5 @@ function runSubmitOcrFileExample(Copyleaks $copyleaks, CopyleaksAuthToken $authT
 
     $copyleaks->submitFileOcr(/*authToken*/$authToken, /*scanId*/time(), /*submission*/$submission);
     
-    logInfo(/*message*/"-Submit OCR File Example-");
+    logInfo(/*title*/"-Submit OCR File Example-");
 }
