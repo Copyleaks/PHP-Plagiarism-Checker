@@ -18,9 +18,6 @@ use Copyleaks\SubmissionScanningCopyleaksDB;
 use Copyleaks\SubmissionScanningExclude;
 use Copyleaks\SubmissionWebhooks;
 
-/**
- * Example demonstrating how to submit URL for plagiarism detection
- */
 function runSubmitUrlExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken, string $webhookUrl): void
 {
     $base64pdfLogo = file_exists(/*filename*/'base64logo.txt') ? file_get_contents(/*filename*/'base64logo.txt') : '';

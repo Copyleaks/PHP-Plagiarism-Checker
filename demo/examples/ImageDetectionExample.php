@@ -8,13 +8,9 @@ use Copyleaks\CopyleaksAiImageDetectionRequestModel;
 use Copyleaks\CopyleaksAiImageDetectionResponseModel;
 use Copyleaks\CopyleaksAiImageDetectionModels;
 
-/**
- * Example demonstrating AI image detection functionality
- */
 function runImageDetectionExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken): void
 {
-    // Read and encode your image file to base64
-    $imagePath = "path/to/your/image.jpg"; // Update this path to your actual image file
+    $imagePath = "path/to/your/image.jpg"; // your image file
     
     $base64Image = base64_encode(file_get_contents(/*filename*/$imagePath));
     $fileName = basename(/*path*/$imagePath);
@@ -23,7 +19,7 @@ function runImageDetectionExample(Copyleaks $copyleaks, CopyleaksAuthToken $auth
         /*base64*/$base64Image,
         /*filename*/$fileName,
         /*model*/CopyleaksAiImageDetectionModels::AI_IMAGE_1_ULTRA,
-        /*sandbox*/true // Use sandbox mode for testing
+        /*sandbox*/true
     );
 
     $response = $copyleaks->aiImageDetectionClient->submit(/*authToken*/$authToken, /*scanId*/time(), /*submission*/$submission);

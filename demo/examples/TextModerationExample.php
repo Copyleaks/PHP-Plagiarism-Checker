@@ -10,9 +10,6 @@ use Copyleaks\CopyleaksTextModerationLanguages;
 use Copyleaks\CopyleaksTextModerationRequestModel;
 use Copyleaks\CopyleaksTextModerationResponseModel;
 
-/**
- * Example demonstrating text moderation functionality
- */
 function runTextModerationExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken): void
 {
     $labelsArray = [

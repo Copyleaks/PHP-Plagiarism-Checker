@@ -1,39 +1,13 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
 use InvalidArgumentException;
 
 /**
- * Sends the HTTP requests of the SDK with curl.
- *
- * One curl handle is kept for the whole PHP process and reused by every request, so connections to the
- * Copyleaks servers stay open between calls (keep-alive) instead of paying a new TCP and TLS handshake each time.
- * Every request has a connect timeout and a total timeout, see CopyleaksConfig::SET_CONNECT_TIMEOUT() and
- * CopyleaksConfig::SET_TIMEOUT().
+ * Sends the SDK's HTTP requests with curl. One curl handle is reused for the whole process, so connections stay
+ * open between calls (keep-alive, no new TCP and TLS handshake). Requests have a connect and a total timeout,
+ * see CopyleaksConfig::SET_CONNECT_TIMEOUT() and CopyleaksConfig::SET_TIMEOUT().
  */
 class HttpClientService {
   /** @var resource|\CurlHandle|null */
@@ -43,18 +17,15 @@ class HttpClientService {
   private static $handlePid = null;
 
   /**
-   * Sends a request and returns the response.
-   *
-   * @param string $verb 'GET', 'POST' (form body), 'POST-JSON', 'PUT', 'PATCH' (JSON body)
-   * or 'MULTIPART' (multipart/form-data POST of an array of fields; files are \CURLFile values).
-   * @param string $url The full URL.
+   * @param string $verb GET, POST (form), POST-JSON, PUT, PATCH (JSON) or MULTIPART (fields array, \CURLFile files).
+   * @param string $url
    * @param array $headers Header lines ('Name: value') or a 'Name' => 'value' map.
-   * @param mixed $data The request body, or null for none.
-   * @return mixed The decoded JSON response, the raw response text when it is not JSON, or null.
-   * @throws CommandException The server rejected the request, or no response was received.
-   * @throws RateLimitException Too many requests (429).
-   * @throws UnderMaintenanceException Copyleaks servers are unavailable (503).
-   * @throws \JsonException The request body cannot be encoded as JSON.
+   * @param mixed $data Request body, or null.
+   * @return mixed Decoded JSON, the raw response text when it is not JSON, or null.
+   * @throws CommandException
+   * @throws RateLimitException
+   * @throws UnderMaintenanceException
+   * @throws \JsonException When the request body cannot be encoded as JSON.
    */
   public static function Execute(string $verb, string $url, array $headers, $data = null) {
     $options = self::buildOptions($verb, $url, $headers, $data);
@@ -129,8 +100,8 @@ class HttpClientService {
   }
 
   /**
-   * Closes the open connections. The next request opens a new connection.
-   * Call it in long-running workers that want to release idle connections.
+   * Close the open connections; the next request opens a new one. For long-running workers that want to release
+   * idle connections.
    */
   public static function closeConnections(): void
   {
@@ -139,8 +110,7 @@ class HttpClientService {
   }
 
   /**
-   * Builds the curl options of a request (without the response header callback).
-   * Exposed for tests; not part of the supported API.
+   * Curl options of a request, without the header callback. For tests; not part of the supported API.
    * @internal
    */
   public static function buildOptions(string $verb, string $url, array $headers, $data = null): array
@@ -203,18 +173,12 @@ class HttpClientService {
     return $options;
   }
 
-  /**
-   * Converts seconds to curl milliseconds. 0 stays 0 (no limit); any positive value is at least 1 ms,
-   * because 0 would mean "no limit" to curl.
-   */
+  /** 0 stays 0 (no limit); a positive value is at least 1 ms, because 0 means "no limit" to curl. */
   private static function milliseconds($seconds): int
   {
     return $seconds > 0 ? max(1, (int) round($seconds * 1000)) : 0;
   }
 
-  /**
-   * Accepts header lines ('Name: value') and 'Name' => 'value' pairs, and returns header lines.
-   */
   private static function headerLines(array $headers): array
   {
     $lines = [];

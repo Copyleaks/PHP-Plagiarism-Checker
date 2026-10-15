@@ -10,9 +10,7 @@ class Results
     public ?Score $score;
     public ?array $internet;
 
-    /**
-     * @var InternalAIData[]|null Results of Internal AI Source Match. null when the webhook has none.
-     */
+    /** @var InternalAIData[]|null Internal AI Source Match results. */
     public ?array $internalAIData;
 
     public function __construct(

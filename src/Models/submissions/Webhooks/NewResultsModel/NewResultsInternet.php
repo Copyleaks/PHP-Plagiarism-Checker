@@ -6,34 +6,22 @@ use Copyleaks\Metadata;
 
 class NewResultsInternet
 {
- /**
-     * @var string|null Unique result ID to identify the result.
-     */
+    /** @var string|null */
     public ?string $id;
 
-    /**
-     * @var string|null Document title. Mostly extracted from the document content.
-     */
+    /** @var string|null Mostly extracted from the document content. */
     public ?string $title;
 
-    /**
-     * @var string|null Document brief introduction. Mostly extracted from the document content.
-     */
+    /** @var string|null Brief introduction, mostly extracted from the document content. */
     public ?string $introduction;
 
-    /**
-     * @var int|null Total matched words between this result and the scanned document.
-     */
+    /** @var int|null Words matched with the scanned document. */
     public ?int $matchedWords;
 
-    /**
-     * @var Metadata|null Metadata object associated with this result.
-     */
+    /** @var Metadata|null */
     public ?Metadata $metadata;
 
-    /**
-     * @var string|null Public URL of the resource.
-     */
+    /** @var string|null */
     public ?string $url;
 
 

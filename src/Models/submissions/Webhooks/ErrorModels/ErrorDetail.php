@@ -3,18 +3,14 @@
 namespace Copyleaks;
 
 /**
- * A parameter that caused an error, in the error webhook (error.details).
+ * A parameter that caused an error (error.details).
  */
 class ErrorDetail
 {
-    /**
-     * @var string|null The parameter name that caused the error.
-     */
+    /** @var string|null */
     public ?string $param;
 
-    /**
-     * @var string|null What is wrong with this parameter.
-     */
+    /** @var string|null What is wrong with the parameter. */
     public ?string $message;
 
     public function __construct(?string $param = null, ?string $message = null)

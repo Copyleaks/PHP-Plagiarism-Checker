@@ -1,82 +1,36 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
 class SubmissionFilter
 {
-  /**
-   * Enable matching of exact words in the text.
-   */
+  /** Match exact words. */
   public bool $identicalEnabled;
-  /**
-   * Enable matching of nearly identical words with small differences like slow becomes slowly.
-   * null leaves it to the server default (true).
-   */
+  /** Match nearly identical words, e.g. slow and slowly. null = server default (true). */
   public ?bool $minorChangesEnabled;
-  /**
-   * Enable matching of paraphrased content stating similar ideas with different words.
-   * null leaves it to the server default (true).
-   */
+  /** Match paraphrased content. null = server default (true). */
   public ?bool $relatedMeaningEnabled;
-  /**
-   * Select results with at least minCopiedWords copied words.
-   */
+  /** Keep only results with at least this many copied words. */
   public ?int $minCopiedWords = null;
-  /**
-   * Block explicit adult content from the scan results such as web pages containing inappropriate images and videos. SafeSearch is not 100% effective with all websites.
-   */
+  /** Block explicit adult content from the results. Not 100% effective on all websites. */
   public bool $safeSearch;
-  /**
-   * string[] - list of domains to either include or exclude from the scan - depending on the value of domainsMode.
-   */
+  /** string[] of domains to include or exclude, see $domainsMode. */
   public array $domains;
-  /**
-   * SubmissionFilterDomainsMode -
-   * Include or Exclude the list of domains you specified under the domains property
-   *
-   * When Include is selected, Copyleaks will filter out all results that are not part of the properties.filters.domains list.
-   *
-   * When Exclude is selected, Copyleaks will only find results outside of the properties.filters.domains list.
-   */
+  /** See SubmissionFilterDomainsMode. */
   public int $domainsMode;
 
-  /**
-   * when set to true it will allow results from the same domain as the submitted url.
-   */
+  /** Allow results from the domain of the submitted URL. */
   public bool $allowSameDomain;
 
   /**
-   *@param bool $identicalEnabled Enable matching of exact words in the text.
-   *@param bool|null $minorChangesEnabled Enable matching of nearly identical words with small differences like slow becomes slowly. null = server default (true).
-   *@param bool|null $relatedMeaningEnabled Enable matching of paraphrased content stating similar ideas with different words. null = server default (true).
-   *@param int $minCopiedWords Select results with at least minCopiedWords copied words.
-   *@param bool $safeSearch Block explicit adult content from the scan results such as web pages containing inappropriate images and videos. SafeSearch is not 100% effective with all websites.
-   *@param array $domains list of domains to either include or exclude from the scan - depending on the value of domainsMode.
-   *@param SubmissionFilterDomainsMode $domainsMode Include or Exclude the list of domains you specified under the domains property
-   *@param bool allowSameDomain when set to true it will allow results from the same domain as the submitted url.
+   * @param bool $identicalEnabled
+   * @param bool|null $minorChangesEnabled
+   * @param bool|null $relatedMeaningEnabled
+   * @param int $minCopiedWords
+   * @param bool $safeSearch
+   * @param array $domains
+   * @param SubmissionFilterDomainsMode $domainsMode
+   * @param bool $allowSameDomain
    */
   public function __construct(
     bool $identicalEnabled = true,

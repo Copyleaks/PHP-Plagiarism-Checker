@@ -1,27 +1,4 @@
 <?php
-/********************************************************************************
- The MIT License(MIT)
- 
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-********************************************************************************/
 
 namespace Copyleaks;
 
@@ -31,58 +8,37 @@ use Copyleaks\CopyleaksAiImageDetectionImageInfoModel;
 use Copyleaks\CopyleaksAiImageDetectionScannedDocumentModel;
 
 /**
- * Response model for Copyleaks AI image detection analysis.
- * Contains the AI detection results, image information, and scan metadata.
- * For an asynchronous scan, check $error first: when the scan failed, it is set and the result properties are null.
+ * AI image detection result. For an asynchronous scan, check $error first: when the scan failed, it is set and
+ * the result properties are null.
  */
 class CopyleaksAiImageDetectionResponseModel
 {
-    /**
-     * The version of the AI detection model used for analysis.
-     */
+    /** Version of the model used. */
     public string $model;
 
-    /**
-     * RLE-encoded mask data containing arrays of start positions and lengths for AI-detected regions.
-     */
+    /** RLE mask of the AI regions. */
     public ?CopyleaksAiImageDetectionResultModel $result;
 
-    /**
-     * Summary statistics of the AI detection analysis.
-     */
     public ?CopyleaksAiImageDetectionSummaryModel $summary;
 
-    /**
-     * Information about the analyzed image.
-     */
     public ?CopyleaksAiImageDetectionImageInfoModel $imageInfo;
 
-    /**
-     * Metadata about the scan operation.
-     */
     public ?CopyleaksAiImageDetectionScannedDocumentModel $scannedDocument;
 
-    /**
-     * Whether the image was determined to contain AI-generated content. null when missing.
-     */
+    /** null when missing. */
     public ?bool $isAiDetected;
 
     /**
-     * The objects found in the image, one entry per object.
-     * Only present when the request used objectDetection; null otherwise.
-     * Objects that were requested but not found are left out, so look entries up by $object.
+     * One entry per object found; null unless the request used objectDetection. Objects not found are left out,
+     * so look entries up by $object.
      * @var CopyleaksAiImageDetectedObjectModel[]|null
      */
     public ?array $detectedObjects;
 
-    /**
-     * Why the scan failed. Set only in the webhook of an asynchronous scan that failed.
-     */
+    /** Why the scan failed. Set only in the webhook of a failed asynchronous scan. */
     public ?Error $error;
 
-    /**
-     * The developer payload sent with the asynchronous submit request.
-     */
+    /** From the asynchronous submit request. */
     public ?string $developerPayload;
 
     public function __construct(

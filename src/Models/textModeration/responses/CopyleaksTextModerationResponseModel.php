@@ -8,16 +8,16 @@ use Copyleaks\TextModerationScannedDocument;
 
 class CopyleaksTextModerationResponseModel
 {
-    /** Moderated text segments detected in the input text. */
+    /** ModerationsModel: the labelled segments of the text. */
     public $moderations;
 
-    /** An array that provides a lookup for the labels referenced by their numerical indices in the text.chars.labels array. Each object within this legend array defines a specific label that was used in the scan. */
+    /** TextModerationsLegend[]: maps the label indices in text.chars.labels to label IDs. */
     public $legend;
 
-    /** General information about the scanned document. */
+    /** TextModerationScannedDocument. */
     public $scannedDocument;
 
-    /** The version of the moderation model used, or null when the response does not include it. */
+    /** Version of the moderation model used; null when the response does not include it. */
     public ?string $modelVersion;
 
     public function __construct(ModerationsModel $moderations, array $legend, TextModerationScannedDocument $scannedDocument, ?string $modelVersion = null)
@@ -32,10 +32,8 @@ class CopyleaksTextModerationResponseModel
     {
         if(is_null($data))
         throw new \Exception("Response is null!");
-        // Create instances using fromArray methods
        $moderations = ModerationsModel::fromArray($data['moderations']);
         
-        // Create array of TextModerationsLegend objects
         $legend = array_map(function($legendData) {
             return TextModerationsLegend::fromArray($legendData);
         }, is_array($data['legend'] ?? null) ? $data['legend'] : []);

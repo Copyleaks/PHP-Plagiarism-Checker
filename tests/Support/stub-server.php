@@ -1,15 +1,11 @@
 <?php
 /*
  * Local HTTP/1.1 stub server for the SDK tests. Usage: php stub-server.php <state-dir>
- *
- * - Listens on 127.0.0.1 on a free port and writes the port to <state-dir>/port.
- * - Records every request as one JSON line in <state-dir>/requests.jsonl: connection number, method,
- *   target, path, query, headers (lowercase names), raw header lines and the body (base64).
- * - Answers with the first response queued in <state-dir>/responses.json (a JSON list of
- *   {status, headers, body, delay, close, gzip, truncate}), or 200 {} when the queue is empty.
- *   truncate sends the full Content-Length but only half of the body, then closes the connection.
- * - Keeps connections open between requests (keep-alive), serves several connections at once,
- *   answers "Expect: 100-continue" and decodes chunked request bodies.
+ * Listens on a free 127.0.0.1 port (written to <state-dir>/port) and records each request as one JSON line in
+ * <state-dir>/requests.jsonl: connection number, method, target, path, query, lowercase headers, raw header lines
+ * and the base64 body. Answers with the first response queued in <state-dir>/responses.json ({status, headers,
+ * body, delay, close, gzip, truncate}), or 200 {} when empty; truncate sends the full Content-Length but half the
+ * body, then closes. Supports keep-alive, concurrent connections, "Expect: 100-continue" and chunked bodies.
  */
 
 $dir = $argv[1] ?? '';

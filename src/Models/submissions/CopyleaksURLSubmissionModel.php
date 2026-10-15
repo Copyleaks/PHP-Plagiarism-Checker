@@ -1,54 +1,23 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
 class CopyleaksURLSubmissionModel extends CopyleaksSubmissionModel
 {
-  /**
-   * The url to be scanned
-   */
   public string $url;
-  /**
-   * Check inner properties for more details.
-   */
   public SubmissionProperties $properties;
-  /**
-   * The HTTP method Copyleaks uses to fetch the url: 'GET', 'POST' or 'PUT'. Leave null to get the server default ('GET').
-   */
+  /** HTTP method for fetching the url: 'GET', 'POST' or 'PUT'. null = server default ('GET'). */
   public ?string $verb;
   /**
-   * Headers Copyleaks sends when fetching the url, as [["header-key", "header-value"], ...].
-   * When set, no Copyleaks headers are added. Use Set-Cookie for cookies.
+   * Headers for fetching the url, as [["header-key", "header-value"], ...]. When set, no Copyleaks headers are
+   * added. Use Set-Cookie for cookies.
    */
   public ?array $headers;
   /**
-   * @param string $url The url to be scanned
-   * @param SubmissionProperties $properties Check inner properties for more details.
-   * @param string|null $verb The HTTP method Copyleaks uses to fetch the url: 'GET', 'POST' or 'PUT'.
-   * @param array|null $headers Headers Copyleaks sends when fetching the url, as [["header-key", "header-value"], ...].
+   * @param string $url
+   * @param SubmissionProperties $properties
+   * @param string|null $verb
+   * @param array|null $headers
    */
   public function __construct(string $url, SubmissionProperties $properties, ?string $verb = null, ?array $headers = null)
   {

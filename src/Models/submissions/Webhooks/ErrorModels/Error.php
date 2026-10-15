@@ -4,35 +4,22 @@ namespace Copyleaks;
 
 class Error
 {
-    /**
-     * @var int|null Error code that represents the reason for failure.
-     * Refer to the full error table for details.
-     */
+    /** @var int|null Failure reason, see the error table in the API docs. */
     public ?int $code;
 
-    /**
-     * @var string|null Error message that represents the reason for failure.
-     */
+    /** @var string|null */
     public ?string $message;
 
-    /**
-     * @var string|null The error type, for example "invalid_request_error" or "payment_error".
-     */
+    /** @var string|null E.g. "invalid_request_error" or "payment_error". */
     public ?string $type;
 
-    /**
-     * @var string|null The machine-readable error identifier, for example "insufficient_credits".
-     */
+    /** @var string|null Machine-readable, e.g. "insufficient_credits". */
     public ?string $id;
 
-    /**
-     * @var string|null A URL to the documentation page of this error.
-     */
+    /** @var string|null Documentation page of this error. */
     public ?string $url;
 
-    /**
-     * @var ErrorDetail[]|null The parameters that caused the error, when known.
-     */
+    /** @var ErrorDetail[]|null The parameters that caused the error, when known. */
     public ?array $details;
 
     public function __construct(

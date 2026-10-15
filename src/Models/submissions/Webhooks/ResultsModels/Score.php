@@ -4,24 +4,17 @@ namespace Copyleaks;
 
 class Score
 {
-    /**
-     * @var int|null Number of words which matched exactly.
-     */
+    /** @var int|null Words that matched exactly. */
     public ?int $identicalWords;
 
-    /**
-     * @var int|null Number of nearly identical words with small differences like 'slow' and 'slowly'.
-     */
+    /** @var int|null Nearly identical words, e.g. 'slow' and 'slowly'. */
     public ?int $minorChangedWords;
 
-    /**
-     * @var int|null Number of paraphrased words showing similar ideas with different words.
-     */
+    /** @var int|null Paraphrased words. */
     public ?int $relatedMeaningWords;
 
     /**
-     * @var float|null The percentage of similar words from all results.
-     * The calculation does not include excluded references, quotations, etc.
+     * @var float|null Percentage of similar words across all results, not counting excluded references, quotes, etc.
      */
     public ?float $aggregatedScore;
 

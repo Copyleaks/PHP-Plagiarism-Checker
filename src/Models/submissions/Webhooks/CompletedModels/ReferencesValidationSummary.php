@@ -7,24 +7,16 @@ namespace Copyleaks;
  */
 class ReferencesValidationSummary
 {
-    /**
-     * @var int|null Total number of references detected in the scanned content.
-     */
+    /** @var int|null References detected. */
     public ?int $total;
 
-    /**
-     * @var int|null Number of detected references identified as academic.
-     */
+    /** @var int|null Detected references identified as academic. */
     public ?int $academic;
 
-    /**
-     * @var int|null Number of academic references fully corroborated against the Copyleaks academic citation index.
-     */
+    /** @var int|null Academic references fully corroborated against the Copyleaks academic citation index. */
     public ?int $academicValidated;
 
-    /**
-     * @var int|null Number of non-academic references fully corroborated against their cited source.
-     */
+    /** @var int|null Non-academic references fully corroborated against their cited source. */
     public ?int $nonAcademicValidated;
 
     public function __construct(?int $total = null, ?int $academic = null, ?int $academicValidated = null, ?int $nonAcademicValidated = null)

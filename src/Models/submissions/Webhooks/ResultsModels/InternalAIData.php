@@ -7,49 +7,31 @@ namespace Copyleaks;
  */
 class InternalAIData
 {
-    /**
-     * @var string|null Short identifier of the match.
-     */
+    /** @var string|null */
     public ?string $id;
 
-    /**
-     * @var string|null Title of the matched database entry.
-     */
+    /** @var string|null Title of the matched entry. */
     public ?string $title;
 
-    /**
-     * @var string|null Sample excerpt of the matched content.
-     */
+    /** @var string|null Excerpt of the matched content. */
     public ?string $introduction;
 
-    /**
-     * @var int|null Total number of words matched from the Copyleaks internal AI database.
-     */
+    /** @var int|null Total words matched. */
     public ?int $matchedWords;
 
-    /**
-     * @var int|null Number of exactly identical words.
-     */
+    /** @var int|null */
     public ?int $identicalWords;
 
-    /**
-     * @var int|null Number of similar but not identical words.
-     */
+    /** @var int|null Similar but not identical words. */
     public ?int $similarWords;
 
-    /**
-     * @var int|null Number of paraphrased words.
-     */
+    /** @var int|null */
     public ?int $paraphrasedWords;
 
-    /**
-     * @var int|null Total word count of the matched database entry.
-     */
+    /** @var int|null Word count of the matched entry. */
     public ?int $totalWords;
 
-    /**
-     * @var Tags[] Result tags, for example the "internal-ai-source-match" tag.
-     */
+    /** @var Tags[] E.g. the "internal-ai-source-match" tag. */
     public array $tags;
 
     public function __construct(
@@ -105,7 +87,7 @@ class InternalAIData
     }
 
     /**
-     * Builds a list of InternalAIData from the decoded internalAIData array. Items that are not objects are skipped.
+     * Items that are not objects are skipped.
      * @return InternalAIData[]|null null when $items is not an array.
      */
     public static function listFromArray($items): ?array

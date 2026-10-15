@@ -7,9 +7,6 @@ use Copyleaks\CopyleaksAuthToken;
 use Copyleaks\CopyleaksDeleteRequestModel;
 use Copyleaks\IdObject;
 
-/**
- * Example demonstrating how to delete scans
- */
 function runDeleteExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken): void
 {
     $idsToDelete = array(new IdObject(/*id*/"cqcps25xxh5cloxe"));

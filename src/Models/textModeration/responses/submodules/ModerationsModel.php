@@ -3,7 +3,7 @@
 namespace Copyleaks;
 class ModerationsModel
 {
-    /** Moderated text segments corresponding to the submitted text. Each position in the inner arrays corresponds to a single segment in the textual version */
+    /** Text: labelled segments of the submitted text, one position per segment in the inner arrays. */
     public $text;
 
     public function __construct(Text $text)

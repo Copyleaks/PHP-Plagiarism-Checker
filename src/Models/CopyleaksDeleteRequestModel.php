@@ -1,53 +1,22 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
 class CopyleaksDeleteRequestModel
 {
-  /**
-   * {id:string}[] - The list of scans to delete
-   */
+  /** Scans to delete, as {id: string}[]. */
   public array $scans;
-  /**
-   * Delete all trace of the scan from Copyleaks server, including from internal database. A purged process will not be available as a result for previous scans.
-   */
+  /** Remove every trace of the scans, including from the internal database, so they no longer appear as results. */
   public bool $purge;
-  /**
-   * Allows you to register to a webhook that will be fired once the removal has been completed. Make sure that your endpoint is listening to a POST method (no body parameters were supplied).
-   */
+  /** Called with a POST (no body) when the deletion completes. An empty string means no webhook. */
   public string $completionWebhook;
-  /**
-   * Headers to add to the completion webhook, as [["header-key", "header-value"], ...].
-   */
+  /** Headers for the completion webhook, as [["header-key", "header-value"], ...]. */
   public ?array $headers;
-  /**   
-   * @param {id:string}[] $scans The list of scans to delete
-   * @param Boolean $purge Delete all trace of the scan from Copyleaks server, including from internal database. A purged process will not be available as a result for previous scans.
-   * @param string $completionWebhook Allows you to register to a webhook that will be fired once the removal has been completed. Make sure that your endpoint is listening to a POST method (no body parameters were supplied). An empty string means no webhook.
-   * @param array|null $headers Headers to add to the completion webhook, as [["header-key", "header-value"], ...].
+  /**
+   * @param {id:string}[] $scans
+   * @param Boolean $purge
+   * @param string $completionWebhook
+   * @param array|null $headers
    */
   public function __construct(array $scans, bool $purge = false, string $completionWebhook = "", ?array $headers = null)
   {

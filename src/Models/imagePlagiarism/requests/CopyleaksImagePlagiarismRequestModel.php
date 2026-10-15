@@ -1,72 +1,39 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
 use InvalidArgumentException;
 
 /**
- * Request model for the Image Plagiarism Detector. The image is uploaded as multipart/form-data.
- * Build it from a file with the constructor, or from bytes in memory with fromContent().
+ * Image Plagiarism Detector request, uploaded as multipart/form-data. Build it from a file with the constructor,
+ * or from bytes in memory with fromContent().
  * See https://docs.copyleaks.com/reference/actions/image-plagiarism-detector/check
  */
 class CopyleaksImagePlagiarismRequestModel
 {
     /**
-     * Path of the image file to upload. null when the image comes from $imageContent.
-     * Requirements: less than 20MB, at most 75 megapixels, JPG, JPEG, PNG, GIF, BMP, WebP or ICO.
+     * Image file to upload; null when the image comes from $imageContent.
+     * Under 20 MB, at most 75 megapixels; JPG, JPEG, PNG, GIF, BMP, WebP or ICO.
      */
     public ?string $imagePath;
 
-    /**
-     * The image bytes to upload, used when $imagePath is null (see fromContent()).
-     */
+    /** Image bytes, used when $imagePath is null (see fromContent()). */
     public ?string $imageContent = null;
 
-    /**
-     * The name of the image file including its extension, at most 255 characters.
-     * Allowed extensions: .jpg, .jpeg, .png, .gif, .bmp, .webp, .ico
-     */
+    /** File name with extension (.jpg, .jpeg, .png, .gif, .bmp, .webp, .ico), max 255 chars. */
     public string $filename;
 
-    /**
-     * Use sandbox mode to test your integration without consuming credits. Returns mock results.
-     * Leave null to get the server default (false).
-     */
+    /** Return mock results without using credits. null = server default (false). */
     public ?bool $sandbox;
 
-    /**
-     * A string that is returned unchanged in the response, to match the result with your own records.
-     */
+    /** Returned unchanged in the response, to match the result with your own records. */
     public ?string $developerPayload;
 
     /**
-     * @param string $imagePath Path of the image file to upload.
-     * @param string $filename The name of the image file including its extension.
-     * @param bool|null $sandbox Use sandbox mode (free, mock results). null = server default (false).
-     * @param string|null $developerPayload A string returned unchanged in the response.
+     * @param string $imagePath
+     * @param string $filename
+     * @param bool|null $sandbox
+     * @param string|null $developerPayload
      */
     public function __construct(string $imagePath, string $filename, ?bool $sandbox = null, ?string $developerPayload = null)
     {
@@ -77,12 +44,11 @@ class CopyleaksImagePlagiarismRequestModel
     }
 
     /**
-     * Builds a request from image bytes held in memory.
-     *
-     * @param string $imageContent The image bytes.
-     * @param string $filename The name of the image file including its extension.
-     * @param bool|null $sandbox Use sandbox mode (free, mock results). null = server default (false).
-     * @param string|null $developerPayload A string returned unchanged in the response.
+     * Build a request from image bytes in memory.
+     * @param string $imageContent
+     * @param string $filename
+     * @param bool|null $sandbox
+     * @param string|null $developerPayload
      */
     public static function fromContent(string $imageContent, string $filename, ?bool $sandbox = null, ?string $developerPayload = null): self
     {
@@ -93,12 +59,10 @@ class CopyleaksImagePlagiarismRequestModel
     }
 
     /**
-     * Builds the multipart form fields: image, filename, sandbox and developerPayload.
-     * When the image comes from memory on PHP 8.0 or older, its bytes are written to a temporary file,
-     * whose path is added to $temporaryFiles so the caller can delete it after the request.
-     *
-     * @param string[] $temporaryFiles Receives the paths of temporary files created for the upload.
-     * @return array<string, string|\CURLFile> The form fields.
+     * On PHP 8.0 and older, in-memory image bytes are written to a temporary file; the caller deletes it after the
+     * request.
+     * @param string[] $temporaryFiles Receives the paths of the temporary files.
+     * @return array<string, string|\CURLFile>
      * @throws InvalidArgumentException When the image or the filename is missing.
      */
     public function toMultipartFields(array &$temporaryFiles = []): array

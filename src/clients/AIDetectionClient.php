@@ -1,42 +1,19 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
 use InvalidArgumentException;
+/**
+ * AI Text Detection. Calls throw the exceptions listed on the Copyleaks class.
+ */
 class AIDetectionClient
 {
     /**
-     * Use Copyleaks AI Content Detection to differentiate between human texts and AI written texts.
-     * For more info: https://docs.copyleaks.com/reference/actions/writer-detector/check
-     *
-     * Exceptions: see the Copyleaks class.
-     *
-     * @param authToken  Copyleaks authentication token
-     * @param scanId     Attach your own scan Id
-     * @param submission Submission model
+     * Detect whether text was written by a human or by AI.
+     * https://docs.copyleaks.com/reference/actions/writer-detector/check
+     * @param CopyleaksAuthToken $authToken
+     * @param string $scanId Your own scan ID.
+     * @param CopyleaksNaturalLanguageSubmissionModel $submission
      */
     public function submitNaturalLanguage(CopyleaksAuthToken $authToken, string $scanId, CopyleaksNaturalLanguageSubmissionModel $submission)
     {
@@ -55,13 +32,10 @@ class AIDetectionClient
     }
 
     /**
-     * Get the credit balance of the AI Text Detection wallet, as {"credits": 382}.
-     * For more info: https://docs.copyleaks.com/reference/actions/writer-detector/credits
-     *
-     * Exceptions: see the Copyleaks class.
-     *
-     * @param CopyleaksAuthToken $authToken Copyleaks authentication token
-     * @return mixed The decoded JSON response.
+     * Get the AI Text Detection credit balance, as {"credits": 382}.
+     * https://docs.copyleaks.com/reference/actions/writer-detector/credits
+     * @param CopyleaksAuthToken $authToken
+     * @return mixed Decoded JSON.
      */
     public function getCreditsBalance(CopyleaksAuthToken $authToken)
     {

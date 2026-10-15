@@ -1,27 +1,4 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
@@ -33,15 +10,12 @@ use Copyleaks\TextModerationClient;
 use InvalidArgumentException;
 
 /**
- * The Copyleaks API client.
- *
- * Every method that calls the API can throw:
- * - CommandException: the server rejected the request (getStatusCode() returns the HTTP status), or no
- *   response was received, for example after a timeout (getStatusCode() returns 0).
- * - UnderMaintenanceException: Copyleaks servers are unavailable (503). Retry later with exponential backoff,
+ * The Copyleaks API client. API calls can throw:
+ * - CommandException: request rejected (getStatusCode() is the HTTP status) or no response, e.g. a timeout (0).
+ * - UnderMaintenanceException: 503. Retry later with exponential backoff,
  *   see https://docs.copyleaks.com/concepts/performance/handling-failures
- * - RateLimitException: too many requests (429). Wait before calling again (see getRetryAfterSeconds()).
- * Methods that need a login token also throw AuthExipredException when the token has expired.
+ * - RateLimitException: 429. Wait getRetryAfterSeconds() before calling again.
+ * - AuthExipredException: the login token has expired (calls that take a token).
  */
 class Copyleaks
 {
@@ -52,14 +26,10 @@ class Copyleaks
 
   public AiImagedetectionClient $aiImageDetectionClient;
 
-  /**
-   * Image Plagiarism Detector: searches the web for copies of an image.
-   */
+  /** Searches the web for copies of an image. */
   public ImagePlagiarismClient $imagePlagiarismClient;
 
-  /**
-   * AI Video Detector: detects AI-generated video. Results are delivered to your webhook.
-   */
+  /** Results are delivered to your webhook. */
   public AiVideoDetectionClient $aiVideoDetectionClient;
 
   public function __construct()
@@ -73,11 +43,10 @@ class Copyleaks
   }
 
   /**
-   * Login to Copyleaks authentication server.
-   * For more info: https://docs.copyleaks.com/reference/actions/account/login
-   * @param String $email Copyleaks account email address.
-   * @param String $key Copyleaks account secret key.
-   * @return CopyleaksAuthToken A authentication token that being expired after certain amount of time.
+   * Log in. https://docs.copyleaks.com/reference/actions/account/login
+   * @param String $email
+   * @param String $key Account API key.
+   * @return CopyleaksAuthToken Valid until its expires time.
    */
   public function login(string $email, string $key): CopyleaksAuthToken
   {
@@ -107,10 +76,8 @@ class Copyleaks
   }
 
   /**
-   * Verify that Copyleaks authentication token is exists and not exipired.
-   * * Exceptions:
-   * * * AuthExipredException: authentication expired. Need to login again.
-   * @param CopyleaksAuthToken $authToken Copyleaks authentication token   
+   * @param CopyleaksAuthToken $authToken
+   * @throws AuthExipredException The token has expired or expires within 5 minutes; log in again.
    */
   public function verifyAuthToken(CopyleaksAuthToken $authToken)
   {
@@ -118,21 +85,19 @@ class Copyleaks
       throw new InvalidArgumentException("authToken is required");
     }
 
-    $date =  strtotime('+ 5 minutes'); // adds 5 minutes ahead for a safety shield.
+    $date =  strtotime('+ 5 minutes'); // safety margin
     $expiresDate = strtotime($authToken->expires);
     if ($expiresDate <= $date) {
-      throw new AuthExipredException(); // expired
+      throw new AuthExipredException();
     }
   }
 
   /**
-   * Starting a new process by providing a file to scan.
-   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/submit-file
-   * @param CopyleaksAuthToken $authToken Copyleaks authentication token
-   * @param string $scanId Attach your own scan Id
-   * @param CopyleaksFileSubmissionModel $submission Submission properties
+   * Submit a file to scan. https://docs.copyleaks.com/reference/actions/authenticity/submit-file
+   * @param CopyleaksAuthToken $authToken
+   * @param string $scanId Your own scan ID.
+   * @param CopyleaksFileSubmissionModel $submission
    */
-
   public function submitFile(CopyleaksAuthToken $authToken, string $scanId, CopyleaksFileSubmissionModel $submission)
   {
     if (!isset($scanId)) {
@@ -150,11 +115,10 @@ class Copyleaks
   }
   
   /**
-   * Starting a new process by providing a OCR image file to scan.
-   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/submit-ocr
-   * @param CopyleaksAuthToken $authToken Copyleaks authentication token
-   * @param string $scanId Attach your own scan Id
-   * @param CopyleaksFileOcrSubmissionModel $submission Submission properties
+   * Submit an image to scan its text with OCR. https://docs.copyleaks.com/reference/actions/authenticity/submit-ocr
+   * @param CopyleaksAuthToken $authToken
+   * @param string $scanId Your own scan ID.
+   * @param CopyleaksFileOcrSubmissionModel $submission
    */
   public function submitFileOcr(CopyleaksAuthToken $authToken, string $scanId, CopyleaksFileOcrSubmissionModel $submission)
   {
@@ -173,11 +137,10 @@ class Copyleaks
   }
 
   /**
-   * Starting a new process by providing a URL to scan.
-   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/submit-url
-   * @param CopyleaksAuthToken $authToken Copyleaks authentication token
-   * @param string $scanId Attach your own scan Id
-   * @param CopyleaksURLSubmissionModel $submission Submission properties
+   * Submit a URL to scan. https://docs.copyleaks.com/reference/actions/authenticity/submit-url
+   * @param CopyleaksAuthToken $authToken
+   * @param string $scanId Your own scan ID.
+   * @param CopyleaksURLSubmissionModel $submission
    */
   public function submitUrl(CopyleaksAuthToken $authToken, string $scanId, CopyleaksURLSubmissionModel $submission)
   {
@@ -196,12 +159,11 @@ class Copyleaks
   }
 
   /**
-   * Exporting scans artifact into your server.
-   * For more info: https://docs.copyleaks.com/reference/actions/downloads/export
-   * @param CopyleaksAuthToken $authToken Your login token to Copyleaks server
-   * @param string $scanId The scan ID of the specific scan to export.
-   * @param string $exportId A new Id for the export process.
-   * @param CopyleaksExportModel $model Request of which artifact should be exported.
+   * Export scan artifacts to your server. https://docs.copyleaks.com/reference/actions/downloads/export
+   * @param CopyleaksAuthToken $authToken
+   * @param string $scanId
+   * @param string $exportId A new ID for this export.
+   * @param CopyleaksExportModel $model Which artifacts to export, and where.
    */
   public function export(CopyleaksAuthToken $authToken, string $scanId, string $exportId, CopyleaksExportModel $model)
   {
@@ -227,10 +189,9 @@ class Copyleaks
   }
 
   /**
-   * Start scanning all the files you submitted for a price-check.
-   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/start
-   * @param CopyleaksAuthToken $authToken Your login token to Copyleaks server.
-   * @param CopyleaksStartRequestModel $data Include information about which scans should be started.
+   * Start scans submitted for a price check. https://docs.copyleaks.com/reference/actions/authenticity/start
+   * @param CopyleaksAuthToken $authToken
+   * @param CopyleaksStartRequestModel $data Which scans to start.
    */
   public function start(CopyleaksAuthToken $authToken, CopyleaksStartRequestModel $data)
   {
@@ -246,9 +207,8 @@ class Copyleaks
   }
 
   /**
-   * Delete the specific process from the server.
-   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/delete
-   * @param CopyleaksAuthToken $authToken Copyleaks authentication token
+   * Delete scans. https://docs.copyleaks.com/reference/actions/authenticity/delete
+   * @param CopyleaksAuthToken $authToken
    * @param CopyleaksDeleteRequestModel $data
    */
   public function delete(CopyleaksAuthToken $authToken, CopyleaksDeleteRequestModel $data)
@@ -271,10 +231,9 @@ class Copyleaks
   }
 
   /**
-   * Resend status webhooks for existing scans.
-   * For more info: https://docs.copyleaks.com/reference/actions/authenticity/resend-webhook
-   * @param CopyleaksAuthToken $authToken Copyleaks authentication token
-   * @param string $scanId Copyleaks scan Id
+   * Resend the status webhooks of a scan. https://docs.copyleaks.com/reference/actions/authenticity/resend-webhook
+   * @param CopyleaksAuthToken $authToken
+   * @param string $scanId
    */
   public function resendWebhook(CopyleaksAuthToken $authToken, string $scanId)
   {
@@ -290,9 +249,8 @@ class Copyleaks
   }
 
   /**
-   * Get current credits balance for the Copyleaks account.
-   * For more info: https://docs.copyleaks.com/reference/actions/admin/check-credits
-   * @param CopyleaksAuthToken $authToken Copyleaks authentication token
+   * Get the account's credit balance. https://docs.copyleaks.com/reference/actions/admin/check-credits
+   * @param CopyleaksAuthToken $authToken
    */
   public function getCreditsBalance(CopyleaksAuthToken $authToken)
   {
@@ -304,12 +262,10 @@ class Copyleaks
   }
 
   /**
-   * This endpoint allows you to export your usage history between two dates.
-   * The output results will be exported to a csv file and it will be attached to the response.
-   * For more info: https://docs.copyleaks.com/reference/actions/admin/usage-history
-   * @param CopyleaksAuthToken $authToken Copyleaks authentication token.
-   * @param string $startDate The start date to collect usage history from. Date Format: `dd-MM-yyyy`.
-   * @param string $endDate The end date to collect usage history from. Date Format: `dd-MM-yyyy`.
+   * Get the usage history between two dates as CSV. https://docs.copyleaks.com/reference/actions/admin/usage-history
+   * @param CopyleaksAuthToken $authToken
+   * @param string $startDate `dd-MM-yyyy`.
+   * @param string $endDate `dd-MM-yyyy`.
    */
   public function getUsagesHistoryCsv(CopyleaksAuthToken $authToken, string $startDate, string $endDate)
   {
@@ -330,10 +286,9 @@ class Copyleaks
   }
 
   /**
-   * Get a list of the supported languages for OCR (this is not a list of supported languages for the api, but only for the OCR files scan).
-   * No login needed.
-   * For more info: https://docs.copyleaks.com/reference/actions/miscellaneous/ocr-supported-languages
-   * @return array List of supported OCR languages.
+   * Languages supported by OCR scans (not by the API in general). No login needed.
+   * https://docs.copyleaks.com/reference/actions/miscellaneous/ocr-supported-languages
+   * @return array
    */
   public function getOCRSupportedLanguages()
   {
@@ -343,10 +298,9 @@ class Copyleaks
   }
 
   /**
-   * Get a list of the file types supported by the Plagiarism Checker.
-   * No login needed.
-   * For more info: https://docs.copyleaks.com/reference/actions/miscellaneous/supported-plagiarism-file-types
-   * @return mixed List of supported file types.
+   * File types supported by the Plagiarism Checker. No login needed.
+   * https://docs.copyleaks.com/reference/actions/miscellaneous/supported-plagiarism-file-types
+   * @return mixed
    */
   public function getSupportedFileTypes()
   {
@@ -356,10 +310,9 @@ class Copyleaks
   }
 
   /**
-   * Get the file types supported by AI Text Detection, as {"supportedAiFileTypes": ["pdf", "docx", ...]}.
-   * No login needed.
-   * For more info: https://docs.copyleaks.com/reference/actions/miscellaneous/supported-ai-text-detection-file-types
-   * @return mixed The decoded JSON response.
+   * File types supported by AI Text Detection, as {"supportedAiFileTypes": ["pdf", "docx", ...]}. No login needed.
+   * https://docs.copyleaks.com/reference/actions/miscellaneous/supported-ai-text-detection-file-types
+   * @return mixed Decoded JSON.
    */
   public function getSupportedAiTextDetectionFileTypes()
   {
@@ -369,13 +322,11 @@ class Copyleaks
   }
 
   /**
-   * Get the languages supported by cross-language plagiarism detection, as
-   * {"documentLanguages": {"danish": "da", ...}, "resultLanguages": {"french": "fr", ...}}: objects that map each
-   * language name to its ISO-639-1 code. Get the codes with array_values((array) $result->resultLanguages).
-   * Use a resultLanguages code in SubmissionScanning's crossLanguages.
-   * No login needed.
-   * For more info: https://docs.copyleaks.com/reference/actions/miscellaneous/supported-cross-languages
-   * @return mixed The decoded JSON response.
+   * Cross-language detection languages, as {"documentLanguages": {"danish": "da", ...}, "resultLanguages": {...}}
+   * (name to ISO-639-1 code). Pass resultLanguages codes, array_values((array) $result->resultLanguages), to
+   * SubmissionScanning's crossLanguages. No login needed.
+   * https://docs.copyleaks.com/reference/actions/miscellaneous/supported-cross-languages
+   * @return mixed Decoded JSON.
    */
   public function getAllowedCrossLanguages()
   {
@@ -385,12 +336,11 @@ class Copyleaks
   }
 
   /**
-   * Get the information of a Private Cloud Hub repository: name, status, credits, masking policy and more.
-   * Requires the "Super Admin" or "Admin" role.
-   * For more info: https://docs.copyleaks.com/reference/actions/private-cloud-hub/info
-   * @param CopyleaksAuthToken $authToken Copyleaks authentication token.
-   * @param string $repositoryId The repository ID, from the Copyleaks Admin Dashboard.
-   * @return mixed The decoded JSON response.
+   * Get a Private Cloud Hub repository's name, status, credits, masking policy and more. Needs the Admin or
+   * Super Admin role. https://docs.copyleaks.com/reference/actions/private-cloud-hub/info
+   * @param CopyleaksAuthToken $authToken
+   * @param string $repositoryId From the Copyleaks Admin Dashboard.
+   * @return mixed Decoded JSON.
    */
   public function getRepositoryInfo(CopyleaksAuthToken $authToken, string $repositoryId)
   {
@@ -407,10 +357,8 @@ class Copyleaks
   }
 
   /**
-   * Get updates about copyleaks api release notes.
-   * No login needed.
-   * For more info: https://docs.copyleaks.com/resources/updates/release-notes
-   * @return mixed List of release notes.
+   * API release notes. No login needed. https://docs.copyleaks.com/resources/updates/release-notes
+   * @return mixed
    */
   public function getReleaseNotes()
   {

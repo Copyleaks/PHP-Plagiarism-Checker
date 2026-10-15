@@ -13,9 +13,7 @@ class NewResultWebhook extends Webhook
     public ?array $batch;
     public ?array $repositories;
 
-    /**
-     * @var InternalAIData[]|null Results of Internal AI Source Match. null when the webhook has none.
-     */
+    /** @var InternalAIData[]|null Internal AI Source Match results. */
     public ?array $internalAIData;
 
     public function __construct(

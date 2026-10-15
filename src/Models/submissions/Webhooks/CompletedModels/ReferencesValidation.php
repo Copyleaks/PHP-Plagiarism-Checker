@@ -2,15 +2,9 @@
 
 namespace Copyleaks;
 
-/**
- * Citation Checker summary of the completed webhook (referencesValidation).
- * Only present when properties.references.validate was enabled for the scan.
- */
 class ReferencesValidation
 {
-    /**
-     * @var ReferencesValidationSummary|null Counts of the detected and validated references.
-     */
+    /** @var ReferencesValidationSummary|null */
     public ?ReferencesValidationSummary $summary;
 
     public function __construct(?ReferencesValidationSummary $summary = null)

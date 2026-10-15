@@ -1,44 +1,17 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
 /**
- * Builds the JSON body of a request from a request model.
- *
- * Null properties are left out, so the server applies its documented default for every option you
- * did not set. The models you pass are never changed, and text values are sent exactly as given.
+ * Builds the JSON body of a request. Null properties are left out, so the server applies its default for every
+ * option you did not set. The models you pass are not changed, and text is sent exactly as given.
  */
 class RequestPayload
 {
   /**
-   * Encodes a request model as JSON.
-   *
    * @param mixed $data A request model, an array or a scalar.
-   * @return string The JSON text.
-   * @throws \JsonException When the data cannot be encoded, for example text that is not valid UTF-8.
+   * @return string
+   * @throws \JsonException When the data cannot be encoded, e.g. text that is not valid UTF-8.
    */
   public static function encode($data): string
   {
@@ -46,11 +19,8 @@ class RequestPayload
   }
 
   /**
-   * Converts a request model to plain values that json_encode() can write.
-   * - Objects become JSON objects of their public, initialized properties. Null properties are left out.
-   * - Associative arrays become JSON objects. Null values are left out.
-   * - Lists stay lists, item for item.
-   *
+   * Plain values for json_encode(): objects (public, initialized properties) and associative arrays become JSON
+   * objects without their null values; lists stay lists.
    * @param mixed $value
    * @return mixed
    */

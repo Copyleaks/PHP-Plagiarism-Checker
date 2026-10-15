@@ -1,27 +1,4 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
@@ -29,18 +6,13 @@ use InvalidArgumentException;
 
 class CopyleaksClientUtils
 {
-  /**
-   * Percent-encodes a value for use as one segment of a URL path, such as a scan ID.
-   */
+  /** Percent-encodes one URL path segment, such as a scan ID. */
   public static function encodePathSegment(string $value): string
   {
     return rawurlencode($value);
   }
 
-  /**
-   * The headers of a request authenticated with the given token.
-   * @return string[]
-   */
+  /** @return string[] */
   public static function authHeaders(CopyleaksAuthToken $authToken, bool $json = true): array
   {
     $headers = [];
@@ -53,7 +25,7 @@ class CopyleaksClientUtils
   }
 
   /**
-   * The headers of a public request (no login needed).
+   * For requests that need no login.
    * @return string[]
    */
   public static function publicHeaders(): array
@@ -67,10 +39,10 @@ class CopyleaksClientUtils
       throw new InvalidArgumentException("authToken is required");
     }
 
-    $date =  strtotime('+ 5 minutes'); // adds 5 minutes ahead for a safety shield.
+    $date =  strtotime('+ 5 minutes'); // safety margin
     $expiresDate = strtotime($authToken->expires);
     if ($expiresDate <= $date) {
-      throw new AuthExipredException(); // expired
+      throw new AuthExipredException();
     }
   }
 }
