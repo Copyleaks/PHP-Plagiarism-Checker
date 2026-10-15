@@ -80,6 +80,7 @@ The package is now published on Packagist as `copyleaks/copyleaks`. Versions up 
 - Requests no longer send `Expect: 100-continue`, which could add up to a second to uploads and to resending webhooks.
 - Scan IDs and other path values are URL-encoded, so IDs with characters such as spaces, `/` or `%` reach the right endpoint.
 - A request body that cannot be encoded as JSON (for example text that is not valid UTF-8) now throws `\JsonException` before anything is sent. Before, an empty body was sent.
+- AI Text Detection `submitNaturalLanguage()`, AI Image Detection `submit()`, Text Moderation `submitText()` and Grammar Checker `submitText()` now throw `InvalidArgumentException` ("Invalid scanId") for an empty scan ID, before anything is sent. Before, the request went to a URL without the scan ID and could not succeed.
 - Delete no longer sends an empty `completionWebhook` when you did not set one.
 - Submitting no longer changes your model objects. Before, null properties were removed from them, and reading those properties afterwards threw an error.
 - `CrossLanguages`, `Language`, `ExcludeCode`, `CustomMetadata`, `ReportCustomizationColors`, `PdfReportVersion`, `ScanMethodAlgorithm` and `MaskingPolicy` are now loaded by the package autoloader.
@@ -96,6 +97,7 @@ The package is now published on Packagist as `copyleaks/copyleaks`. Versions up 
 - **File paths:** the package now installs to `vendor/copyleaks/copyleaks/` instead of `vendor/copyleaks/php-plagiarism-checker/`. Update any code or build script that refers to the old folder directly.
 - **Webhooks:** the new methods are additions. Existing code that reads `notifications` or `Alerts` keeps working.
 - **Timeouts:** a request that takes longer than 120 seconds now fails with a `CommandException` whose `getStatusCode()` is 0. If you upload very large files over a slow connection, raise the limit with `CopyleaksConfig::SET_TIMEOUT($seconds)`, or pass 0 for no limit.
+- **Nullable properties:** `CopyleaksExportModel` `$results` and `$crawledVersion`, `CopyleaksTextModerationRequestModel` `$language`, `SubmissionFilter` `$minorChangesEnabled` and `$relatedMeaningEnabled`, `SubmissionIndexing` `$repositories`, `SubmissionPDF` `$title` and `$largeLogo`, and `SubmissionScanningExclude` `$idPattern` can now be null. A subclass that redeclares one of them must use the nullable type, and code that reads them should allow null.
 - **Filter and scanning defaults:** if you relied on `new SubmissionFilter()` turning off minor-changes and related-meaning matches, or on `new SubmissionScanning()` turning off internet scanning, pass `false` explicitly.
 - **Error codes:** `CommandException::getCode()` is now the HTTP status instead of 0. Messages keep their format.
 - **Text Moderation:** pass at most 16 labels. `$sandbox` and `$language` now have defaults (`false` and null), so you can leave them out with named arguments. `$labels` is still required.

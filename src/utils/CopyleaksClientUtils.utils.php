@@ -42,6 +42,7 @@ class CopyleaksClientUtils
    * @return mixed Decoded JSON.
    * @throws InvalidArgumentException When $scanId is empty.
    * @throws AuthExipredException
+   * @internal Used by the SDK's clients; not part of the supported API.
    */
   public static function sendScanRequest(CopyleaksAuthToken $authToken, string $verb, string $path, string $scanId, $body = null, bool $json = true)
   {

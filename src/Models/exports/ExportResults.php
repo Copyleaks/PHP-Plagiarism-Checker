@@ -13,7 +13,7 @@ class ExportResults extends ExportTarget implements \JsonSerializable
    * @param string $id
    * @param string $endpoint
    * @param string $verb
-   * @param array $headers
+   * @param array|null $headers
    */
   public function __construct(
     string $id,
