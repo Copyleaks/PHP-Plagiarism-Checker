@@ -100,7 +100,7 @@ class Copyleaks
    */
   public function submitFile(CopyleaksAuthToken $authToken, string $scanId, CopyleaksFileSubmissionModel $submission)
   {
-    if (!isset($scanId)) {
+    if ($scanId === '') {
       throw new InvalidArgumentException("Invalid scanId");
     }
     if (!isset($submission)) {
@@ -122,7 +122,7 @@ class Copyleaks
    */
   public function submitFileOcr(CopyleaksAuthToken $authToken, string $scanId, CopyleaksFileOcrSubmissionModel $submission)
   {
-    if (!isset($scanId)) {
+    if ($scanId === '') {
       throw new InvalidArgumentException("Invalid scanId");
     }
     if (!isset($submission)) {
@@ -144,7 +144,7 @@ class Copyleaks
    */
   public function submitUrl(CopyleaksAuthToken $authToken, string $scanId, CopyleaksURLSubmissionModel $submission)
   {
-    if (!isset($scanId)) {
+    if ($scanId === '') {
       throw new InvalidArgumentException("Invalid scanId");
     }
     if (!isset($submission)) {
@@ -170,10 +170,10 @@ class Copyleaks
     if (!isset($authToken)) {
       throw new InvalidArgumentException("Invalid authToken");
     }
-    if (!isset($exportId)) {
+    if ($exportId === '') {
       throw new InvalidArgumentException("Invalid exportId");
     }
-    if (!isset($scanId)) {
+    if ($scanId === '') {
       throw new InvalidArgumentException("Invalid scanId");
     }
     if (!isset($model)) {
@@ -237,7 +237,7 @@ class Copyleaks
    */
   public function resendWebhook(CopyleaksAuthToken $authToken, string $scanId)
   {
-    if (!isset($scanId)) {
+    if ($scanId === '') {
       throw new InvalidArgumentException("Invalid scanId");
     }
 

@@ -6,9 +6,11 @@ use Copyleaks\AIGeneratedText;
 use Copyleaks\AIGeneratedTextExplain;
 use Copyleaks\AISourceMatch;
 use Copyleaks\CopyleaksFileOcrSubmissionModel;
+use Copyleaks\CopyleaksExportModel;
 use Copyleaks\CopyleaksFileSubmissionModel;
 use Copyleaks\CopyleaksURLSubmissionModel;
 use Copyleaks\CrossLanguages;
+use Copyleaks\ExportPdfReport;
 use Copyleaks\InternalAISourceMatch;
 use Copyleaks\Language;
 use Copyleaks\PdfReportVersion;
@@ -40,6 +42,34 @@ class ScanSubmissionTest extends SdkTestCase
     private function webhooks(): SubmissionWebhooks
     {
         return new SubmissionWebhooks('https://example.com/webhook/{STATUS}');
+    }
+
+    public function testEmptyIdsAreRejectedBeforeSending(): void
+    {
+        $properties = new SubmissionProperties($this->webhooks());
+        $export = new CopyleaksExportModel('https://example.com/done', null, null, new ExportPdfReport('https://example.com/pdf', 'POST'));
+        $calls = [
+            'submitFile' => fn() => $this->copyleaks->submitFile($this->token(), '', new CopyleaksFileSubmissionModel('aGk=', 'a.txt', $properties)),
+            'submitFileOcr' => fn() => $this->copyleaks->submitFileOcr($this->token(), '', new CopyleaksFileOcrSubmissionModel('en', 'aGk=', 'a.png', $properties)),
+            'submitUrl' => fn() => $this->copyleaks->submitUrl($this->token(), '', new CopyleaksURLSubmissionModel('https://example.com', $properties)),
+            'export scanId' => fn() => $this->copyleaks->export($this->token(), '', 'export1', $export),
+            'resendWebhook' => fn() => $this->copyleaks->resendWebhook($this->token(), ''),
+        ];
+        foreach ($calls as $name => $call) {
+            try {
+                $call();
+                $this->fail("$name: expected InvalidArgumentException");
+            } catch (\InvalidArgumentException $e) {
+                $this->assertSame('Invalid scanId', $e->getMessage(), $name);
+            }
+        }
+        try {
+            $this->copyleaks->export($this->token(), 'scan1', '', $export);
+            $this->fail('export: expected InvalidArgumentException');
+        } catch (\InvalidArgumentException $e) {
+            $this->assertSame('Invalid exportId', $e->getMessage());
+        }
+        $this->assertSame([], \Copyleaks\Tests\Support\StubServer::requests());
     }
 
     public function testMinimalFileSubmission(): void

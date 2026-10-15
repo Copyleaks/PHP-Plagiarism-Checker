@@ -80,7 +80,7 @@ The package is now published on Packagist as `copyleaks/copyleaks`. Versions up 
 - Requests no longer send `Expect: 100-continue`, which could add up to a second to uploads and to resending webhooks.
 - Scan IDs and other path values are URL-encoded, so IDs with characters such as spaces, `/` or `%` reach the right endpoint.
 - A request body that cannot be encoded as JSON (for example text that is not valid UTF-8) now throws `\JsonException` before anything is sent. Before, an empty body was sent.
-- AI Text Detection `submitNaturalLanguage()`, AI Image Detection `submit()`, Text Moderation `submitText()` and Grammar Checker `submitText()` now throw `InvalidArgumentException` ("Invalid scanId") for an empty scan ID, before anything is sent. Before, the request went to a URL without the scan ID and could not succeed.
+- `submitFile()`, `submitFileOcr()`, `submitUrl()`, `export()` and `resendWebhook()`, AI Text Detection `submitNaturalLanguage()`, AI Image Detection `submit()`, Text Moderation `submitText()` and Grammar Checker `submitText()` now throw `InvalidArgumentException` ("Invalid scanId", or "Invalid exportId" for `export()`) for an empty ID, before anything is sent. Before, the request went to a URL without the ID and could not succeed.
 - Delete no longer sends an empty `completionWebhook` when you did not set one.
 - Submitting no longer changes your model objects. Before, null properties were removed from them, and reading those properties afterwards threw an error.
 - `CrossLanguages`, `Language`, `ExcludeCode`, `CustomMetadata`, `ReportCustomizationColors`, `PdfReportVersion`, `ScanMethodAlgorithm` and `MaskingPolicy` are now loaded by the package autoloader.
