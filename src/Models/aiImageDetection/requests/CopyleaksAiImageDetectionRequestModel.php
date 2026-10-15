@@ -61,22 +61,19 @@ class CopyleaksAiImageDetectionRequestModel
         $this->objectDetection = $objectDetection;
     }
 
-    /** @return array */
+    /**
+     * The four original keys are always present, even when null, as in earlier releases. The newer options are
+     * added as in the request body: only when set.
+     * @return array
+     */
     public function toArray()
     {
-        $array = [
+        return [
             'base64' => $this->base64,
             'fileName' => $this->fileName,
             'model' => $this->model,
             'sandbox' => $this->sandbox
-        ];
-        if ($this->maskType !== null) {
-            $array['maskType'] = $this->maskType;
-        }
-        if ($this->objectDetection !== null) {
-            $array['objectDetection'] = RequestPayload::toPayload($this->objectDetection);
-        }
-        return $array;
+        ] + (array) RequestPayload::toPayload(['maskType' => $this->maskType, 'objectDetection' => $this->objectDetection]);
     }
 
     /** @return string */

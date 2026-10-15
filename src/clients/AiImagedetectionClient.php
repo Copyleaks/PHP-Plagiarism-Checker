@@ -3,7 +3,6 @@
 namespace Copyleaks;
 
 use Copyleaks\CopyleaksAiImageDetectionRequestModel;
-use InvalidArgumentException;
 
 /**
  * AI Image Detection. Calls throw the exceptions listed on the Copyleaks class.
@@ -20,18 +19,7 @@ class AiImagedetectionClient{
      */
     public function submit(CopyleaksAuthToken $authToken, string $scanId, CopyleaksAiImageDetectionRequestModel $submission)
     {
-        if (!isset($scanId)) {
-            throw new InvalidArgumentException("Invalid scanId");
-        }
-        if (!isset($submission)) {
-            throw new InvalidArgumentException("Invalid submission");
-        }
-  
-        CopyleaksClientUtils::verifyAuthToken($authToken);
-  
-        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/ai-image-detector/" . CopyleaksClientUtils::encodePathSegment($scanId) . "/check";
-
-        return HttpClientService::Execute('POST-JSON', $url, CopyleaksClientUtils::authHeaders($authToken), $submission);
+        return CopyleaksClientUtils::sendScanRequest($authToken, 'POST-JSON', '/v1/ai-image-detector/{scanId}/check', $scanId, $submission);
     }
 
     /**
@@ -45,14 +33,6 @@ class AiImagedetectionClient{
      */
     public function submitAsync(CopyleaksAuthToken $authToken, string $scanId, CopyleaksAiImageDetectionAsyncRequestModel $submission)
     {
-        if ($scanId === '') {
-            throw new InvalidArgumentException("Invalid scanId");
-        }
-
-        CopyleaksClientUtils::verifyAuthToken($authToken);
-
-        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/ai-image-detector-async/" . CopyleaksClientUtils::encodePathSegment($scanId) . "/submit";
-
-        return HttpClientService::Execute('PUT', $url, CopyleaksClientUtils::authHeaders($authToken), $submission);
+        return CopyleaksClientUtils::sendScanRequest($authToken, 'PUT', '/v1/ai-image-detector-async/{scanId}/submit', $scanId, $submission);
     }
 }

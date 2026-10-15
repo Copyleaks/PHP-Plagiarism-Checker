@@ -15,6 +15,7 @@ use Copyleaks\CopyleaksAiVideoDetectionResponseModel;
 use Copyleaks\CopyleaksAsyncWebhooks;
 use Copyleaks\CopyleaksNaturalLanguageSubmissionModel;
 use Copyleaks\Error;
+use Copyleaks\RequestPayload;
 use Copyleaks\Tests\Support\StubServer;
 
 /**
@@ -92,6 +93,24 @@ class AiDetectionTest extends SdkTestCase
         $body = $this->assertJsonRequest($this->lastRequest(), 'POST', '/v1/ai-image-detector/aii2/check');
         $this->assertSame(['base64' => 'aW1n', 'fileName' => 'photo.png', 'model' => 'ai-image-1-ultra', 'sandbox' => true], $body);
         $this->assertSame($body, $submission->toArray());
+    }
+
+    /**
+     * toArray() and toJson() give the four original keys as earlier releases did, even when null; the newer options
+     * only when set, as in the request body.
+     */
+    public function testAiImageToArrayKeepsTheEarlierOutput(): void
+    {
+        $empty = new CopyleaksAiImageDetectionRequestModel(null, null, null, null);
+        $this->assertSame(['base64' => null, 'fileName' => null, 'model' => null, 'sandbox' => null], $empty->toArray());
+        $this->assertSame('{"base64":null,"fileName":null,"model":null,"sandbox":null}', $empty->toJson());
+        $this->assertSame(['base64' => 'aW1n', 'fileName' => 'p.png', 'model' => null, 'sandbox' => false],
+            (new CopyleaksAiImageDetectionRequestModel('aW1n', 'p.png', null))->toArray());
+        $this->assertSame('{"base64":"aW1n","fileName":"a.jpg","model":"m\/1","sandbox":1}', (new CopyleaksAiImageDetectionRequestModel('aW1n', 'a.jpg', 'm/1', 1))->toJson());
+
+        $options = new CopyleaksAiImageDetectionRequestModel('aW1n', 'p.png', 'm', true, CopyleaksAiImageMaskTypes::NONE, []);
+        $this->assertSame(['base64' => 'aW1n', 'fileName' => 'p.png', 'model' => 'm', 'sandbox' => true, 'maskType' => 'none', 'objectDetection' => []], $options->toArray());
+        $this->assertSame(json_decode(RequestPayload::encode($options), true), json_decode($options->toJson(), true));
     }
 
     public function testAiImageResponseNewFields(): void

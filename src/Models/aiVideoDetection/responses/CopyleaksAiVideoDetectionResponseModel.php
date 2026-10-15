@@ -24,7 +24,7 @@ class CopyleaksAiVideoDetectionResponseModel
 
     public ?CopyleaksAiVideoDetectionVideoInfoModel $videoInfo;
 
-    public ?CopyleaksAiVideoDetectionScannedVideoModel $scannedVideo;
+    public ?CopyleaksScannedDocumentModel $scannedVideo;
 
     /** Why the scan failed. Set only when it failed. */
     public ?Error $error;
@@ -39,7 +39,7 @@ class CopyleaksAiVideoDetectionResponseModel
         ?CopyleaksAiVideoDetectionSummaryModel $summary = null,
         ?bool $isAiDetected = null,
         ?CopyleaksAiVideoDetectionVideoInfoModel $videoInfo = null,
-        ?CopyleaksAiVideoDetectionScannedVideoModel $scannedVideo = null,
+        ?CopyleaksScannedDocumentModel $scannedVideo = null,
         ?Error $error = null,
         ?string $developerPayload = null
     ) {
@@ -68,7 +68,7 @@ class CopyleaksAiVideoDetectionResponseModel
             is_array($data['summary'] ?? null) ? CopyleaksAiVideoDetectionSummaryModel::fromArray($data['summary']) : null,
             is_bool($data['isAiDetected'] ?? null) ? $data['isAiDetected'] : null,
             is_array($data['videoInfo'] ?? null) ? CopyleaksAiVideoDetectionVideoInfoModel::fromArray($data['videoInfo']) : null,
-            is_array($data['scannedVideo'] ?? null) ? CopyleaksAiVideoDetectionScannedVideoModel::fromArray($data['scannedVideo']) : null,
+            is_array($data['scannedVideo'] ?? null) ? CopyleaksScannedDocumentModel::fromArray($data['scannedVideo']) : null,
             is_array($data['error'] ?? null) ? Error::fromArray($data['error']) : null,
             is_string($data['developerPayload'] ?? null) ? $data['developerPayload'] : null
         );

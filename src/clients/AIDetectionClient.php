@@ -2,7 +2,6 @@
 
 namespace Copyleaks;
 
-use InvalidArgumentException;
 /**
  * AI Text Detection. Calls throw the exceptions listed on the Copyleaks class.
  */
@@ -17,18 +16,7 @@ class AIDetectionClient
      */
     public function submitNaturalLanguage(CopyleaksAuthToken $authToken, string $scanId, CopyleaksNaturalLanguageSubmissionModel $submission)
     {
-        if (!isset($scanId)) {
-            throw new InvalidArgumentException("Invalid scanId");
-        }
-        if (!isset($submission)) {
-            throw new InvalidArgumentException("Invalid submission");
-        }
-
-        CopyleaksClientUtils::verifyAuthToken($authToken);
-
-        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v2/writer-detector/" . CopyleaksClientUtils::encodePathSegment($scanId) . "/check";
-
-        return HttpClientService::Execute('POST-JSON', $url, CopyleaksClientUtils::authHeaders($authToken), $submission);
+        return CopyleaksClientUtils::sendScanRequest($authToken, 'POST-JSON', '/v2/writer-detector/{scanId}/check', $scanId, $submission);
     }
 
     /**

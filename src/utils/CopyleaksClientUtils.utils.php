@@ -33,6 +33,32 @@ class CopyleaksClientUtils
     return ['User-Agent: ' . CopyleaksConfig::GET_USER_AGENT()];
   }
 
+  /**
+   * Sends an authenticated request for one scan to the API server.
+   * @param string $verb See HttpClientService::Execute().
+   * @param string $path With a {scanId} placeholder, e.g. '/v1/text-moderation/{scanId}/check'.
+   * @param mixed $body Request body. A \Closure is called after the checks pass, to build it.
+   * @param bool $json Send 'Content-Type: application/json'.
+   * @return mixed Decoded JSON.
+   * @throws InvalidArgumentException When $scanId is empty.
+   * @throws AuthExipredException
+   */
+  public static function sendScanRequest(CopyleaksAuthToken $authToken, string $verb, string $path, string $scanId, $body = null, bool $json = true)
+  {
+    if ($scanId === '') {
+      throw new InvalidArgumentException("Invalid scanId");
+    }
+
+    self::verifyAuthToken($authToken);
+
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . str_replace('{scanId}', self::encodePathSegment($scanId), $path);
+    if ($body instanceof \Closure) {
+      $body = $body();
+    }
+
+    return HttpClientService::Execute($verb, $url, self::authHeaders($authToken, $json), $body);
+  }
+
   public static function verifyAuthToken(CopyleaksAuthToken $authToken)
   {
     if (!isset($authToken)) {

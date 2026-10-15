@@ -2,19 +2,13 @@
 
 namespace Copyleaks;
 
-class ExportResults
+class ExportResults extends ExportTarget implements \JsonSerializable
 {
   /**
    * Result ID, from the completed webhook.
    * https://docs.copyleaks.com/reference/data-types/authenticity/webhooks/scan-completed
    */
   public string $id;
-  /** HTTP URL to upload the data to. */
-  public string $endpoint;
-  /** HTTP method of the upload, e.g. "POST". */
-  public string $verb;
-  /** Upload request headers, such as Authorization, as [["header-key", "header-value"], ...]. */
-  public ?array $headers;
   /**
    * @param string $id
    * @param string $endpoint
@@ -28,8 +22,12 @@ class ExportResults
     ?array $headers = null
   ) {
     $this->id = $id;
-    $this->endpoint = $endpoint;
-    $this->verb = $verb;
-    $this->headers = $headers;
+    parent::__construct($endpoint, $verb, $headers);
+  }
+
+  /** Keeps `id` first in the JSON, as in earlier releases; inherited properties would otherwise come first. */
+  public function jsonSerialize(): array
+  {
+    return ['id' => $this->id] + get_object_vars($this);
   }
 }

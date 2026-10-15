@@ -8,9 +8,9 @@ class CopyleaksAiVideoDetectionVideoInfoModel
     public ?float $duration;
 
     /** null when not available. */
-    public ?CopyleaksVideoMetadataModel $metadata;
+    public ?CopyleaksMediaMetadataModel $metadata;
 
-    public function __construct(?float $duration = null, ?CopyleaksVideoMetadataModel $metadata = null)
+    public function __construct(?float $duration = null, ?CopyleaksMediaMetadataModel $metadata = null)
     {
         $this->duration = $duration;
         $this->metadata = $metadata;
@@ -24,7 +24,7 @@ class CopyleaksAiVideoDetectionVideoInfoModel
 
         return new self(
             is_numeric($data['duration'] ?? null) ? (float) $data['duration'] : null,
-            is_array($data['metadata'] ?? null) ? CopyleaksVideoMetadataModel::fromArray($data['metadata']) : null
+            is_array($data['metadata'] ?? null) ? CopyleaksMediaMetadataModel::fromArray($data['metadata']) : null
         );
     }
 }

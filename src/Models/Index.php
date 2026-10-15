@@ -6,6 +6,8 @@ include_once(__DIR__ . '/CopyleaksAuthToken.php');
 include_once(__DIR__ . '/CopyleaksDeleteRequestModel.php');
 include_once(__DIR__ . '/CopyleaksStartRequestModel.php');
 include_once(__DIR__ . '/IdObject.php');
+include_once(__DIR__ . '/CopyleaksMediaMetadataModel.php');
+include_once(__DIR__ . '/CopyleaksScannedDocumentModel.php');
 
 include_once(__DIR__ . '/submissions/index.php');
 

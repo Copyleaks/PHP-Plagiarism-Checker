@@ -20,18 +20,12 @@ class ImagePlagiarismClient
      */
     public function submit(CopyleaksAuthToken $authToken, string $scanId, CopyleaksImagePlagiarismRequestModel $submission)
     {
-        if ($scanId === '') {
-            throw new InvalidArgumentException("Invalid scanId");
-        }
-
-        CopyleaksClientUtils::verifyAuthToken($authToken);
-
-        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/image-plagiarism-detector/" . CopyleaksClientUtils::encodePathSegment($scanId) . "/check";
-
         $temporaryFiles = [];
         try {
-            $fields = $submission->toMultipartFields($temporaryFiles);
-            return HttpClientService::Execute('MULTIPART', $url, CopyleaksClientUtils::authHeaders($authToken, false), $fields);
+            $fields = static function () use ($submission, &$temporaryFiles): array {
+                return $submission->toMultipartFields($temporaryFiles);
+            };
+            return CopyleaksClientUtils::sendScanRequest($authToken, 'MULTIPART', '/v1/image-plagiarism-detector/{scanId}/check', $scanId, $fields, false);
         } finally {
             foreach ($temporaryFiles as $path) {
                 @unlink($path);

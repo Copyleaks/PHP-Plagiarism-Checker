@@ -2,8 +2,6 @@
 
 namespace Copyleaks;
 
-use InvalidArgumentException;
-
 /**
  * AI Video Detection. Calls throw the exceptions listed on the Copyleaks class.
  */
@@ -20,14 +18,6 @@ class AiVideoDetectionClient
      */
     public function submit(CopyleaksAuthToken $authToken, string $scanId, CopyleaksAiVideoDetectionRequestModel $submission)
     {
-        if ($scanId === '') {
-            throw new InvalidArgumentException("Invalid scanId");
-        }
-
-        CopyleaksClientUtils::verifyAuthToken($authToken);
-
-        $url = CopyleaksConfig::GET_API_SERVER_URI() . "/v1/ai-video-detector/" . CopyleaksClientUtils::encodePathSegment($scanId) . "/submit";
-
-        return HttpClientService::Execute('POST-JSON', $url, CopyleaksClientUtils::authHeaders($authToken), $submission);
+        return CopyleaksClientUtils::sendScanRequest($authToken, 'POST-JSON', '/v1/ai-video-detector/{scanId}/submit', $scanId, $submission);
     }
 }
