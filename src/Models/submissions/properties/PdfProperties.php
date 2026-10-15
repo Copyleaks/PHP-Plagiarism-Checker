@@ -45,15 +45,11 @@ class SubmissionPDF
    */
   public bool $rtl;
 
-  /** @deprecated PDF report versions 1 and 2 are deprecated; use $reportVersion = 'v3' instead. */
-  public ?int $version;
-
   /**
-   * Which version of the PDF report to generate: 'v1' (deprecated), 'v2' (deprecated), 'v3' or 'latest'.
+   * Which version of the PDF report to generate: 'v3' or 'latest'.
    * Values are lowercase and case-sensitive ('V3' or 'Latest' are rejected by the server).
-   * Overrides the legacy $version property.
    * Only takes effect when $create is true.
-   * When null, the server falls back to $version if set, otherwise to its default.
+   * When null, the server default applies.
    */
   public ?string $reportVersion;
   
@@ -67,9 +63,8 @@ class SubmissionPDF
    *@param string $title Customize the title for the PDF report.
    *@param string $largeLogo Customize the logo image in the PDF report.
    *@param bool $rtl When set to true the text in the report will be aligned from right to left.
-   *@param ?int $version Deprecated: PDF report versions 1 and 2 are deprecated; use $reportVersion = 'v3' instead.
    *@param ReportCustomizationColors $colors heck inner properties for more details.
-   *@param string $reportVersion Which version of the PDF report to generate: 'v1' (deprecated), 'v2' (deprecated), 'v3' or 'latest' (lowercase, case-sensitive). Overrides the legacy version property. Only takes effect when $create is true. When null, the server falls back to $version if set, otherwise to its default.
+   *@param string $reportVersion Which version of the PDF report to generate: 'v3' or 'latest' (lowercase, case-sensitive). Only takes effect when $create is true. When null, the server default applies.
 
    */
   public function __construct(
@@ -77,18 +72,17 @@ class SubmissionPDF
     string $title,
     string $largeLogo,
     bool $rtl,
-    ?int $version = null,
     ?ReportCustomizationColors $colors = null,
     ?string $reportVersion = null
   ) {
+    // Old 7-argument calls (with the removed $version slot) must fail instead of silently dropping $reportVersion.
+    if (func_num_args() > 6) {
+      throw new \ArgumentCountError('SubmissionPDF: the legacy $version parameter was removed; pass ($create, $title, $largeLogo, $rtl, $colors, $reportVersion).');
+    }
     $this->create = $create;
     $this->title = $title;
     $this->largeLogo = $largeLogo;
     $this->rtl = $rtl; 
-    if ($version !== null) {
-      trigger_error("PDF report versions 1 and 2 are deprecated. Use \$reportVersion = 'v3' instead.", E_USER_DEPRECATED);
-    }
-    $this->version = $version; 
     $this->colors = $colors; 
     $this->reportVersion = $reportVersion;
   }
