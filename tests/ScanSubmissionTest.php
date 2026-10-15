@@ -46,14 +46,16 @@ class ScanSubmissionTest extends SdkTestCase
 
     public function testEmptyIdsAreRejectedBeforeSending(): void
     {
+        // An expired token: the ID checks must run before the token check.
+        $token = new \Copyleaks\CopyleaksAuthToken('2000-01-01T00:00:00Z', 'expired', '2000-01-01T00:00:00Z');
         $properties = new SubmissionProperties($this->webhooks());
         $export = new CopyleaksExportModel('https://example.com/done', null, null, new ExportPdfReport('https://example.com/pdf', 'POST'));
         $calls = [
-            'submitFile' => fn() => $this->copyleaks->submitFile($this->token(), '', new CopyleaksFileSubmissionModel('aGk=', 'a.txt', $properties)),
-            'submitFileOcr' => fn() => $this->copyleaks->submitFileOcr($this->token(), '', new CopyleaksFileOcrSubmissionModel('en', 'aGk=', 'a.png', $properties)),
-            'submitUrl' => fn() => $this->copyleaks->submitUrl($this->token(), '', new CopyleaksURLSubmissionModel('https://example.com', $properties)),
-            'export scanId' => fn() => $this->copyleaks->export($this->token(), '', 'export1', $export),
-            'resendWebhook' => fn() => $this->copyleaks->resendWebhook($this->token(), ''),
+            'submitFile' => fn() => $this->copyleaks->submitFile($token, '', new CopyleaksFileSubmissionModel('aGk=', 'a.txt', $properties)),
+            'submitFileOcr' => fn() => $this->copyleaks->submitFileOcr($token, '', new CopyleaksFileOcrSubmissionModel('en', 'aGk=', 'a.png', $properties)),
+            'submitUrl' => fn() => $this->copyleaks->submitUrl($token, '', new CopyleaksURLSubmissionModel('https://example.com', $properties)),
+            'export scanId' => fn() => $this->copyleaks->export($token, '', 'export1', $export),
+            'resendWebhook' => fn() => $this->copyleaks->resendWebhook($token, ''),
         ];
         foreach ($calls as $name => $call) {
             try {
@@ -64,7 +66,7 @@ class ScanSubmissionTest extends SdkTestCase
             }
         }
         try {
-            $this->copyleaks->export($this->token(), 'scan1', '', $export);
+            $this->copyleaks->export($token, '', '', $export);
             $this->fail('export: expected InvalidArgumentException');
         } catch (\InvalidArgumentException $e) {
             $this->assertSame('Invalid exportId', $e->getMessage());
