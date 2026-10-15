@@ -4,44 +4,28 @@ namespace Copyleaks;
 
 class Metadata
 {
- /**
-     * @var string|null The submitted URL after all HTTP redirects.
-     */
+    /** @var string|null The submitted URL after all redirects. */
     public ?string $finalUrl;
 
-    /**
-     * @var string|null Extracted canonical URL from the scanned document.
-     */
+    /** @var string|null Canonical URL found in the document. */
     public ?string $canonicalUrl;
 
-    /**
-     * @var string|null Publication date of the scanned document (e.g., in ISO 8601 format).
-     */
+    /** @var string|null E.g. ISO 8601. */
     public ?string $publishDate;
 
-    /**
-     * @var string|null Creation date of the scanned document (e.g., in ISO 8601 format).
-     */
+    /** @var string|null E.g. ISO 8601. */
     public ?string $creationDate;
 
-    /**
-     * @var string|null Last modification date of the scanned document (e.g., in ISO 8601 format).
-     */
+    /** @var string|null E.g. ISO 8601. */
     public ?string $lastModificationDate;
 
-    /**
-     * @var string|null Scanned document author.
-     */
+    /** @var string|null */
     public ?string $author;
 
-    /**
-     * @var string|null Scanned document organization.
-     */
+    /** @var string|null */
     public ?string $organization;
 
-    /**
-     * @var string|null Scanned document filename.
-     */
+    /** @var string|null */
     public ?string $filename;
 
     public function __construct(

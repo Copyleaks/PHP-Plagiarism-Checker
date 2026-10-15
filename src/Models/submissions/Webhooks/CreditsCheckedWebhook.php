@@ -20,9 +20,11 @@ class CreditsCheckedWebhook extends StatusWebhook
 
     public static function fromArray(array $data): self
     {
-        return new self(
+        $webhook = new self(
             $data['credits'] ?? null,
             isset($data['scannedDocument']) ? ScannedDocument::fromArray($data['scannedDocument']) : null
         );
+        self::withBaseFields($webhook, $data);
+        return $webhook;
     }
 }

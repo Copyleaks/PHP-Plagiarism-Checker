@@ -4,34 +4,22 @@ namespace Copyleaks;
 
 class ScannedDocument
 {
-    /**
-     * @var string|null The unique scan ID provided by you.
-     */
+    /** @var string|null */
     public ?string $scanId;
 
-    /**
-     * @var int|null Total number of words found in the scanned text.
-     */
+    /** @var int|null */
     public ?int $totalWords;
 
-    /**
-     * @var int|null Number of excluded words in the submitted content.
-     */
+    /** @var int|null Excluded words. */
     public ?int $totalExcluded;
 
-    /**
-     * @var int|null Overall credits used for the scan.
-     */
+    /** @var int|null Credits used. */
     public ?int $credits;
 
-    /**
-     * @var string|null The creation time of the scan (e.g., in ISO 8601 format).
-     */
+    /** @var string|null E.g. ISO 8601. */
     public ?string $creationTime;
 
-    /**
-     * @var Metadata|null Metadata object.
-     */
+    /** @var Metadata|null */
     public ?Metadata $metadata;
 
     public function __construct(

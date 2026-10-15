@@ -1,42 +1,75 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
+use InvalidArgumentException;
+
 class CopyleaksClientUtils
 {
+  /** Percent-encodes one URL path segment, such as a scan ID. */
+  public static function encodePathSegment(string $value): string
+  {
+    return rawurlencode($value);
+  }
+
+  /** @return string[] */
+  public static function authHeaders(CopyleaksAuthToken $authToken, bool $json = true): array
+  {
+    $headers = [];
+    if ($json) {
+      $headers[] = 'Content-Type: application/json';
+    }
+    $headers[] = 'User-Agent: ' . CopyleaksConfig::GET_USER_AGENT();
+    $headers[] = 'Authorization: Bearer ' . $authToken->accessToken;
+    return $headers;
+  }
+
+  /**
+   * For requests that need no login.
+   * @return string[]
+   */
+  public static function publicHeaders(): array
+  {
+    return ['User-Agent: ' . CopyleaksConfig::GET_USER_AGENT()];
+  }
+
+  /**
+   * Sends an authenticated request for one scan to the API server.
+   * @param string $verb See HttpClientService::Execute().
+   * @param string $path With a {scanId} placeholder, e.g. '/v1/text-moderation/{scanId}/check'.
+   * @param mixed $body Request body. A \Closure is called after the checks pass, to build it.
+   * @param bool $json Send 'Content-Type: application/json'.
+   * @return mixed Decoded JSON.
+   * @throws InvalidArgumentException When $scanId is empty.
+   * @throws AuthExipredException
+   * @internal Used by the SDK's clients; not part of the supported API.
+   */
+  public static function sendScanRequest(CopyleaksAuthToken $authToken, string $verb, string $path, string $scanId, $body = null, bool $json = true)
+  {
+    if ($scanId === '') {
+      throw new InvalidArgumentException("Invalid scanId");
+    }
+
+    self::verifyAuthToken($authToken);
+
+    $url = CopyleaksConfig::GET_API_SERVER_URI() . str_replace('{scanId}', self::encodePathSegment($scanId), $path);
+    if ($body instanceof \Closure) {
+      $body = $body();
+    }
+
+    return HttpClientService::Execute($verb, $url, self::authHeaders($authToken, $json), $body);
+  }
+
   public static function verifyAuthToken(CopyleaksAuthToken $authToken)
   {
     if (!isset($authToken)) {
       throw new InvalidArgumentException("authToken is required");
     }
 
-    $date =  strtotime('+ 5 minutes'); // adds 5 minutes ahead for a safety shield.
+    $date =  strtotime('+ 5 minutes'); // safety margin
     $expiresDate = strtotime($authToken->expires);
     if ($expiresDate <= $date) {
-      throw new AuthExipredException(); // expired
+      throw new AuthExipredException();
     }
   }
 }

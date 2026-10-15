@@ -3,27 +3,22 @@ namespace Copyleaks;
 use DateTime;
 class TextModerationScannedDocument
 {
-    /** The scan id given by the user. */
     public $scanId;
 
-    /** Total number of words found in the scanned text. */
     public $totalWords;
 
-    /** Total excluded words from the text. */
+    /** Number of excluded words. */
     public $totalExcluded;
 
-    /** The cost of credits for this scan. */
+    /** Credits used. */
     public $actualCredits;
 
-    /** The amount of credits that was expected to be spent on the scan. */
     public $expectedCredits;
 
-    /** Creation time of the scan. */
+    /** DateTime, or null. */
     public $creationTime;
 
     /**
-     * Constructor to initialize properties.
-     *
      * @param string $scanId
      * @param int $totalWords
      * @param int $totalExcluded
@@ -42,21 +37,19 @@ class TextModerationScannedDocument
     }
 
     /**
-     * Create an instance of TextModerationScannedDocument from an array.
-     *
      * @param array $data
      * @return TextModerationScannedDocument
      */
     public static function fromArray(?array $data)
     {
-        $creationTime = new DateTime($data['creationTime']);
+        $creationTime = is_string($data['creationTime'] ?? null) ? new DateTime($data['creationTime']) : null;
 
         return new self(
-            $data['scanId'],
-            $data['totalWords'],
-            $data['totalExcluded'],
-            $data['actualCredits'],
-            $data['expectedCredits'],
+            $data['scanId'] ?? null,
+            $data['totalWords'] ?? null,
+            $data['totalExcluded'] ?? null,
+            $data['actualCredits'] ?? null,
+            $data['expectedCredits'] ?? null,
             $creationTime
         );
     }

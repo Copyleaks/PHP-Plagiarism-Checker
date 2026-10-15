@@ -1,44 +1,30 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
 class SubmissionScanningExclude
 {
   /**
-   * Exclude your submissions from results if their id matches the supplied pattern. Matched submissions will be excluded from batch, internal database and repositories results.
-   * * Supported pattern wildcards:
-   *  * '*' Matches any, zero or more, characters.
-   *  * '.' Matches a single (non whitespace) character
+   * Exclude your submissions whose scan ID matches this pattern from batch, internal database and repository
+   * results. Wildcards: '*' any number of characters, '.' one non-whitespace character.
    */
-  public string $idPattern;
+  public ?string $idPattern;
+
+  /** string[]: exclude results with backlinks to these domains. Max 10, each 1-256 characters. */
+  public ?array $backlinksDomains;
+
+  /** string[]: exclude results that contain any of these phrases. Max 5, each 1-30 characters. */
+  public ?array $text;
+
   /**
-   * @param string $idPattern - Exclude your submissions from results if their id matches the supplied pattern. Matched submissions will be excluded from batch, internal database and repositories results. Supported pattern wildcards: '*' Matches any, zero or more, characters.  '.' Matches a single (non whitespace) character
+   * @param string|null $idPattern
+   * @param string[]|null $backlinksDomains
+   * @param string[]|null $text
    */
-  public function __construct(string $idPattern)
+  public function __construct(?string $idPattern = null, ?array $backlinksDomains = null, ?array $text = null)
   {
     $this->idPattern = $idPattern;
+    $this->backlinksDomains = $backlinksDomains;
+    $this->text = $text;
   }
 }

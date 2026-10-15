@@ -7,7 +7,6 @@ use Copyleaks\CopyleaksAuthToken;
 use Copyleaks\CopyleaksConfig;
 use Throwable;
 
-// Include utilities and all example files
 require_once 'examples/Utils.php';
 require_once 'examples/ExportExample.php';
 require_once 'examples/SubmitOcrFileExample.php';
@@ -64,7 +63,7 @@ class Test {
             
             // runCreditsBalanceExample($this->copyleaks, $loginResult);
             
-            // runDeleteExample($this->copyleaks, $loginResult);
+            // runDeleteExample($this->copyleaks, $loginResult, $this->webhookUrl);
             
             // runStartExample($this->copyleaks, $loginResult);
             
@@ -80,7 +79,7 @@ class Test {
             
             // runWritingAssistantExample($this->copyleaks, $loginResult);
             
-            // // runTextModerationExample($this->copyleaks, $loginResult);
+            // runTextModerationExample($this->copyleaks, $loginResult);
             
             runImageDetectionExample($this->copyleaks, $loginResult);
 

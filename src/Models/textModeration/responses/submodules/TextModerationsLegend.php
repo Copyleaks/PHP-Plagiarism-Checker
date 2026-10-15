@@ -2,15 +2,13 @@
 namespace Copyleaks;
 class TextModerationsLegend
 {
-    /** The numerical index of the label. */
+    /** Label index, as used in text.chars.labels. */
     public $index;
 
-    /** A unique string identifier for the label. This ID serves as a machine-readable way to identify the label type. */
+    /** Label ID, see CopyleaksTextModerationConstants. */
     public $id;
 
     /**
-     * Constructor to initialize properties.
-     *
      * @param int $index
      * @param string $id
      */
@@ -21,8 +19,6 @@ class TextModerationsLegend
     }
 
     /**
-     * Create an instance of TextModerationsLegend from an array.
-     *
      * @param array $data
      * @return TextModerationsLegend
      * @throws InvalidArgumentException if required fields are missing.

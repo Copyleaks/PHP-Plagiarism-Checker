@@ -10,18 +10,23 @@ class Results
     public ?Score $score;
     public ?array $internet;
 
+    /** @var InternalAIData[]|null Internal AI Source Match results. */
+    public ?array $internalAIData;
+
     public function __construct(
         ?array $database = null,
         ?array $batch = null,
         ?array $repositories = null,
         ?Score $score = null,
-        ?array $internet = null
+        ?array $internet = null,
+        ?array $internalAIData = null
     ) {
         $this->database = $database;
         $this->batch = $batch;
         $this->repositories = $repositories;
         $this->score = $score;
         $this->internet = $internet;
+        $this->internalAIData = $internalAIData;
     }
 
     public static function fromArray(array $data): self
@@ -46,6 +51,6 @@ class Results
             ? array_map(fn($item) => Internet::fromArray($item), $data['internet'])
             : null;
 
-        return new self($database, $batch, $repositories, $score, $internet);
+        return new self($database, $batch, $repositories, $score, $internet, InternalAIData::listFromArray($data['internalAIData'] ?? null));
     }
 }

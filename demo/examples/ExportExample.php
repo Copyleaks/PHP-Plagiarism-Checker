@@ -8,9 +8,6 @@ use Copyleaks\CopyleaksExportModel;
 use Copyleaks\ExportCrawledVersion;
 use Copyleaks\ExportResults;
 
-/**
- * Example demonstrating how to export scan results
- */
 function runExportExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken, string $webhookUrl): void
 {
     $exportResults = new ExportResults(
@@ -35,5 +32,5 @@ function runExportExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken, s
     $exportedScanId = "1611042365";
     $copyleaks->export(/*authToken*/$authToken, /*scanId*/$exportedScanId, /*exportId*/$exportedScanId, /*model*/$model);
     
-    logInfo(/*message*/"-Export Example-");
+    logInfo(/*title*/"-Export Example-");
 }

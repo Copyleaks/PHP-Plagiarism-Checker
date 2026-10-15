@@ -4,43 +4,25 @@ namespace Copyleaks;
 
 class Alerts
 {
-    /**
-     * @var int|null Scan alert category.
-     * Note: Changed to int|null as per C# 'int Category' but your PHP request used '?string $category'.
-     * Assuming 'category' is an integer code. If it's truly a string, adjust type accordingly.
-     */
+    /** @var int|null */
     public ?int $category;
 
-    /**
-     * @var string|null Scan alert code. The code is unique for each scan alert.
-     */
+    /** @var string|null Unique per scan alert, see CopyleaksAlertCodes. */
     public ?string $code;
 
-    /**
-     * @var string|null Scan alert human-readable title.
-     */
+    /** @var string|null */
     public ?string $title;
 
-    /**
-     * @var string|null Provides human-readable information about the scan alert.
-     */
+    /** @var string|null Human-readable details. */
     public ?string $message;
 
-    /**
-     * @var string|null URL to a resource describing the specific scan alert.
-     */
+    /** @var string|null URL of a page about this alert. */
     public ?string $helpLink;
 
-    /**
-     * @var int|null Specifies the importance of the scan alert.
-     * Note: Changed to int|null as per C# 'int Severity' but your PHP request used '?string $severity'.
-     * Assuming 'severity' is an integer code. If it's truly a string, adjust type accordingly.
-     */
+    /** @var int|null 0 (very low) to 4 (very high). */
     public ?int $severity;
 
-    /**
-     * @var string|null Additional data about the scan alert. Supplied as a JSON string.
-     */
+    /** @var string|null A JSON string. */
     public ?string $additionalData;
 
     public function __construct(
@@ -75,22 +57,11 @@ class Alerts
     }
 
     /**
-     * Decodes the AI text detection result carried by this alert.
-     * Only the 'suspected-ai-text' alert (CopyleaksAlertCodes::SUSPECTED_AI_TEXT, category 2, severity 4)
-     * carries it: its additionalData is the result encoded as a JSON string.
-     * Trailing NUL (\0) and ASCII whitespace (\t \n \v \f \r and space) characters are removed before decoding.
-     * The raw string stays available in $additionalData.
-     *
-     * Returns null when:
-     * - the alert code is not 'suspected-ai-text' (the match is exact and case-sensitive);
-     * - additionalData is null, empty, or only NUL and ASCII whitespace characters;
-     * - additionalData is valid JSON but not a JSON object (an array, a number, a string, true, false or null).
-     * Otherwise it returns the decoded model. Fields with an unexpected type are read like missing fields,
-     * so a valid JSON object never throws (see CopyleaksAiTextDetectionResponseModel::fromArray()).
-     *
-     * @return CopyleaksAiTextDetectionResponseModel|null the decoded result, or null in the cases listed above.
-     * @throws \JsonException when the trimmed additionalData is not valid JSON, or is nested deeper than 512 levels.
-     * This is the only exception it throws.
+     * Decode the AI text detection result in additionalData, after trimming trailing NUL and ASCII whitespace.
+     * Returns null when the code is not exactly 'suspected-ai-text', when additionalData is null or blank, or when
+     * it is valid JSON but not an object. Fields of an unexpected type are read as missing.
+     * @return CopyleaksAiTextDetectionResponseModel|null
+     * @throws \JsonException When additionalData is not valid JSON or is nested deeper than 512 levels.
      */
     public function getAIDetectionResult(): ?CopyleaksAiTextDetectionResponseModel
     {
@@ -98,7 +69,7 @@ class Alerts
             return null;
         }
 
-        // rtrim with an explicit ASCII character list: one linear pass, no regex, not Unicode-aware.
+        // Explicit ASCII list: one linear pass, no regex, not Unicode-aware.
         $json = rtrim($this->additionalData, "\0\t\n\v\f\r ");
         if ($json === '') {
             return null;

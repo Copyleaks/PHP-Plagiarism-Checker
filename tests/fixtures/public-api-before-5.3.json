@@ -1,0 +1,2606 @@
+{
+    "Copyleaks\\AIDetectionClient": {
+        "methods": {
+            "submitNaturalLanguage": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "scanId",
+                    "submission"
+                ],
+                "required": 3
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\AIGeneratedText": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "detect"
+                ],
+                "required": 0
+            }
+        },
+        "properties": [
+            "detect"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\AISourceMatch": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "enable"
+                ],
+                "required": 0
+            }
+        },
+        "properties": [
+            "enable"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\AiImagedetectionClient": {
+        "methods": {
+            "submit": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "scanId",
+                    "submission"
+                ],
+                "required": 3
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\Alerts": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "category",
+                    "code",
+                    "title",
+                    "message",
+                    "helpLink",
+                    "severity",
+                    "additionalData"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            },
+            "getAIDetectionResult": {
+                "static": false,
+                "params": [],
+                "required": 0
+            }
+        },
+        "properties": [
+            "additionalData",
+            "category",
+            "code",
+            "helpLink",
+            "message",
+            "severity",
+            "title"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\AuthExipredException": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "code",
+                    "previous"
+                ],
+                "required": 0
+            },
+            "__toString": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "__wakeup": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getCode": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getFile": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getLine": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getMessage": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getPrevious": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getTrace": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getTraceAsString": {
+                "static": false,
+                "params": [],
+                "required": 0
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\Batch": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "tags"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id",
+            "introduction",
+            "matchedWords",
+            "metadata",
+            "scanId",
+            "tags",
+            "title"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CommandException": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "error",
+                    "code",
+                    "previous"
+                ],
+                "required": 1
+            },
+            "__toString": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "__wakeup": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getCode": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getFile": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getLine": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getMessage": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getPrevious": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getTrace": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getTraceAsString": {
+                "static": false,
+                "params": [],
+                "required": 0
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\CompletedWebhook": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "results",
+                    "notifications",
+                    "scannedDocument"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            },
+            "getAIDetectionAlert": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getAIDetectionResult": {
+                "static": false,
+                "params": [],
+                "required": 0
+            }
+        },
+        "properties": [
+            "developerPayload",
+            "notifications",
+            "results",
+            "scannedDocument",
+            "status"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Copyleaks": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "delete": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "data"
+                ],
+                "required": 2
+            },
+            "export": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "scanId",
+                    "exportId",
+                    "model"
+                ],
+                "required": 4
+            },
+            "getCreditsBalance": {
+                "static": false,
+                "params": [
+                    "authToken"
+                ],
+                "required": 1
+            },
+            "getOCRSupportedLanguages": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getReleaseNotes": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getSupportedFileTypes": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getUsagesHistoryCsv": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "startDate",
+                    "endDate"
+                ],
+                "required": 3
+            },
+            "login": {
+                "static": false,
+                "params": [
+                    "email",
+                    "key"
+                ],
+                "required": 2
+            },
+            "resendWebhook": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "scanId"
+                ],
+                "required": 2
+            },
+            "start": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "data"
+                ],
+                "required": 2
+            },
+            "submitFile": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "scanId",
+                    "submission"
+                ],
+                "required": 3
+            },
+            "submitFileOcr": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "scanId",
+                    "submission"
+                ],
+                "required": 3
+            },
+            "submitUrl": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "scanId",
+                    "submission"
+                ],
+                "required": 3
+            },
+            "verifyAuthToken": {
+                "static": false,
+                "params": [
+                    "authToken"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "aiDetectionClient",
+            "aiImageDetectionClient",
+            "textModerationClient",
+            "writingAssistantClient"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiDetectionSubmissionModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "text",
+                    "sandbox"
+                ],
+                "required": 2
+            }
+        },
+        "properties": [
+            "sandbox",
+            "text"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiImageDetectionImageInfoModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "shape",
+                    "metadata"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "metadata",
+            "shape"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiImageDetectionModels": {
+        "methods": [],
+        "properties": [],
+        "constants": [
+            "AI_IMAGE_1_ULTRA"
+        ]
+    },
+    "Copyleaks\\CopyleaksAiImageDetectionRequestModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "base64",
+                    "fileName",
+                    "model",
+                    "sandbox"
+                ],
+                "required": 3
+            },
+            "toArray": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "toJson": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "validate": {
+                "static": false,
+                "params": [],
+                "required": 0
+            }
+        },
+        "properties": [
+            "base64",
+            "fileName",
+            "model",
+            "sandbox"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiImageDetectionResponseModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "model",
+                    "result",
+                    "summary",
+                    "imageInfo",
+                    "scannedDocument"
+                ],
+                "required": 1
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "imageInfo",
+            "model",
+            "result",
+            "scannedDocument",
+            "summary"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiImageDetectionResultModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "starts",
+                    "lengths"
+                ],
+                "required": 2
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "lengths",
+            "starts"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiImageDetectionScannedDocumentModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "scanId",
+                    "actualCredits",
+                    "expectedCredits",
+                    "creationTime"
+                ],
+                "required": 4
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "actualCredits",
+            "creationTime",
+            "expectedCredits",
+            "scanId"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiImageDetectionSummaryModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "human",
+                    "ai"
+                ],
+                "required": 2
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "ai",
+            "human"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiTextDetectionExplainModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "patterns"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "patterns"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiTextDetectionMatchModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "text",
+                    "html"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "html",
+            "text"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiTextDetectionMatchTextModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "chars",
+                    "words"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "chars",
+            "words"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiTextDetectionPatternMatchModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "chars",
+                    "words"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "chars",
+            "words"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiTextDetectionPatternStatisticsModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "aiCount",
+                    "humanCount",
+                    "proportion",
+                    "source"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "aiCount",
+            "humanCount",
+            "proportion",
+            "source"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiTextDetectionPatternsModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "statistics",
+                    "text",
+                    "html"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "html",
+            "statistics",
+            "text"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiTextDetectionPositionsModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "starts",
+                    "lengths",
+                    "groupIds"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "groupIds",
+            "lengths",
+            "starts"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiTextDetectionResponseModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "modelVersion",
+                    "results",
+                    "summary",
+                    "translationProvider",
+                    "translation",
+                    "explain"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "explain",
+            "modelVersion",
+            "results",
+            "summary",
+            "translation",
+            "translationProvider"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiTextDetectionResultModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "classification",
+                    "probability",
+                    "matches"
+                ],
+                "required": 1
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "classification",
+            "matches",
+            "probability"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAiTextDetectionSummaryModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "human",
+                    "ai"
+                ],
+                "required": 2
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "ai",
+            "human"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksAlertCodes": {
+        "methods": [],
+        "properties": [],
+        "constants": [
+            "SUSPECTED_AI_TEXT"
+        ]
+    },
+    "Copyleaks\\CopyleaksAuthToken": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "expires",
+                    "accessToken",
+                    "issued"
+                ],
+                "required": 3
+            }
+        },
+        "properties": [
+            "accessToken",
+            "expires",
+            "issued"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksClientUtils": {
+        "methods": {
+            "verifyAuthToken": {
+                "static": true,
+                "params": [
+                    "authToken"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksConfig": {
+        "methods": {
+            "GET_API_SERVER_URI": {
+                "static": true,
+                "params": [],
+                "required": 0
+            },
+            "GET_IDENTITY_SERVER_URI": {
+                "static": true,
+                "params": [],
+                "required": 0
+            },
+            "GET_USER_AGENT": {
+                "static": true,
+                "params": [],
+                "required": 0
+            },
+            "SET_API_SERVER_URI": {
+                "static": true,
+                "params": [
+                    "url"
+                ],
+                "required": 1
+            },
+            "SET_IDENTITY_SERVER_URI": {
+                "static": true,
+                "params": [
+                    "url"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksDeleteRequestModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "scans",
+                    "purge",
+                    "completionWebhook"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "completionWebhook",
+            "purge",
+            "scans"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksExportModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "completionWebhook",
+                    "results",
+                    "crawledVersion",
+                    "pdfReport",
+                    "maxRetries",
+                    "developerPayload"
+                ],
+                "required": 3
+            }
+        },
+        "properties": [
+            "completionWebhook",
+            "crawledVersion",
+            "developerPayload",
+            "maxRetries",
+            "pdfReport",
+            "results"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksFileOcrSubmissionModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "langCode",
+                    "base64",
+                    "filename",
+                    "properties"
+                ],
+                "required": 4
+            }
+        },
+        "properties": [
+            "base64",
+            "filename",
+            "langCode",
+            "properties"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksFileSubmissionModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "base64",
+                    "filename",
+                    "properties"
+                ],
+                "required": 3
+            }
+        },
+        "properties": [
+            "base64",
+            "filename",
+            "properties"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksImageMetadataModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "issuedTime",
+                    "issuedBy",
+                    "appOrDeviceUsed"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "appOrDeviceUsed",
+            "issuedBy",
+            "issuedTime"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksImageShapeModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "height",
+                    "width"
+                ],
+                "required": 2
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "height",
+            "width"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksNaturalLanguageSubmissionModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "text",
+                    "sandbox",
+                    "language"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "language",
+            "sandbox",
+            "text"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksStartErrorHandlings": {
+        "methods": [],
+        "properties": [],
+        "constants": [
+            "CANCEL",
+            "IGNORE"
+        ]
+    },
+    "Copyleaks\\CopyleaksStartRequestModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "trigger",
+                    "errorHandling"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "errorHandling",
+            "trigger"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksSubmissionModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "properties"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "properties"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksTextModerationConstants": {
+        "methods": [],
+        "properties": [],
+        "constants": [
+            "ADULT_V1",
+            "TOXIC_V1",
+            "VIOLENT_V1",
+            "PROFANITY_V1",
+            "SELF_HARM_V1",
+            "HARASSMENT_V1",
+            "HATE_SPEECH_V1",
+            "DRUGS_V1",
+            "FIREARMS_V1",
+            "CYBERSECURITY_V1"
+        ]
+    },
+    "Copyleaks\\CopyleaksTextModerationLabel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "id"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksTextModerationLanguages": {
+        "methods": [],
+        "properties": [],
+        "constants": [
+            "ENGLISH"
+        ]
+    },
+    "Copyleaks\\CopyleaksTextModerationRequestModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "text",
+                    "sandbox",
+                    "language",
+                    "labels"
+                ],
+                "required": 4
+            }
+        },
+        "properties": [
+            "labels",
+            "language",
+            "sandbox",
+            "text"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksTextModerationResponseModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "moderations",
+                    "legend",
+                    "scannedDocument"
+                ],
+                "required": 3
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "legend",
+            "moderations",
+            "scannedDocument"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksURLSubmissionModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "url",
+                    "properties"
+                ],
+                "required": 2
+            }
+        },
+        "properties": [
+            "properties",
+            "url"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CopyleaksWritingAssistantSubmissionModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "text",
+                    "sandbox",
+                    "language",
+                    "score"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "language",
+            "sandbox",
+            "score",
+            "text"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\CreditsCheckedWebhook": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "credits",
+                    "scannedDocument"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "credits",
+            "developerPayload",
+            "scannedDocument",
+            "status"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Database": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "tags"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id",
+            "introduction",
+            "matchedWords",
+            "metadata",
+            "scanId",
+            "tags",
+            "title"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Error": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "code",
+                    "message"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "code",
+            "message"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\ErrorWebhook": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "error"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "developerPayload",
+            "error",
+            "status"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\ExportCompletedWebhook": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "completed",
+                    "tasks"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "completed",
+            "developerPayload",
+            "tasks"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\ExportCrawledVersion": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "endpoint",
+                    "verb",
+                    "headers"
+                ],
+                "required": 2
+            }
+        },
+        "properties": [
+            "endpoint",
+            "headers",
+            "verb"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\ExportPdfReport": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "endpoint",
+                    "verb",
+                    "headers"
+                ],
+                "required": 2
+            }
+        },
+        "properties": [
+            "endpoint",
+            "headers",
+            "verb"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\ExportResults": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "id",
+                    "endpoint",
+                    "verb",
+                    "headers"
+                ],
+                "required": 3
+            }
+        },
+        "properties": [
+            "endpoint",
+            "headers",
+            "id",
+            "verb"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\HttpClientService": {
+        "methods": {
+            "Execute": {
+                "static": true,
+                "params": [
+                    "verb",
+                    "url",
+                    "headers",
+                    "data"
+                ],
+                "required": 3
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\IdObject": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "id"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\IndexedWebhook": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "developerPayload",
+            "status"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Internet": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "tags"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id",
+            "introduction",
+            "matchedWords",
+            "metadata",
+            "tags",
+            "title",
+            "url"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Metadata": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "finalUrl",
+                    "canonicalUrl",
+                    "publishDate",
+                    "creationDate",
+                    "lastModificationDate",
+                    "author",
+                    "organization",
+                    "filename"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "author",
+            "canonicalUrl",
+            "creationDate",
+            "filename",
+            "finalUrl",
+            "lastModificationDate",
+            "organization",
+            "publishDate"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\ModerationsModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "text"
+                ],
+                "required": 1
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "text"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\NewResultScore": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "aggregatedScore"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "aggregatedScore"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\NewResultWebhook": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "score",
+                    "internet",
+                    "database",
+                    "batch",
+                    "repositories"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "batch",
+            "database",
+            "developerPayload",
+            "internet",
+            "repositories",
+            "score"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\NewResultsInternet": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "id",
+                    "title",
+                    "introduction",
+                    "matchedWords",
+                    "metadata",
+                    "url"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id",
+            "introduction",
+            "matchedWords",
+            "metadata",
+            "title",
+            "url"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\NewResultsRepositories": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "repositoryId"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id",
+            "introduction",
+            "matchedWords",
+            "metadata",
+            "repositoryId",
+            "scanId",
+            "title"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Notifications": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "alerts"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "alerts"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\ObjectFilter": {
+        "methods": {
+            "filterNullProperties": {
+                "static": true,
+                "params": [
+                    "object"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\RateLimitException": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "code",
+                    "previous"
+                ],
+                "required": 0
+            },
+            "__toString": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "__wakeup": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getCode": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getFile": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getLine": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getMessage": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getPrevious": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getTrace": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getTraceAsString": {
+                "static": false,
+                "params": [],
+                "required": 0
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\Repositories": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "repositoryId",
+                    "tags",
+                    "metadata"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id",
+            "introduction",
+            "matchedWords",
+            "metadata",
+            "repositoryId",
+            "scanId",
+            "tags",
+            "title"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\RepositoryMetadata": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "finalUrl",
+                    "canonicalUrl",
+                    "publishDate",
+                    "creationDate",
+                    "lastModificationDate",
+                    "author",
+                    "organization",
+                    "filename",
+                    "submittedBy"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "author",
+            "canonicalUrl",
+            "creationDate",
+            "filename",
+            "finalUrl",
+            "lastModificationDate",
+            "organization",
+            "publishDate",
+            "submittedBy"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Results": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "database",
+                    "batch",
+                    "repositories",
+                    "score",
+                    "internet"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "batch",
+            "database",
+            "internet",
+            "repositories",
+            "score"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\ScannedDocument": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "scanId",
+                    "creationTime",
+                    "totalWords",
+                    "totalExcluded",
+                    "credits",
+                    "metadata"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "creationTime",
+            "credits",
+            "metadata",
+            "scanId",
+            "totalExcluded",
+            "totalWords"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Score": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "identicalWords",
+                    "minorChangedWords",
+                    "relatedMeaningWords",
+                    "aggregatedScore"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "aggregatedScore",
+            "identicalWords",
+            "minorChangedWords",
+            "relatedMeaningWords"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\ScoreWeights": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "grammarScoreWeight",
+                    "mechanicsScoreWeight",
+                    "sentenceStructureScoreWeight",
+                    "wordChoiceScoreWeight"
+                ],
+                "required": 0
+            }
+        },
+        "properties": [
+            "grammarScoreWeight",
+            "mechanicsScoreWeight",
+            "sentenceStructureScoreWeight",
+            "wordChoiceScoreWeight"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SharedResultsModel": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "id",
+                    "title",
+                    "introduction",
+                    "matchedWords",
+                    "scanId",
+                    "metadata"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id",
+            "introduction",
+            "matchedWords",
+            "metadata",
+            "scanId",
+            "title"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\StatusWebhook": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "payload",
+                    "status"
+                ],
+                "required": 2
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "developerPayload",
+            "status"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionActions": {
+        "methods": [],
+        "properties": [],
+        "constants": [
+            "Scan",
+            "CheckCredits",
+            "IndexOnly"
+        ]
+    },
+    "Copyleaks\\SubmissionAuthor": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "id"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionExclude": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "quotes",
+                    "references",
+                    "tableOfContents",
+                    "titles",
+                    "htmlTemplate",
+                    "citations",
+                    "documentTemplateIds",
+                    "code"
+                ],
+                "required": 0
+            }
+        },
+        "properties": [
+            "citations",
+            "code",
+            "documentTemplateIds",
+            "htmlTemplate",
+            "quotes",
+            "references",
+            "tableOfContents",
+            "titles"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionFilter": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "identicalEnabled",
+                    "minorChangesEnabled",
+                    "relatedMeaningEnabled",
+                    "minCopiedWords",
+                    "safeSearch",
+                    "domains",
+                    "domainsMode",
+                    "allowSameDomain"
+                ],
+                "required": 0
+            }
+        },
+        "properties": [
+            "domains",
+            "domainsMode",
+            "identicalEnabled",
+            "minCopiedWords",
+            "minorChangesEnabled",
+            "relatedMeaningEnabled",
+            "safeSearch"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionFilterDomainsMode": {
+        "methods": [],
+        "properties": [],
+        "constants": [
+            "Include",
+            "Exclude"
+        ]
+    },
+    "Copyleaks\\SubmissionIndexing": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "repositories"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "repositories"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionPDF": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "create",
+                    "title",
+                    "largeLogo",
+                    "rtl",
+                    "version",
+                    "colors",
+                    "reportVersion"
+                ],
+                "required": 4
+            }
+        },
+        "properties": [
+            "colors",
+            "create",
+            "largeLogo",
+            "reportVersion",
+            "rtl",
+            "title",
+            "version"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionProperties": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "webhooks",
+                    "includeHtml",
+                    "developerPayload",
+                    "sandbox",
+                    "expiration",
+                    "sensitivityLevel",
+                    "cheatDetection",
+                    "action",
+                    "author",
+                    "filters",
+                    "scanning",
+                    "indexing",
+                    "exclude",
+                    "pdf",
+                    "sensitiveDataProtection",
+                    "scanMethodAlgorithm",
+                    "customMetadata",
+                    "aiGeneratedText",
+                    "displayLanguage",
+                    "aiSourceMatch"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "action",
+            "aiGeneratedText",
+            "aiSourceMatch",
+            "author",
+            "cheatDetection",
+            "customMetadata",
+            "developerPayload",
+            "displayLanguage",
+            "exclude",
+            "expiration",
+            "filters",
+            "includeHtml",
+            "indexing",
+            "pdf",
+            "sandbox",
+            "scanMethodAlgorithm",
+            "scanning",
+            "sensitiveDataProtection",
+            "sensitivityLevel",
+            "webhooks"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionRepository": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "id",
+                    "maskingPolicy"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id",
+            "maskingPolicy"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionScanning": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "internet",
+                    "exclude",
+                    "repositories",
+                    "copyleaksDb"
+                ],
+                "required": 0
+            }
+        },
+        "properties": [
+            "copyleaksDb",
+            "exclude",
+            "internet",
+            "repositories"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionScanningCopyleaksDB": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "includeMySubmissions",
+                    "includeOthersSubmissions"
+                ],
+                "required": 2
+            }
+        },
+        "properties": [
+            "includeMySubmissions",
+            "includeOthersSubmissions"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionScanningExclude": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "idPattern"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "idPattern"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionScanningRepository": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "id",
+                    "includeMySubmissions",
+                    "includeOthersSubmissions"
+                ],
+                "required": 3
+            }
+        },
+        "properties": [
+            "id",
+            "includeMySubmissions",
+            "includeOthersSubmissions",
+            "maskingPolicy"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionSensitiveData": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "driversLicense",
+                    "credentials",
+                    "passport",
+                    "network",
+                    "url",
+                    "emailAddress",
+                    "creditCard",
+                    "phoneNumber"
+                ],
+                "required": 0
+            }
+        },
+        "properties": [
+            "credentials",
+            "creditCard",
+            "driversLicense",
+            "emailAddress",
+            "network",
+            "passport",
+            "phoneNumber",
+            "url"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\SubmissionWebhooks": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "status",
+                    "newResult"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "newResult",
+            "status"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Tags": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "code",
+                    "title",
+                    "description"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "code",
+            "description",
+            "title"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Task": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "endpoint",
+                    "isHealthy",
+                    "httpStatusCode"
+                ],
+                "required": 0
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "endpoint",
+            "httpStatusCode",
+            "isHealthy"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\Text": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "chars"
+                ],
+                "required": 1
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "chars"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\TextModerationChars": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "labels",
+                    "starts",
+                    "lengths"
+                ],
+                "required": 3
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "labels",
+            "lengths",
+            "starts"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\TextModerationClient": {
+        "methods": {
+            "submitText": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "scanId",
+                    "submission"
+                ],
+                "required": 3
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\TextModerationScannedDocument": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "scanId",
+                    "totalWords",
+                    "totalExcluded",
+                    "actualCredits",
+                    "expectedCredits",
+                    "creationTime"
+                ],
+                "required": 6
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "actualCredits",
+            "creationTime",
+            "expectedCredits",
+            "scanId",
+            "totalExcluded",
+            "totalWords"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\TextModerationsLegend": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "index",
+                    "id"
+                ],
+                "required": 2
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "id",
+            "index"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\UnderMaintenanceException": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "code",
+                    "previous"
+                ],
+                "required": 0
+            },
+            "__toString": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "__wakeup": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getCode": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getFile": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getLine": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getMessage": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getPrevious": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getTrace": {
+                "static": false,
+                "params": [],
+                "required": 0
+            },
+            "getTraceAsString": {
+                "static": false,
+                "params": [],
+                "required": 0
+            }
+        },
+        "properties": [],
+        "constants": []
+    },
+    "Copyleaks\\Webhook": {
+        "methods": {
+            "__construct": {
+                "static": false,
+                "params": [
+                    "payload"
+                ],
+                "required": 1
+            },
+            "fromArray": {
+                "static": true,
+                "params": [
+                    "data"
+                ],
+                "required": 1
+            }
+        },
+        "properties": [
+            "developerPayload"
+        ],
+        "constants": []
+    },
+    "Copyleaks\\WritingAssistantClient": {
+        "methods": {
+            "getCorrectionTypes": {
+                "static": false,
+                "params": [
+                    "languageCode"
+                ],
+                "required": 1
+            },
+            "submitText": {
+                "static": false,
+                "params": [
+                    "authToken",
+                    "scanId",
+                    "submission"
+                ],
+                "required": 3
+            }
+        },
+        "properties": [],
+        "constants": []
+    }
+}
