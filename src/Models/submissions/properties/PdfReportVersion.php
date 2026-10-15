@@ -25,6 +25,7 @@
 
 namespace Copyleaks;
 
+/** @deprecated PDF report versions 1 and 2 are deprecated; use SubmissionPDF::$reportVersion = 'v3' instead. */
 class PdfReportVersion
 {
   const V1 = 1;
