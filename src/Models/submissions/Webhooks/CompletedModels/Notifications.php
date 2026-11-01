@@ -4,9 +4,7 @@ namespace Copyleaks;
 
 class Notifications
 {
-    /**
-     * @var array<string, mixed>[]|null A list of scan alerts that were detected in the scan.
-     */
+    /** @var array<string, mixed>[]|null */
     public ?array $alerts;
 
     public function __construct(?array $alerts = [])

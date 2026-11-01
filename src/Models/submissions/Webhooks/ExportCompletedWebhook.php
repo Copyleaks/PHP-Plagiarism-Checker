@@ -30,9 +30,11 @@ class ExportCompletedWebhook extends Webhook
             );
         }
 
-        return new self(
+        $webhook = new self(
             $data['completed'] ?? null,
             $tasks
         );
+        self::withBaseFields($webhook, $data);
+        return $webhook;
     }
 }

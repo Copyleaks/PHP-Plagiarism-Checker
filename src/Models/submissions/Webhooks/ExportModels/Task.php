@@ -4,20 +4,13 @@ namespace Copyleaks;
 
 class Task
 {
-    /**
-     * @var string The endpoint address of the export task.
-     */
+    /** @var string */
     public string $endpoint;
 
-    /**
-     * @var bool This flag gives an indication whether the scan was completed without internal errors on the Copyleaks side.
-     */
+    /** @var bool Whether the task completed without internal errors on the Copyleaks side. */
     public bool $isHealthy;
 
-    /**
-     * @var int|null The status code reported by the customer servers.
-     * If the tasks.isHealthy is equal to false - this field will be null.
-     */
+    /** @var int|null Status code returned by your server; null when isHealthy is false. */
     public ?int $httpStatusCode;
 
     public function __construct(

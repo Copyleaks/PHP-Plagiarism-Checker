@@ -4,9 +4,6 @@ namespace Demo\Examples;
 
 use Copyleaks\Copyleaks;
 
-/**
- * Example demonstrating miscellaneous API calls
- */
 function runMiscExample(Copyleaks $copyleaks): void
 {
     $ocrSupportedLanguages = $copyleaks->getOCRSupportedLanguages();

@@ -18,24 +18,21 @@ use Copyleaks\SubmissionScanningCopyleaksDB;
 use Copyleaks\SubmissionScanningExclude;
 use Copyleaks\SubmissionWebhooks;
 
-/**
- * Example demonstrating how to submit file for plagiarism detection
- */
 function runSubmitFileExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToken, string $webhookUrl): void
 {
     $base64pdfLogo = file_exists(/*filename*/'base64logo.txt') ? file_get_contents(/*filename*/'base64logo.txt') : '';
     
-    $webhooks = new SubmissionWebhooks(/*url*/"$webhookUrl/{STATUS}");
-    $author = new SubmissionAuthor(/*name*/'php-test');
+    $webhooks = new SubmissionWebhooks(/*status*/"$webhookUrl/{STATUS}");
+    $author = new SubmissionAuthor(/*id*/'php-test');
     $filters = new SubmissionFilter(/*identicalEnabled*/true, /*minorChangesEnabled*/true, /*relatedMeaningEnabled*/true);
     
-    $scanningExclude = new SubmissionScanningExclude(/*entryIds*/'php-test-*');
+    $scanningExclude = new SubmissionScanningExclude(/*idPattern*/'php-test-*');
     $copyleaksDB = new SubmissionScanningCopyleaksDB(/*includeMySubmissions*/true, /*includeOthersSubmissions*/true);
-    $scanning = new SubmissionScanning(/*internet*/true, /*exclude*/$scanningExclude, /*include*/null, /*copyleaksDB*/$copyleaksDB);
+    $scanning = new SubmissionScanning(/*internet*/true, /*exclude*/$scanningExclude, /*repositories*/null, /*copyleaksDb*/$copyleaksDB);
     
     $indexing = new SubmissionIndexing(/*repositories*/(array)[new SubmissionRepository(/*id*/'repoId')]);
-    $exclude = new SubmissionExclude(/*quotes*/true, /*references*/true, /*tablesOfContents*/true, /*titles*/true, /*htmlTemplate*/true);
-    $pdf = new SubmissionPDF(/*create*/true, /*title*/'title', /*logoImage*/$base64pdfLogo, /*rtl*/false);
+    $exclude = new SubmissionExclude(/*quotes*/true, /*references*/true, /*tableOfContents*/true, /*titles*/true, /*htmlTemplate*/true);
+    $pdf = new SubmissionPDF(/*create*/true, /*title*/'title', /*largeLogo*/$base64pdfLogo, /*rtl*/false);
     
     $properties = new SubmissionProperties(
         /*webhooks*/$webhooks,
@@ -43,7 +40,7 @@ function runSubmitFileExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToke
         /*developerPayload*/null,
         /*sandbox*/true,
         /*expiration*/6,
-        /*sensitiveDataProtection*/1,
+        /*sensitivityLevel*/1,
         /*cheatDetection*/true,
         /*action*/SubmissionActions::Scan,
         /*author*/$author,
@@ -62,5 +59,5 @@ function runSubmitFileExample(Copyleaks $copyleaks, CopyleaksAuthToken $authToke
 
     $copyleaks->submitFile(/*authToken*/$authToken, /*scanId*/time(), /*submission*/$submission);
     
-    logInfo(/*message*/"-Submit File Example-");
+    logInfo(/*title*/"-Submit File Example-");
 }

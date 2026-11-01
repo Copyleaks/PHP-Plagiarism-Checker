@@ -1,36 +1,26 @@
 <?php
-/*
- The MIT License(MIT)
-
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
-
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
-
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-*/
 
 namespace Copyleaks;
 
 use Exception;
 
+/**
+ * Copyleaks servers are unavailable (HTTP 503). getCode() and getStatusCode() return 503.
+ * getRetryAfterSeconds() says how long to wait, when the server sent a Retry-After header.
+ */
 class UnderMaintenanceException extends Exception
 {
-  public function __construct($code = 0, Exception $previous = null)
+  use HttpResponseDetails;
+
+  /**
+   * @param int $code
+   * @param Exception|null $previous
+   * @param string|null $responseBody
+   * @param array<string, string> $responseHeaders
+   */
+  public function __construct($code = 0, ?Exception $previous = null, ?string $responseBody = null, array $responseHeaders = [])
   {
     parent::__construct("Copyleaks is Under Maintenance, please visit https://status.copyleaks.com", $code, $previous);
+    $this->setResponseDetails($responseBody, $responseHeaders);
   }
 }

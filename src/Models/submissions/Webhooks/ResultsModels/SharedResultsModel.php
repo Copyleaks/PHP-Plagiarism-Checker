@@ -6,35 +6,25 @@ use Copyleaks\Metadata;
 
 class SharedResultsModel
 {
-    /**
-     * @var string|null Unique result ID to identify this result.
-     */
+    /** @var string|null */
     public ?string $id;
 
-    /**
-     * @var string|null Document title. Mostly extracted from the document content.
-     */
+    /** @var string|null Mostly extracted from the document content. */
     public ?string $title;
 
-    /**
-     * @var string|null Document brief introduction. Mostly extracted from the document content.
-     */
+    /** @var string|null Brief introduction, mostly extracted from the document content. */
     public ?string $introduction;
 
-    /**
-     * @var int|null Total matched words between this result and the scanned document.
-     */
+    /** @var int|null Words matched with the scanned document. */
     public ?int $matchedWords;
 
     /**
-     * @var string|null In case a result was found in the Copyleaks internal database, and was submitted by you,
-     * this will show the scan ID of the specific result. Otherwise, this field will remain empty.
+     * @var string|null Scan ID of the result when it is your own submission in the internal database; empty
+     * otherwise.
      */
     public ?string $scanId;
 
-    /**
-     * @var Metadata|null Metadata object.
-     */
+    /** @var Metadata|null */
     public ?Metadata $metadata;
 
     public function __construct(

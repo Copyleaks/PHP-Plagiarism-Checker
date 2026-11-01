@@ -1,27 +1,4 @@
 <?php
-/********************************************************************************
- The MIT License(MIT)
- 
- Copyright(c) 2016 Copyleaks LTD (https://copyleaks.com)
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in all
- copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- SOFTWARE.
-********************************************************************************/
 
 namespace Copyleaks;
 
@@ -32,21 +9,14 @@ use Copyleaks\CopyleaksAiTextDetectionMatchModel;
  */
 class CopyleaksAiTextDetectionResultModel
 {
-    /**
-     * Classification of the segment: 1 = human, 2 = AI.
-     * 0 when missing or not a number.
-     */
+    /** 1 = human, 2 = AI; 0 when missing or not a number. */
     public int $classification;
 
-    /**
-     * Probability of the classification.
-     * Deprecated by the server and may be removed; null when missing or not a number.
-     */
+    /** Deprecated by the server and may be removed. null when missing or not a number. */
     public ?float $probability;
 
     /**
-     * Positions of the segment in the scanned text.
-     * Items that are not JSON objects are skipped.
+     * Positions of the segment. Items that are not JSON objects are skipped.
      * @var CopyleaksAiTextDetectionMatchModel[]
      */
     public array $matches;

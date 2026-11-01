@@ -2,9 +2,6 @@
 
 namespace Demo\Examples;
 
-/**
- * Shared utility function for logging information
- */
 function logInfo($title, $info = null): void
 {
     echo "\n";

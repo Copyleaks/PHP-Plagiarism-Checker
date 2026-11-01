@@ -5,9 +5,7 @@ use Copyleaks\NewResultsInternet;
 
 class Internet extends NewResultsInternet
 {
-    /**
-     * @var Tags[]|null Tags object array. Each element in the array is an instance of the Tags class.
-     */
+    /** @var Tags[]|null */
     public ?array $tags;
 
     public function __construct(?array $tags = [])

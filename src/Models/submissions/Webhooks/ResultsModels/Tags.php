@@ -4,19 +4,13 @@ namespace Copyleaks;
 
 class Tags
 {
-   /**
-     * @var string|null Unique ID that signifies the type of result tag.
-     */
+    /** @var string|null Unique ID of the tag type. */
     public ?string $code;
 
-    /**
-     * @var string|null A simple name for this tag.
-     */
+    /** @var string|null */
     public ?string $title;
 
-    /**
-     * @var string|null Short text describing this tag.
-     */
+    /** @var string|null */
     public ?string $description;
 
     public function __construct(

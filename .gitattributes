@@ -1,0 +1,7 @@
+# Files that are not needed to use the SDK are left out of the Composer package.
+/demo export-ignore
+/tests export-ignore
+/phpunit.xml.dist export-ignore
+/.gitattributes export-ignore
+/.gitignore export-ignore
+/.github export-ignore

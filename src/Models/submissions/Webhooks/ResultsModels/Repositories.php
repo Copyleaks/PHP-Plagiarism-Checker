@@ -6,19 +6,13 @@ use Copyleaks\Metadata;
 
 class Repositories extends SharedResultsModel
 {
-/**
-     * @var string|null The repository ID that has the result.
-     */
+    /** @var string|null Repository that has the result. */
     public ?string $repositoryId;
 
-    /**
-     * @var Tags[]|null Tags object array. Each element in the array is an instance of the Tags class.
-     */
+    /** @var Tags[]|null */
     public ?array $tags;
 
-    /**
-     * @var Metadata|null Metadata object associated with the repository result.
-     */
+    /** @var Metadata|null */
     public ?Metadata $metadata;
 
     public function __construct(

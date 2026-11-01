@@ -16,32 +16,36 @@ class CompletedWebhook extends StatusWebhook
     public ?Notifications $notifications;
     public ?ScannedDocument $scannedDocument;
 
+    /** Citation Checker summary; only when properties.references.validate was enabled. */
+    public ?ReferencesValidation $referencesValidation;
+
     public function __construct(
         ?Results $results = null,
         ?Notifications $notifications = null,
-        ?ScannedDocument $scannedDocument = null
+        ?ScannedDocument $scannedDocument = null,
+        ?ReferencesValidation $referencesValidation = null
     ) {
         $this->results = $results;
         $this->notifications = $notifications;
         $this->scannedDocument = $scannedDocument;
+        $this->referencesValidation = $referencesValidation;
     }
 
     public static function fromArray(array $data): self
     {
-        return new self(
+        $webhook = new self(
             isset($data['results']) ? Results::fromArray($data['results']) : null,
             isset($data['notifications']) ? Notifications::fromArray($data['notifications']) : null,
-            isset($data['scannedDocument']) ? ScannedDocument::fromArray($data['scannedDocument']) : null
+            isset($data['scannedDocument']) ? ScannedDocument::fromArray($data['scannedDocument']) : null,
+            is_array($data['referencesValidation'] ?? null) ? ReferencesValidation::fromArray($data['referencesValidation']) : null
         );
+        self::withBaseFields($webhook, $data);
+        return $webhook;
     }
 
     /**
-     * Returns the first 'suspected-ai-text' alert (CopyleaksAlertCodes::SUSPECTED_AI_TEXT) of the scan.
-     * The alerts can be Alerts instances (as fromArray() builds them) or raw alert arrays;
-     * a matching raw array is converted with Alerts::fromArray().
-     * Returns null when the completed webhook contains no suspected-ai-text alert.
-     *
-     * @return Alerts|null null when there are no notifications or alerts, or no 'suspected-ai-text' alert.
+     * The first 'suspected-ai-text' alert. A raw alert array is converted with Alerts::fromArray().
+     * @return Alerts|null null when there is no such alert.
      */
     public function getAIDetectionAlert(): ?Alerts
     {
@@ -63,18 +67,10 @@ class CompletedWebhook extends StatusWebhook
     }
 
     /**
-     * Decodes the AI text detection result of the 'suspected-ai-text' alert.
-     * Same as getAIDetectionAlert()->getAIDetectionResult().
-     *
-     * Returns null when:
-     * - there is no 'suspected-ai-text' alert (see getAIDetectionAlert());
-     * - the alert's additionalData is null, empty, or only NUL and ASCII whitespace characters;
-     * - the alert's additionalData is valid JSON but not a JSON object.
+     * Same as getAIDetectionAlert()->getAIDetectionResult(), and also null when there is no such alert.
      * Use getAIDetectionAlert() to tell a missing alert from an alert without a result.
-     *
-     * @return CopyleaksAiTextDetectionResponseModel|null the decoded result, or null in the cases listed above.
-     * @throws \JsonException when the alert's trimmed additionalData is not valid JSON, or is nested deeper than
-     * 512 levels.
+     * @return CopyleaksAiTextDetectionResponseModel|null
+     * @throws \JsonException When the alert's additionalData is not valid JSON or is nested deeper than 512 levels.
      */
     public function getAIDetectionResult(): ?CopyleaksAiTextDetectionResponseModel
     {

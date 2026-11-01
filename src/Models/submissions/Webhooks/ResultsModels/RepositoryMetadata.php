@@ -6,9 +6,7 @@ use Copyleaks\Metadata;
 
 class RepositoryMetadata extends Metadata
 {
-    /**
-     * @var string|null Email of the user which added this document to the repository.
-     */
+    /** @var string|null Email of the user who added the document to the repository. */
     public ?string $submittedBy;
 
     public function __construct(

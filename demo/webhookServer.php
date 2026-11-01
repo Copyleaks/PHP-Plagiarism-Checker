@@ -13,7 +13,6 @@ use Slim\Factory\AppFactory;
 
 
 $app = AppFactory::create();
-// Enable error reporting (optional but useful)
 $app->addErrorMiddleware(true, true, true);
 
 $logDir = __DIR__ . '/logs';
@@ -21,15 +20,13 @@ if (!is_dir($logDir)) {
     mkdir($logDir, 0777, true);
 }
 
-// writes the response from webhook to logs directory with file name as the webhook status
+// Appends the webhook body to logs/<status>.log.
 function logWebhook(string $status, $data): void {
     global $logDir;
     $logFile = $logDir . "/$status.log";
     $logContent = date('Y-m-d H:i:s') . "\n" . json_encode($data, JSON_PRETTY_PRINT) . "\n\n";
     file_put_contents($logFile, $logContent, FILE_APPEND);
 }
-
-// parses the json payload
 function parseJsonBody(Request $request): ?array {
     $body = (string) $request->getBody();
     $decoded = json_decode($body, true);
@@ -50,11 +47,8 @@ $app->post('/webhook/completed', function (Request $request, Response $response)
         $response->getBody()->write("Invalid JSON");
         return $response->withStatus(400);
     }
-    //desrialze the json payload into CompletedWebhook model
     $statusWebhook = CompletedWebhook::fromArray($data);
-    #var_dump($statusWebhook);
     logWebhook('completed', $statusWebhook);
-    // read the AI text detection result from the 'suspected-ai-text' alert, if the scan produced one
     $aiAlert = $statusWebhook->getAIDetectionAlert(); // null when the scan produced no AI alert
     if ($aiAlert !== null) {
         try {
@@ -73,7 +67,6 @@ $app->post('/webhook/completed', function (Request $request, Response $response)
             logWebhook('completed-ai-detection', ['error' => $e->getMessage()]);
         }
     }
-    // Create a response array
     $responseData = [
         'status' => 'success',
         'message' => "Webhook 'completed' processed",
@@ -90,11 +83,9 @@ $app->post('/webhook/error', function (Request $request, Response $response) {
         $response->getBody()->write("Invalid JSON");
         return $response->withStatus(400);
     }
-    //desrialze the json payload into ErrorWebhook model
     $error = ErrorWebhook::fromArray($data);
 
     logWebhook('error', $error);
-    // Create a response array
     $responseData = [
         'status' => 'success',
         'message' => "Webhook 'error' processed",
@@ -106,17 +97,14 @@ $app->post('/webhook/error', function (Request $request, Response $response) {
 });
 
 
-$app->post('/webhook/creditsChecked', function (Request $request, Response $response) {
+$app->post('/webhook/creditschecked', function (Request $request, Response $response) {
     $data = parseJsonBody($request);
     if ($data === null) {
         $response->getBody()->write("Invalid JSON");
         return $response->withStatus(400);
     }
-    //desrialze the json payload into CreditsCheckedWebhook model
     $credits_checked = CreditsCheckedWebhook::fromArray($data);
     logWebhook('creditsChecked', $credits_checked);
-    
-    // Create a response array
     $responseData = [
         'status' => 'success',
         'message' => "Webhook 'creditsChecked' processed",
@@ -133,12 +121,8 @@ $app->post('/webhook/indexed', function (Request $request, Response $response) {
         $response->getBody()->write("Invalid JSON");
         return $response->withStatus(400);
     }
-
-    //desrialze the json payload into IndexedWebhook model
     $indexed = IndexedWebhook::fromArray($data);
     logWebhook('indexed', $indexed);
-    
-    // Create a response array
     $responseData = [
         'status' => 'success',
         'message' => "Webhook 'indexed' processed",
@@ -155,11 +139,9 @@ $app->post('/webhook/new-results', function (Request $request, Response $respons
         $response->getBody()->write("Invalid JSON");
         return $response->withStatus(400);
     }
-    //desrialze the json payload into NewResultWebhook model
     $new_results = NewResultWebhook::fromArray($data);
 
     logWebhook('new-results', $new_results);
-    // Create a response array
     $responseData = [
         'status' => 'success',
         'message' => "Webhook 'new_results' processed",

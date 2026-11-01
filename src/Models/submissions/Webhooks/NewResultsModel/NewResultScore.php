@@ -6,10 +6,7 @@ namespace Copyleaks;
 
 class NewResultScore
 {
-    /**
-     * @var float The percentage of similar words from all results.
-     * The calculation does not include excluded references, quotations, etc.
-     */
+    /** @var float Percentage of similar words across all results, not counting excluded references, quotes, etc. */
     public ?float $aggregatedScore;
 
     public function __construct(?float $aggregatedScore = null)
