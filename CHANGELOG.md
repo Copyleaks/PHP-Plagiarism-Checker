@@ -2,6 +2,14 @@
 
 All notable changes to the Copyleaks PHP SDK are listed here.
 
+## Unreleased
+
+### Added
+
+- **AI Image Detection file upload.** `$copyleaks->aiImageDetectionClient->submitFile($token, $scanId, new CopyleaksAiImageDetectionFileRequestModel($imagePath, $filename, $model, $sandbox, $maskType, $objectDetection))` uploads the image as multipart/form-data, without the base64 overhead, and returns the same response as `submit()`. `CopyleaksAiImageDetectionFileRequestModel::fromContent()` takes the image bytes instead of a file path. `submit()` is unchanged.
+- **API error fields.** `CommandException`, `RateLimitException` and `UnderMaintenanceException` read the API's JSON error body: `getErrorType()`, `getErrorId()`, `getErrorCode()` (int), `getErrorMessage()`, `getErrorUrl()` and `getErrorDetails()` (an array of `Copyleaks\ErrorDetail`). Each returns null, or an empty array for the details, when the body is not JSON or lacks the field. `getMessage()`, the status code and the retry behaviour are unchanged.
+- `Copyleaks\CopyleaksErrorTypes`: `INVALID_REQUEST_ERROR`, `AUTHENTICATION_ERROR`, `PAYMENT_ERROR` and `API_ERROR`, the documented values of `getErrorType()`.
+
 ## 5.3.0
 
 The package is now published on Packagist as `copyleaks/copyleaks`. Versions up to v5.2.0 were published as `copyleaks/php-plagiarism-checker`. The PHP code you write does not change: the `Copyleaks\` namespace and all class names are the same as before. Read the upgrade notes below.

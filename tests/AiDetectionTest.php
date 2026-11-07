@@ -3,6 +3,7 @@
 namespace Copyleaks\Tests;
 
 use Copyleaks\CopyleaksAiImageDetectionAsyncRequestModel;
+use Copyleaks\CopyleaksAiImageDetectionFileRequestModel;
 use Copyleaks\CopyleaksAiImageDetectionModels;
 use Copyleaks\CopyleaksAiImageDetectionRequestModel;
 use Copyleaks\CopyleaksAiImageDetectionResponseModel;
@@ -136,6 +137,123 @@ class AiDetectionTest extends SdkTestCase
         $this->assertNull($plain->isAiDetected);
         $this->assertNull($plain->detectedObjects);
         $this->assertNull($plain->result);
+    }
+
+    /** @var string[] */
+    private array $temporaryImages = [];
+
+    protected function tearDown(): void
+    {
+        foreach ($this->temporaryImages as $path) {
+            @unlink($path);
+        }
+        parent::tearDown();
+    }
+
+    /** Writes a small fake image to a temporary file; deleted in tearDown(). */
+    private function temporaryImage(string $extension): string
+    {
+        $base = tempnam(sys_get_temp_dir(), 'claii');
+        @unlink($base);
+        $path = $base . '.' . $extension;
+        file_put_contents($path, "\x89PNG\r\n\x1a\n" . random_bytes(3000) . "\0\r\n--edge");
+        $this->temporaryImages[] = $path;
+        return $path;
+    }
+
+    public function testAiImageFileUploadsMultipart(): void
+    {
+        StubServer::enqueueJson(['model' => 'ai-image-1-ultra', 'summary' => ['human' => 0.25, 'ai' => 0.75], 'isAiDetected' => true]);
+        $path = $this->temporaryImage('png');
+        $submission = new CopyleaksAiImageDetectionFileRequestModel($path, 'my-photo.png', CopyleaksAiImageDetectionModels::AI_IMAGE_1_ULTRA, true,
+            CopyleaksAiImageMaskTypes::HEATMAP, [new CopyleaksAiImageObjectDetectionItem('face'), new CopyleaksAiImageObjectDetectionItem('hand')]);
+        $result = $this->copyleaks->aiImageDetectionClient->submitFile($this->token(), 'aif 1', $submission);
+
+        $request = $this->lastRequest();
+        $this->assertRequest($request, 'POST', '/v1/ai-image-detector/aif%201/check');
+        $this->assertSame('Bearer ' . self::TOKEN, $request['headers']['authorization']);
+        $this->assertSame((string) strlen($request['body']), $request['headers']['content-length']);
+
+        $parts = $this->parseMultipart($request);
+        $this->assertSame(['image', 'filename', 'model', 'sandbox', 'maskType', 'objectDetection'], array_keys($parts));
+        $this->assertSame('form-data; name="image"; filename="my-photo.png"', $parts['image']['headers']['content-disposition']);
+        $this->assertSame('image/png', $parts['image']['headers']['content-type']);
+        $this->assertSame(file_get_contents($path), $parts['image']['body']);
+        $this->assertSame('my-photo.png', $parts['filename']['body']);
+        $this->assertSame('ai-image-1-ultra', $parts['model']['body']);
+        $this->assertSame('true', $parts['sandbox']['body']);
+        $this->assertSame('heatmap', $parts['maskType']['body']);
+        $this->assertSame('[{"object":"face"},{"object":"hand"}]', $parts['objectDetection']['body']);
+        $this->assertStringNotContainsString($path, $request['body'], 'the local path is never sent');
+
+        $model = CopyleaksAiImageDetectionResponseModel::fromArray(json_decode(json_encode($result), true));
+        $this->assertSame(0.75, $model->summary->ai);
+        $this->assertTrue($model->isAiDetected);
+    }
+
+    public function testAiImageFileFromMemoryLeavesOptionalFieldsOut(): void
+    {
+        $bytes = "\x89PNG\r\n\x1a\n" . random_bytes(2000);
+        $submission = CopyleaksAiImageDetectionFileRequestModel::fromContent($bytes, 'photo.heic', 'ai-image-1-ultra');
+        $this->copyleaks->aiImageDetectionClient->submitFile($this->token(), 'aif2', $submission);
+
+        $request = $this->lastRequest();
+        $this->assertRequest($request, 'POST', '/v1/ai-image-detector/aif2/check');
+        $parts = $this->parseMultipart($request);
+        $this->assertSame(['image', 'filename', 'model', 'sandbox'], array_keys($parts));
+        $this->assertSame('form-data; name="image"; filename="photo.heic"', $parts['image']['headers']['content-disposition']);
+        $this->assertSame('image/heic', $parts['image']['headers']['content-type']);
+        $this->assertSame($bytes, $parts['image']['body']);
+        $this->assertSame('false', $parts['sandbox']['body']);
+
+        $empty = CopyleaksAiImageDetectionFileRequestModel::fromContent($bytes, 'p.avif', 'm', false, CopyleaksAiImageMaskTypes::NONE, []);
+        $this->copyleaks->aiImageDetectionClient->submitFile($this->token(), 'aif3', $empty);
+        $parts = $this->parseMultipart($this->lastRequest());
+        $this->assertSame('image/avif', $parts['image']['headers']['content-type']);
+        $this->assertSame('none', $parts['maskType']['body']);
+        $this->assertSame('[]', $parts['objectDetection']['body']);
+    }
+
+    public function testAiImageFileRejectsBadInputBeforeSending(): void
+    {
+        $image = $this->temporaryImage('png');
+        $secret = 'IMAGE-BYTES-' . bin2hex(random_bytes(8));
+        $cases = [
+            'missing file' => [new CopyleaksAiImageDetectionFileRequestModel('/no/such/file.png', 'file.png', 'm'), 'cannot be read'],
+            'directory' => [new CopyleaksAiImageDetectionFileRequestModel(sys_get_temp_dir(), 'file.png', 'm'), 'cannot be read'],
+            'stream wrapper' => [new CopyleaksAiImageDetectionFileRequestModel('file://' . $image, 'file.png', 'm'), 'cannot be read'],
+            'signed url' => [new CopyleaksAiImageDetectionFileRequestModel('https://user:pw@example.com/a.png?X-Goog-Signature=' . $secret, 'file.png', 'm'), 'cannot be read'],
+            'php wrapper' => [new CopyleaksAiImageDetectionFileRequestModel('php://stdin', 'file.png', 'm'), 'cannot be read'],
+            'nul byte' => [new CopyleaksAiImageDetectionFileRequestModel($image . "\0.txt", 'file.png', 'm'), 'cannot be read'],
+            'no image' => [CopyleaksAiImageDetectionFileRequestModel::fromContent('', 'file.png', 'm'), 'image is required'],
+            'no filename' => [CopyleaksAiImageDetectionFileRequestModel::fromContent($secret, '', 'm'), 'filename is required'],
+            'header injection' => [CopyleaksAiImageDetectionFileRequestModel::fromContent($secret, "a.png\"\r\nX-Injected: 1", 'm'), 'control characters'],
+        ];
+        foreach ($cases as $name => [$submission, $message]) {
+            try {
+                $this->copyleaks->aiImageDetectionClient->submitFile($this->token(), 'aif4', $submission);
+                $this->fail("$name: expected InvalidArgumentException");
+            } catch (\InvalidArgumentException $e) {
+                $this->assertStringContainsString($message, $e->getMessage(), $name);
+                $this->assertStringNotContainsString($secret, $e->getMessage(), "$name: no image bytes in the message");
+                $this->assertStringNotContainsString("\0", $e->getMessage(), $name);
+                $this->assertStringNotContainsString('/no/such', $e->getMessage(), "$name: the path is not repeated");
+                $this->assertStringNotContainsString('pw@', $e->getMessage(), $name);
+            }
+        }
+        $this->assertSame([], StubServer::requests());
+    }
+
+    public function testAiImageFileValidate(): void
+    {
+        $this->assertSame([], CopyleaksAiImageDetectionFileRequestModel::fromContent('x', 'a.AVIF', 'ai-image-1-ultra')->validate());
+        $this->assertSame([], (new CopyleaksAiImageDetectionFileRequestModel('/any/path.png', 'a.jpeg', 'm'))->validate());
+        $this->assertSame(
+            ['Image field is required', 'FileName field is required', 'Model field is required'],
+            CopyleaksAiImageDetectionFileRequestModel::fromContent('', '', '')->validate()
+        );
+        $this->assertSame(['Unsupported file extension. Allowed: .png, .bmp, .jpg, .jpeg, .webp, .heic, .heif, .avif'],
+            CopyleaksAiImageDetectionFileRequestModel::fromContent('x', 'a.gif', 'm')->validate());
     }
 
     public function testAiImageAsyncSubmit(): void

@@ -286,6 +286,19 @@ For a full guide please refer to our step by step [Guide](https://docs.copyleaks
 
 For a detailed understanding of the AI Image Detection process, refer to the Copyleaks AI image detection Endpoint [Documentation](https://docs.copyleaks.com/reference/actions/ai-image-detector/check/)
 
+### AI Image Detection file upload
+Upload the image as a file (multipart/form-data) instead of base64. The options and the response are the same as `submit()`.
+```php
+<?php
+    use Copyleaks\CopyleaksAiImageDetectionFileRequestModel;
+    use Copyleaks\CopyleaksAiImageDetectionModels;
+
+    $submission = new CopyleaksAiImageDetectionFileRequestModel('/path/to/photo.jpg', 'photo.jpg', CopyleaksAiImageDetectionModels::AI_IMAGE_1_ULTRA, true); // sandbox
+    // Or from bytes in memory: CopyleaksAiImageDetectionFileRequestModel::fromContent($bytes, 'photo.jpg', CopyleaksAiImageDetectionModels::AI_IMAGE_1_ULTRA);
+
+    $response = $copyleaks->aiImageDetectionClient->submitFile($authToken, 'my-image-scan', $submission);
+```
+
 ### AI Image Detection options
 Ask for a heatmap mask and locate objects in the image. Both options are optional.
 
@@ -479,6 +492,25 @@ Errors are thrown as exceptions that carry the HTTP status code:
         sleep($e->getRetryAfterSeconds() ?? 60);             // 429
     } catch (CommandException $e) {
         error_log($e->getStatusCode() . ' ' . $e->getResponseBody()); // getStatusCode() is 0 when no response arrived, for example after a timeout
+    }
+```
+
+The exceptions also read the API's JSON error body ([API errors](https://docs.copyleaks.com/using-the-apis/api-errors/)). Each getter returns null, or an empty array for the details, when the body does not have that field:
+
+```php
+<?php
+    use Copyleaks\CommandException;
+    use Copyleaks\CopyleaksErrorTypes;
+
+    try {
+        $copyleaks->submitFile($authToken, 'my-scan', $submission);
+    } catch (CommandException $e) {
+        if ($e->getErrorType() === CopyleaksErrorTypes::PAYMENT_ERROR) {
+            // $e->getErrorId(), $e->getErrorCode(), $e->getErrorMessage() and $e->getErrorUrl() describe the error
+        }
+        foreach ($e->getErrorDetails() as $detail) {
+            echo $detail->param, ': ', $detail->message, "\n"; // the parameters that caused the error; escape API text before putting it in HTML
+        }
     }
 ```
 
