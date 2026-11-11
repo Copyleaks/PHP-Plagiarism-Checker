@@ -3,6 +3,7 @@
 namespace Copyleaks;
 
 include_once(__DIR__ . '/requests/CopyleaksAiImageDetectionRequestModel.php');
+include_once(__DIR__ . '/requests/CopyleaksAiImageDetectionFileRequestModel.php');
 include_once(__DIR__ . '/requests/CopyleaksAiImageObjectDetectionItem.php');
 include_once(__DIR__ . '/requests/CopyleaksAsyncWebhooks.php');
 include_once(__DIR__ . '/requests/CopyleaksAiImageDetectionAsyncRequestModel.php');

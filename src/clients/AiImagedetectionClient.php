@@ -23,6 +23,32 @@ class AiImagedetectionClient{
     }
 
     /**
+     * Same as submit(), but uploads the image as multipart/form-data, without the base64 overhead.
+     * https://docs.copyleaks.com/reference/actions/ai-image-detector/check
+     * @param CopyleaksAuthToken $authToken
+     * @param string $scanId Your own scan ID.
+     * @param CopyleaksAiImageDetectionFileRequestModel $submission
+     * @return mixed Decoded JSON, see CopyleaksAiImageDetectionResponseModel::fromArray().
+     * @throws \InvalidArgumentException When scanId is empty, or the image or its filename is missing or invalid.
+     * @throws \RuntimeException When the temporary file for in-memory bytes cannot be written (PHP 8.0 and older).
+     * @throws \JsonException When $submission->objectDetection cannot be encoded as JSON.
+     */
+    public function submitFile(CopyleaksAuthToken $authToken, string $scanId, CopyleaksAiImageDetectionFileRequestModel $submission)
+    {
+        $temporaryFiles = [];
+        try {
+            $fields = static function () use ($submission, &$temporaryFiles): array {
+                return $submission->toMultipartFields($temporaryFiles);
+            };
+            return CopyleaksClientUtils::sendScanRequest($authToken, 'MULTIPART', '/v1/ai-image-detector/{scanId}/check', $scanId, $fields, false);
+        } finally {
+            foreach ($temporaryFiles as $path) {
+                @unlink($path);
+            }
+        }
+    }
+
+    /**
      * Submit an image URL for AI detection. Answers 201 right away; the result is sent to
      * $submission->webhooks->url, read it with CopyleaksAiImageDetectionResponseModel::fromArray().
      * https://docs.copyleaks.com/reference/actions/ai-image-detector/submit

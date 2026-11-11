@@ -43,35 +43,6 @@ class ImagePlagiarismTest extends SdkTestCase
         parent::tearDown();
     }
 
-    /**
-     * Splits a multipart/form-data body into its parts: name => ['headers' => [...], 'body' => string].
-     */
-    private function parseMultipart(array $request): array
-    {
-        $this->assertMatchesRegularExpression('#^multipart/form-data; boundary=(\S+)$#', $request['headers']['content-type']);
-        preg_match('#boundary=(\S+)$#', $request['headers']['content-type'], $m);
-        $boundary = $m[1];
-        $body = $request['body'];
-        $this->assertStringEndsWith("--$boundary--\r\n", $body);
-
-        $parts = [];
-        $chunks = explode("--$boundary", $body);
-        array_shift($chunks); // before the first boundary
-        array_pop($chunks);   // the closing "--\r\n"
-        foreach ($chunks as $chunk) {
-            $chunk = substr($chunk, 2, -2); // strip the CRLF after the boundary and before the next one
-            [$head, $content] = explode("\r\n\r\n", $chunk, 2);
-            $headers = [];
-            foreach (explode("\r\n", $head) as $line) {
-                [$name, $value] = explode(':', $line, 2);
-                $headers[strtolower($name)] = trim($value);
-            }
-            preg_match('#name="([^"]+)"#', $headers['content-disposition'], $n);
-            $parts[$n[1]] = ['headers' => $headers, 'body' => $content];
-        }
-        return $parts;
-    }
-
     public function testUploadsTheImageFileAsMultipart(): void
     {
         StubServer::enqueueJson(self::RESPONSE);
