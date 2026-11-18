@@ -5,7 +5,7 @@ namespace Copyleaks;
 class CopyleaksConfig
 {
   /** Sent in the User-Agent header. */
-  const SDK_VERSION = '5.3.0';
+  const SDK_VERSION = '5.4.0';
 
   /** Seconds to open a connection to a Copyleaks server. */
   const DEFAULT_CONNECT_TIMEOUT = 10;

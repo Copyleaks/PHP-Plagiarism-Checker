@@ -2,7 +2,7 @@
 
 All notable changes to the Copyleaks PHP SDK are listed here.
 
-## Unreleased
+## 5.4.0
 
 ### Added
 
